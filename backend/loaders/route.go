@@ -32,6 +32,7 @@ func SetupRoutes() {
 	// Handlers
 	var userHandlers = handlers.NewUserHandler(userServices)
 	var authHandlers = handlers.NewAuthHandler(authServices)
+	var videoInterviewHandlers = handlers.NewVideoInterviewHandler()
 	var WorkspaceHandler = handlers.NewWorkspaceHandler(workspaceService)
 
 	// Fiber App
@@ -42,38 +43,37 @@ func SetupRoutes() {
 	}))
 
 	// Public Routes
-	app.Post("api/user.createUser", userHandlers.CreateUser)
-	app.Post("api/auth.login", authHandlers.Login)
-	app.Post("api/auth.logout", authHandlers.Logout)
-	app.Get("api/healthcheck", handlers.HealthCheck)
-	app.Get("api/swagger/*", swagger.HandlerDefault)
-	app.Get("api/", func(c *fiber.Ctx) error {
+	public := app.Group("/api")
+	public.Get("healthcheck", handlers.HealthCheck)
+	public.Get("swagger/*", swagger.HandlerDefault)
+	public.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("Hello, Interv 🕊️")
 	})
 
-	app.Post("api/workspace.new", WorkspaceHandler.CreateWorkspace)
-
 	// Private Routes
-	api := app.Group("/api")
-	api.Use(func(c *fiber.Ctx) error {
+	private := app.Group("/api")
+	private.Use(func(c *fiber.Ctx) error {
 		token := c.Cookies("token", "")
 		_, err := jwt.Parse(token, func(token *jwt.Token) (interface{}, error) {
 			return []byte(viper.GetString("JWT_SECRET")), nil
 		})
 
 		if err != nil {
-			print("Error ", err.Error(), "\n")
-			return fiber.ErrUnauthorized
+			println("Error: ", err.Error())
+			return fiber.NewError(fiber.StatusUnauthorized, err.Error())
 		}
 
 		return c.Next()
 	})
 
 	// User
-	api.Post("user.deleteUser", userHandlers.DeleteUser)
+	private.Post("user.deleteUser", userHandlers.DeleteUser)
 
 	// Auth
-	api.Get("auth.me", authHandlers.Me)
+
+	// portal
+
+	// ^^Can change above na
 
 	ListenAndServe(app, serverAddr)
 }
