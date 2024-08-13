@@ -3,11 +3,10 @@ package loaders
 import (
 	"errors"
 	"fmt"
-	"time"
-
 	swagger "github.com/arsmn/fiber-swagger/v2"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/spf13/viper"
+	"time"
 
 	"csgit.sit.kmutt.ac.th/interv/interv-platform/internal/handlers"
 	"csgit.sit.kmutt.ac.th/interv/interv-platform/internal/repositories"
@@ -22,12 +21,10 @@ func SetupRoutes() {
 
 	// Repositories
 	var userRepositories = repositories.NewUserRepository(*DB)
-	var workspaceRepositories = repositories.NewWorkspaceRepository(*DB)
 
 	// Services
 	var userServices = services.NewUserService(userRepositories)
 	var authServices = services.NewAuthService(userRepositories)
-	var workspaceService = services.NewWorkspaceService(workspaceRepositories)
 
 	// Handlers
 	var userHandlers = handlers.NewUserHandler(userServices)
@@ -49,6 +46,19 @@ func SetupRoutes() {
 	public.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("Hello, Interv 🕊️")
 	})
+
+	// user
+	public.Post("user.createUser", userHandlers.CreateUser)
+
+	// auth
+	public.Post("auth.login", authHandlers.Login)
+	public.Post("auth.logout", authHandlers.Logout)
+	public.Get("auth.me", authHandlers.Me)
+
+	// videoInterview
+	public.Get("videoInterview.getVideoInterviewContext", videoInterviewHandlers.GetVideoInterviewContext)
+	public.Get("videoInterview.getVideoInterviewQuestion", videoInterviewHandlers.GetVideoInterviewQuestion)
+
 
 	// Private Routes
 	private := app.Group("/api")
@@ -72,6 +82,8 @@ func SetupRoutes() {
 	// Auth
 
 	// portal
+	//// Workspace
+	private.Post("workspace.new", )
 
 	// ^^Can change above na
 
