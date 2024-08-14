@@ -128,6 +128,6 @@ func NewFiberApp() *fiber.App {
 func ListenAndServe(app *fiber.App, serverAddr string) {
 	err := app.Listen(serverAddr)
 	if err != nil {
-		panic(err)
+		 panic(err)
 	}
 }
