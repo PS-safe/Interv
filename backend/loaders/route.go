@@ -3,10 +3,11 @@ package loaders
 import (
 	"errors"
 	"fmt"
+	"time"
+
 	swagger "github.com/arsmn/fiber-swagger/v2"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/spf13/viper"
-	"time"
 
 	"csgit.sit.kmutt.ac.th/interv/interv-platform/internal/handlers"
 	"csgit.sit.kmutt.ac.th/interv/interv-platform/internal/repositories"
@@ -21,17 +22,18 @@ func SetupRoutes() {
 
 	// Repositories
 	var userRepositories = repositories.NewUserRepository(*DB)
+	var workspaceRepositories = repositories.NewWorkspaceRepository(*DB)
 
 	// Services
 	var userServices = services.NewUserService(userRepositories)
 	var authServices = services.NewAuthService(userRepositories)
+	var workspaceService = services.NewWorkspaceService(workspaceRepositories)
 
 	// Handlers
 	var userHandlers = handlers.NewUserHandler(userServices)
 	var authHandlers = handlers.NewAuthHandler(authServices)
 	var videoInterviewHandlers = handlers.NewVideoInterviewHandler()
-	var WorkspaceHandler = handlers.NewWorkspaceHandler(workspaceService)
-
+	var workspaceHandlers = handlers.NewWorkspaceHandler(workspaceService)
 	// Fiber App
 	app := NewFiberApp()
 	app.Use(cors.New(cors.Config{
@@ -59,7 +61,6 @@ func SetupRoutes() {
 	public.Get("videoInterview.getVideoInterviewContext", videoInterviewHandlers.GetVideoInterviewContext)
 	public.Get("videoInterview.getVideoInterviewQuestion", videoInterviewHandlers.GetVideoInterviewQuestion)
 
-
 	// Private Routes
 	private := app.Group("/api")
 	private.Use(func(c *fiber.Ctx) error {
@@ -83,7 +84,8 @@ func SetupRoutes() {
 
 	// portal
 	//// Workspace
-	private.Post("workspace.new", )
+	private.Post("workspace.new", workspaceHandlers.CreateWorkspace)
+	private.Delete("workspace.rm", workspaceHandlers.DeleteWorkspace)
 
 	// ^^Can change above na
 

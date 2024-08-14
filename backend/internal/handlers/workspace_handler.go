@@ -72,16 +72,6 @@ func (w WorkspaceHandler) DeleteWorkspace(c *fiber.Ctx) error {
 		return err
 	}
 
-	userId, err := GetCurrentUser(c)
-
-	if err != nil {
-		return err
-	}
-
-	if *form.Id == *userId {
-		return fiber.NewError(fiber.StatusBadRequest, "cannot delete yourself")
-	}
-
 	if err := w.workspaceService.Delete(*form.Id); err != nil {
 		return err
 	}
