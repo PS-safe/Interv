@@ -6,10 +6,10 @@ import (
 )
 
 type UserInWorkspaceHandler struct {
-	UserInWorkspaceService services.IUserInWorkspaceService
+	UserInWorkspaceService services.IWorkspaceService
 }
 
-func NewInWorkspaceHandler(UserInWorkspaceService services.IUserInWorkspaceService) UserInWorkspaceHandler {
+func NewUserInWorkspaceHandler(UserInWorkspaceService services.IWorkspaceService) UserInWorkspaceHandler {
 	return UserInWorkspaceHandler{
 		UserInWorkspaceService: UserInWorkspaceService,
 	}
@@ -26,7 +26,7 @@ func (uiw UserInWorkspaceHandler) AddUserToWorkspace(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 
-	response, err := uiw.UserInWorkspaceService.Add(body.UserId, body.WorkspaceId)
+	response, err := uiw.UserInWorkspaceService.CreateUserInWorkspace(body.UserId, body.WorkspaceId, body.Status)
 
 	if err != nil {
 		return err
@@ -55,7 +55,7 @@ func (uiw UserInWorkspaceHandler) DeleteUserFromWorkspace(c *fiber.Ctx) error {
 	// }
 	// need to check workspace owner ?
 
-	if err := uiw.UserInWorkspaceService.Delete(body.UserId, body.WorkspaceId); err != nil {
+	if err := uiw.UserInWorkspaceService.DeleteUserInWorkspace(body.UserId, body.WorkspaceId); err != nil {
 		return err
 	}
 

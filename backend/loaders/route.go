@@ -23,17 +23,19 @@ func SetupRoutes() {
 	// Repositories
 	var userRepositories = repositories.NewUserRepository(*DB)
 	var workspaceRepositories = repositories.NewWorkspaceRepository(*DB)
+	var userInWorkspaceRepositories = repositories.NewUserInWorkspaceRepository(*DB)
 
 	// Services
 	var userServices = services.NewUserService(userRepositories)
 	var authServices = services.NewAuthService(userRepositories)
-	var workspaceService = services.NewWorkspaceService(workspaceRepositories)
+	var workspaceService = services.NewWorkspaceService(workspaceRepositories, userInWorkspaceRepositories)
 
 	// Handlers
 	var userHandlers = handlers.NewUserHandler(userServices)
 	var authHandlers = handlers.NewAuthHandler(authServices)
 	var videoInterviewHandlers = handlers.NewVideoInterviewHandler()
 	var workspaceHandlers = handlers.NewWorkspaceHandler(workspaceService)
+	var UserInWorkspaceHandler = handlers.NewUserInWorkspaceHandler(workspaceService)
 	// Fiber App
 	app := NewFiberApp()
 	app.Use(cors.New(cors.Config{
@@ -84,8 +86,10 @@ func SetupRoutes() {
 
 	// portal
 	//// Workspace
-	private.Post("workspace.new", workspaceHandlers.CreateWorkspace)
+	private.Post("workspace.add", workspaceHandlers.CreateWorkspace)
 	private.Delete("workspace.rm", workspaceHandlers.DeleteWorkspace)
+	private.Post("userInWorkspace.add", UserInWorkspaceHandler.AddUserToWorkspace)
+	private.Delete("userInWorkspace.rm", UserInWorkspaceHandler.DeleteUserFromWorkspace)
 
 	// ^^Can change above na
 

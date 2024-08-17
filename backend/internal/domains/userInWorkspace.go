@@ -19,7 +19,7 @@ type UserInWorkspace struct {
 	WorkspaceId uint
 	User        User       `gorm:"foreignKey:UserId"`
 	Workspace   Workspace  `gorm:"foreignKey:WorkspaceId"`
-	Status      StatusType `gorm:"default:'unseen'"`
+	Status      StatusType `gorm:"default: unseen"`
 	IsInterest  *bool      `gorm:"default:false"`
 	gorm.Model
 }
@@ -32,4 +32,8 @@ func (UserInWorkspace *UserInWorkspace) BeforeCreate(tx *gorm.DB) (err error) {
 		}
 	}
 	return fiber.NewError(fiber.StatusBadRequest, "invalid status , must be one of: "+StatusUnseen+", "+StatusPending+", "+StatusSuccess)
+}
+
+func (UserInWorkspace *UserInWorkspace) getUserId(tx *gorm.DB) (userId uint) {
+	return UserInWorkspace.UserId
 }

@@ -9,11 +9,12 @@ type UserInWorkspace struct {
 }
 
 type AddUserToWorkspaceBody struct {
-	UserId      []uint `json:"user_id" validate:"required"`
+	UserId      uint   `json:"user_id" validate:"required"`
 	WorkspaceId uint   `json:"workspace_id" validate:"required"`
+	Status      string `json:"status" validate:"required"`
 } // @name UserCreateBody
 
 type DeleteUserFromWorkspaceBody struct {
 	UserId      uint `json:"user_id" validate:"required"`
-	WorkspaceId uint   `json:"workspace_id" validate:"required"`
+	WorkspaceId uint `json:"workspace_id" validate:"required"`
 } // @name UserDeleteBody
