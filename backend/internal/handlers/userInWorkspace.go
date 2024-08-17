@@ -1,0 +1,19 @@
+package handlers
+
+type UserInWorkspace struct {
+	ID          uint
+	UserId      uint
+	WorkspaceId uint
+	Status      string
+	IsInterest  bool
+}
+
+type AddUserToWorkspaceBody struct {
+	UserId      []uint `json:"user_id" validate:"required"`
+	WorkspaceId uint   `json:"workspace_id" validate:"required"`
+} // @name UserCreateBody
+
+type DeleteUserFromWorkspaceBody struct {
+	UserId      uint `json:"user_id" validate:"required"`
+	WorkspaceId uint   `json:"workspace_id" validate:"required"`
+} // @name UserDeleteBody
