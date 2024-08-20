@@ -6,7 +6,6 @@ import (
 	"time"
 
 	swagger "github.com/arsmn/fiber-swagger/v2"
-	"github.com/golang-jwt/jwt/v5"
 	"github.com/spf13/viper"
 
 	"csgit.sit.kmutt.ac.th/interv/interv-platform/internal/handlers"
@@ -22,18 +21,22 @@ func SetupRoutes() {
 
 	// Repositories
 	var userRepositories = repositories.NewUserRepository(*DB)
+	var objectRepositories = repositories.NewObjectRepository(*MINIO)
 	var workspaceRepositories = repositories.NewWorkspaceRepository(*DB)
 	var userInWorkspaceRepositories = repositories.NewUserInWorkspaceRepository(*DB)
 
 	// Services
 	var userServices = services.NewUserService(userRepositories)
 	var authServices = services.NewAuthService(userRepositories)
+	var videoInterviewServices = services.NewVideoInterviewService(objectRepositories)
+	var objectServices = services.NewObjectService(objectRepositories)
 	var workspaceService = services.NewWorkspaceService(workspaceRepositories, userInWorkspaceRepositories)
 
 	// Handlers
 	var userHandlers = handlers.NewUserHandler(userServices)
 	var authHandlers = handlers.NewAuthHandler(authServices)
-	var videoInterviewHandlers = handlers.NewVideoInterviewHandler()
+	var videoInterviewHandlers = handlers.NewVideoInterviewHandler(videoInterviewServices)
+	var objectHandlers = handlers.NewObjectHandler(objectServices)
 	var workspaceHandlers = handlers.NewWorkspaceHandler(workspaceService)
 	var UserInWorkspaceHandler = handlers.NewUserInWorkspaceHandler(workspaceService)
 	// Fiber App
@@ -62,22 +65,11 @@ func SetupRoutes() {
 	// videoInterview
 	public.Get("videoInterview.getVideoInterviewContext", videoInterviewHandlers.GetVideoInterviewContext)
 	public.Get("videoInterview.getVideoInterviewQuestion", videoInterviewHandlers.GetVideoInterviewQuestion)
+	public.Post("videoInterview.submitVideoInterview", videoInterviewHandlers.SubmitVideoInterview)
 
 	// Private Routes
 	private := app.Group("/api")
-	private.Use(func(c *fiber.Ctx) error {
-		token := c.Cookies("token", "")
-		_, err := jwt.Parse(token, func(token *jwt.Token) (interface{}, error) {
-			return []byte(viper.GetString("JWT_SECRET")), nil
-		})
-
-		if err != nil {
-			println("Error: ", err.Error())
-			return fiber.NewError(fiber.StatusUnauthorized, err.Error())
-		}
-
-		return c.Next()
-	})
+	private.Use(JwtAuthentication)
 
 	// User
 	private.Post("user.deleteUser", userHandlers.DeleteUser)
@@ -91,7 +83,9 @@ func SetupRoutes() {
 	private.Post("userInWorkspace.add", UserInWorkspaceHandler.AddUserToWorkspace)
 	private.Delete("userInWorkspace.rm", UserInWorkspaceHandler.DeleteUserFromWorkspace)
 
-	// ^^Can change above na
+	// Object
+	private.Post("object.uploadObject", objectHandlers.UploadObject)
+	private.Post("object.getObject", objectHandlers.GetObject)
 
 	ListenAndServe(app, serverAddr)
 }
@@ -123,6 +117,7 @@ func NewFiberApp() *fiber.App {
 			// Return from handler
 			return nil
 		},
+		StreamRequestBody: true,
 	}
 
 	app := fiber.New(fiberConfig)
