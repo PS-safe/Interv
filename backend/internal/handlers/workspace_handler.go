@@ -26,7 +26,6 @@ func NewWorkspaceHandler(workspaceService services.IWorkspaceService) WorkspaceH
 // @Failure 400 {object} ErrResponse
 // @Failure 500 {object} ErrResponse
 // @Router /workspace.get [get]
-
 func (w WorkspaceHandler) GetWorkspace(c *fiber.Ctx) error {
 	form := new(GetWorkspaceBody)
 
@@ -53,7 +52,6 @@ func (w WorkspaceHandler) GetWorkspace(c *fiber.Ctx) error {
 // @Failure 400 {object} ErrResponse
 // @Failure 500 {object} ErrResponse
 // @Router /workspace.getAll [get]
-
 func (w WorkspaceHandler) GetAllWorkspace(c *fiber.Ctx) error {
 
 	userId, err := GetCurrentUser(c)
@@ -82,7 +80,6 @@ func (w WorkspaceHandler) GetAllWorkspace(c *fiber.Ctx) error {
 // @Failure 400 {object} ErrResponse
 // @Failure 500 {object} ErrResponse
 // @Router /workspace.create [post]
-
 func (w WorkspaceHandler) CreateWorkspace(c *fiber.Ctx) error {
 	form := new(CreateWorkspaceBody)
 
@@ -126,7 +123,6 @@ func (w WorkspaceHandler) CreateWorkspace(c *fiber.Ctx) error {
 // @Failure 400 {object} ErrResponse
 // @Failure 500 {object} ErrResponse
 // @Router /workspace.delete [post]
-
 func (w WorkspaceHandler) DeleteWorkspace(c *fiber.Ctx) error {
 	form := new(DeleteWorkspaceBody)
 

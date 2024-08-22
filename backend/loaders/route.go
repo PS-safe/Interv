@@ -76,8 +76,7 @@ func SetupRoutes() {
 
 	// Auth
 
-	// portal
-	//// Workspace
+	// Workspace
 	private.Get("workspace.get", workspaceHandlers.GetWorkspace)
 	private.Get("workspace.getAll", workspaceHandlers.GetAllWorkspace)
 	private.Post("workspace.create", workspaceHandlers.CreateWorkspace)

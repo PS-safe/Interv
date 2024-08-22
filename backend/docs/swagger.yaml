@@ -1,5 +1,24 @@
 basePath: /api
 definitions:
+  CreateWorkspaceBody:
+    properties:
+      iscoding:
+        type: boolean
+      isvideo:
+        type: boolean
+      startdate:
+        type: string
+      stopdate:
+        type: string
+      title:
+        type: string
+    required:
+    - iscoding
+    - isvideo
+    - startdate
+    - stopdate
+    - title
+    type: object
   CurrentUserResponse:
     properties:
       created_at:
@@ -19,6 +38,13 @@ definitions:
     - updated_at
     - username
     type: object
+  DeleteWorkspaceBody:
+    properties:
+      id:
+        type: integer
+    required:
+    - id
+    type: object
   GetObjectBody:
     properties:
       bucketName:
@@ -28,6 +54,13 @@ definitions:
     required:
     - bucketName
     - objectName
+    type: object
+  GetWorkspaceBody:
+    properties:
+      id:
+        type: integer
+    required:
+    - id
     type: object
   LoginBody:
     properties:
@@ -113,6 +146,23 @@ definitions:
     - timeToAnswer
     - timeToPrepare
     type: object
+  Workspace:
+    properties:
+      id:
+        type: integer
+      iscoding:
+        type: boolean
+      isvideo:
+        type: boolean
+      owner:
+        type: integer
+      startdate:
+        type: string
+      stopdate:
+        type: string
+      title:
+        type: string
+    type: object
   handlers.ErrResponse:
     properties:
       code:
@@ -170,6 +220,17 @@ definitions:
         type: integer
       data:
         $ref: '#/definitions/VideoInterviewQuestionResponse'
+      message:
+        type: string
+      timestamp:
+        type: string
+    type: object
+  handlers.Response-Workspace:
+    properties:
+      code:
+        type: integer
+      data:
+        $ref: '#/definitions/Workspace'
       message:
         type: string
       timestamp:
@@ -462,4 +523,117 @@ paths:
       summary: Submit video interview
       tags:
       - videoInterview
+  /workspace.create:
+    post:
+      consumes:
+      - application/json
+      operationId: CreateWorkspace
+      parameters:
+      - description: CreateWorkspaceBody
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/CreateWorkspaceBody'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.Response-Workspace'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.ErrResponse'
+      summary: Create new workspace
+      tags:
+      - workspace
+  /workspace.delete:
+    post:
+      consumes:
+      - application/json
+      operationId: DeleteWorkspace
+      parameters:
+      - description: DeleteWorkspaceBody
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/DeleteWorkspaceBody'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.Response-string'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.ErrResponse'
+      summary: Delete workspace
+      tags:
+      - workspace
+  /workspace.get:
+    get:
+      consumes:
+      - application/json
+      operationId: GetWorkspace
+      parameters:
+      - description: GetWorkspaceBody
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/GetWorkspaceBody'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.Response-Workspace'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.ErrResponse'
+      summary: Get workspace
+      tags:
+      - workspace
+  /workspace.getAll:
+    get:
+      consumes:
+      - application/json
+      operationId: GetAllWorkspace
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.Response-Workspace'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.ErrResponse'
+      summary: Get List of workspace
+      tags:
+      - workspace
 swagger: "2.0"
