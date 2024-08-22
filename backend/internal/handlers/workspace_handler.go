@@ -15,17 +15,73 @@ func NewWorkspaceHandler(workspaceService services.IWorkspaceService) WorkspaceH
 	}
 }
 
-// CreateUser
-// @ID createUser
-// @Tags user
-// @Summary Create new user
+// GetWorkspace
+// @ID GetWorkspace
+// @Tags workspace
+// @Summary Get workspace
 // @Accept json
 // @Produce json
-// @Param payload body CreateUserBody true "CreateUserBody"
-// @Success 200 {object} Response[UserData]
+// @Param payload body GetWorkspaceBody true "GetspaceBody"
+// @Success 200 {object} Response[WorkspaceData]
 // @Failure 400 {object} ErrResponse
 // @Failure 500 {object} ErrResponse
-// @Router /user.createUser [post]
+// @Router /workspace.get [get]
+
+func (w WorkspaceHandler) GetWorkspace(c *fiber.Ctx) error {
+	form := new(GetWorkspaceBody)
+
+	if err := c.BodyParser(form); err != nil {
+		return err
+	}
+
+	response, err := w.workspaceService.Get(*form.Id)
+
+	if err != nil {
+		return err
+	}
+
+	return Ok(c, response)
+}
+
+// GetAllWorkspace
+// @ID GetAllWorkspace
+// @Tags workspace
+// @Summary Get List of workspace
+// @Accept json
+// @Produce json
+// @Success 200 {object} Response[WorkspaceData]
+// @Failure 400 {object} ErrResponse
+// @Failure 500 {object} ErrResponse
+// @Router /workspace.getAll [get]
+
+func (w WorkspaceHandler) GetAllWorkspace(c *fiber.Ctx) error {
+
+	userId, err := GetCurrentUser(c)
+
+	if err != nil {
+		return err
+	}
+
+	response, err := w.workspaceService.GetAll(userId)
+
+	if err != nil {
+		return err
+	}
+
+	return Ok(c, response)
+}
+
+// CreateWorkspace
+// @ID CreateWorkspace
+// @Tags workspace
+// @Summary Create new workspace
+// @Accept json
+// @Produce json
+// @Param payload body CreateWorkspaceBody true "CreateWorkspaceBody"
+// @Success 200 {object} Response[WorkspaceData]
+// @Failure 400 {object} ErrResponse
+// @Failure 500 {object} ErrResponse
+// @Router /workspace.create [post]
 
 func (w WorkspaceHandler) CreateWorkspace(c *fiber.Ctx) error {
 	form := new(CreateWorkspaceBody)
@@ -38,7 +94,12 @@ func (w WorkspaceHandler) CreateWorkspace(c *fiber.Ctx) error {
 		return err
 	}
 
-	response, err := w.workspaceService.Create(form.Title, form.IsVideo, form.IsCoding, form.StartDate, form.StopDate)
+	userId, err := GetCurrentUser(c)
+	if err != nil {
+		return err
+	}
+
+	response, err := w.workspaceService.Create(form.Title, form.IsVideo, form.IsCoding, form.StartDate, form.StopDate, userId)
 	if err != nil {
 		return err
 	}
@@ -50,20 +111,21 @@ func (w WorkspaceHandler) CreateWorkspace(c *fiber.Ctx) error {
 		IsCoding:  *response.IsCoding,
 		StartDate: response.StartDate,
 		StopDate:  response.StopDate,
+		Owner:     response.Owner,
 	})
 }
 
-// DeleteUser
-// @ID deleteUser
-// @Tags user
-// @Summary Delete user
+// DeleteWorkspace
+// @ID DeleteWorkspace
+// @Tags workspace
+// @Summary Delete workspace
 // @Accept json
 // @Produce json
-// @Param payload body DeleteUserBody true "DeleteUserBody"
+// @Param payload body DeleteWorkspaceBody true "DeleteWorkspaceBody"
 // @Success 200 {object} Response[string]
 // @Failure 400 {object} ErrResponse
 // @Failure 500 {object} ErrResponse
-// @Router /user.deleteUser [post]
+// @Router /workspace.delete [post]
 
 func (w WorkspaceHandler) DeleteWorkspace(c *fiber.Ctx) error {
 	form := new(DeleteWorkspaceBody)

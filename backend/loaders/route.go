@@ -78,10 +78,12 @@ func SetupRoutes() {
 
 	// portal
 	//// Workspace
-	private.Post("workspace.add", workspaceHandlers.CreateWorkspace)
-	private.Delete("workspace.rm", workspaceHandlers.DeleteWorkspace)
-	private.Post("userInWorkspace.add", UserInWorkspaceHandler.AddUserToWorkspace)
-	private.Delete("userInWorkspace.rm", UserInWorkspaceHandler.DeleteUserFromWorkspace)
+	private.Get("workspace.get", workspaceHandlers.GetWorkspace)
+	private.Get("workspace.getAll", workspaceHandlers.GetAllWorkspace)
+	private.Post("workspace.create", workspaceHandlers.CreateWorkspace)
+	private.Delete("workspace.delete", workspaceHandlers.DeleteWorkspace)
+	private.Post("userInWorkspace.create", UserInWorkspaceHandler.AddUserToWorkspace)
+	private.Delete("userInWorkspace.delete", UserInWorkspaceHandler.DeleteUserFromWorkspace)
 
 	// Object
 	private.Post("object.uploadObject", objectHandlers.UploadObject)
@@ -127,6 +129,6 @@ func NewFiberApp() *fiber.App {
 func ListenAndServe(app *fiber.App, serverAddr string) {
 	err := app.Listen(serverAddr)
 	if err != nil {
-		 panic(err)
+		panic(err)
 	}
 }

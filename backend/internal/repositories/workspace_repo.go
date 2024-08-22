@@ -43,6 +43,14 @@ func (w *workspaceRepository) FindById(id uint) (workspace *domains.Workspace, e
 	return foundWorkspace, nil
 }
 
+func (w *workspaceRepository) FindByOwner(owner_id *uint) (workspace *[]domains.Workspace, err error) {
+	foundWorkspace := new([]domains.Workspace)
+	if err := w.DB.Find(&foundWorkspace, "owner = ? ", owner_id).Error; err != nil {
+		return nil, err
+	}
+	return foundWorkspace, nil
+}
+
 func (w *workspaceRepository) DeleteById(id uint) (err error) {
 	if err := w.DB.Delete(&domains.Workspace{}, "id = ?", id).Error; err != nil {
 		return err

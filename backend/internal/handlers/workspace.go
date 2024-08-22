@@ -9,6 +9,7 @@ type WorkspaceData struct {
 	IsCoding  bool      `json:"iscoding"`
 	StartDate time.Time `json:"startdate"`
 	StopDate  time.Time `json:"stopdate"`
+	Owner     uint      `json:"owner"`
 } // @name Workspace
 
 type CreateWorkspaceBody struct {
@@ -18,6 +19,10 @@ type CreateWorkspaceBody struct {
 	StartDate time.Time `json:"startdate" validate:"required"`
 	StopDate  time.Time `json:"stopdate" validate:"required"`
 } // @name WorkspaceCreateBody
+
+type GetWorkspaceBody struct {
+	Id *uint `json:"id" validate:"required"`
+} // @name WorkspaceGetBody
 
 type DeleteWorkspaceBody struct {
 	Id *uint `json:"id" validate:"required"`

@@ -20,7 +20,15 @@ func NewWorkspaceService(workspaceReposity repositories.IWorkspaceRepository, us
 	}
 }
 
-func (w *workspaceService) Create(title string, isCoding *bool, isVideo *bool, startDate time.Time, stopDate time.Time) (workspace *domains.Workspace, err error) {
+func (w *workspaceService) Get(id uint) (workspace *domains.Workspace, err error) {
+	return w.workspaceReposity.FindById(id)
+}
+
+func (w *workspaceService) GetAll(owner_id *uint) (workspace *[]domains.Workspace, err error) {
+	return w.workspaceReposity.FindByOwner(owner_id)
+}
+
+func (w *workspaceService) Create(title string, isCoding *bool, isVideo *bool, startDate time.Time, stopDate time.Time, owner *uint) (workspace *domains.Workspace, err error) {
 
 	if _, err := w.workspaceReposity.FindByTitle(strings.TrimSpace(title)); err == nil {
 		return nil, ErrorWorkspaceExists
@@ -32,6 +40,7 @@ func (w *workspaceService) Create(title string, isCoding *bool, isVideo *bool, s
 		IsCoding:  isCoding,
 		StartDate: startDate,
 		StopDate:  stopDate,
+		Owner:     *owner,
 	})
 }
 
