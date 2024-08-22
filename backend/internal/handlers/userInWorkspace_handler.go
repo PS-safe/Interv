@@ -15,6 +15,17 @@ func NewUserInWorkspaceHandler(UserInWorkspaceService services.IWorkspaceService
 	}
 }
 
+// AddUserToWorkspace
+// @ID AddUserToWorkspace
+// @Tags userInWorkspace
+// @Summary Add User To Workspace
+// @Accept json
+// @Produce json
+// @Param payload body AddUserToWorkspaceBody true "AddUserToWorkspaceBody"
+// @Success 200 {object} Response[UserInWorkspace]
+// @Failure 400 {object} ErrResponse
+// @Failure 500 {object} ErrResponse
+// @Router /userInWorkspace.create [post]
 func (uiw UserInWorkspaceHandler) AddUserToWorkspace(c *fiber.Ctx) error {
 	body := AddUserToWorkspaceBody{}
 
@@ -41,19 +52,23 @@ func (uiw UserInWorkspaceHandler) AddUserToWorkspace(c *fiber.Ctx) error {
 	})
 }
 
+// DeleteUserFromWorkspace
+// @ID DeleteUserFromWorkspace
+// @Tags userInWorkspace
+// @Summary Delete User From Workspace
+// @Accept json
+// @Produce json
+// @Param payload body DeleteUserFromWorkspaceBody true "DeleteUserFromWorkspaceBody"
+// @Success 200 {object} Response[UserInWorkspace]
+// @Failure 400 {object} ErrResponse
+// @Failure 500 {object} ErrResponse
+// @Router /userInWorkspace.delete [delete]
 func (uiw UserInWorkspaceHandler) DeleteUserFromWorkspace(c *fiber.Ctx) error {
 	body := DeleteUserFromWorkspaceBody{}
 
 	if err := c.BodyParser(&body); err != nil {
 		return err
 	}
-
-	// userId, err := GetCurrentUser(c)
-
-	// if err != nil {
-	// 	return err
-	// }
-	// need to check workspace owner ?
 
 	if err := uiw.UserInWorkspaceService.DeleteUserInWorkspace(body.UserId, body.WorkspaceId); err != nil {
 		return err

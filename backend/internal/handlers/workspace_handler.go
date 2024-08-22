@@ -48,25 +48,34 @@ func (w WorkspaceHandler) GetWorkspace(c *fiber.Ctx) error {
 // @Summary Get List of workspace
 // @Accept json
 // @Produce json
-// @Success 200 {object} Response[WorkspaceData]
+// @Success 200 {object} Response[[]WorkspaceData]
 // @Failure 400 {object} ErrResponse
 // @Failure 500 {object} ErrResponse
 // @Router /workspace.getAll [get]
 func (w WorkspaceHandler) GetAllWorkspace(c *fiber.Ctx) error {
-
 	userId, err := GetCurrentUser(c)
-
 	if err != nil {
 		return err
 	}
-
 	response, err := w.workspaceService.GetAll(userId)
-
 	if err != nil {
 		return err
 	}
+	var res []WorkspaceData
 
-	return Ok(c, response)
+	for _, v := range *response {
+		res = append(res, WorkspaceData{
+			ID:        v.ID,
+			Title:     v.Title,
+			IsVideo:   *v.IsVideo,
+			IsCoding:  *v.IsCoding,
+			StartDate: v.StartDate,
+			StopDate:  v.StopDate,
+			Owner:     v.Owner,
+		})
+	}
+
+	return Ok(c, res)
 }
 
 // CreateWorkspace

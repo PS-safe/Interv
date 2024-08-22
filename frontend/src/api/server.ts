@@ -9,6 +9,16 @@
  * ---------------------------------------------------------------
  */
 
+export interface AddUserToWorkspaceBody {
+  status: string
+  user_id: number
+  workspace_id: number
+}
+
+export type AddUserToWorkspaceData = HandlersResponseHandlersUserInWorkspace
+
+export type AddUserToWorkspaceError = HandlersErrResponse
+
 export type CreateUserData = HandlersResponseUser
 
 export type CreateUserError = HandlersErrResponse
@@ -21,7 +31,7 @@ export interface CreateWorkspaceBody {
   title: string
 }
 
-export type CreateWorkspaceData = HandlersResponseWorkspace
+export type CreateWorkspaceData = HandlersResponseWorkspaceData
 
 export type CreateWorkspaceError = HandlersErrResponse
 
@@ -37,6 +47,15 @@ export type DeleteUserData = HandlersResponseString
 
 export type DeleteUserError = HandlersErrResponse
 
+export interface DeleteUserFromWorkspaceBody {
+  user_id: number
+  workspace_id: number
+}
+
+export type DeleteUserFromWorkspaceData = HandlersResponseHandlersUserInWorkspace
+
+export type DeleteUserFromWorkspaceError = HandlersErrResponse
+
 export interface DeleteWorkspaceBody {
   id: number
 }
@@ -45,7 +64,7 @@ export type DeleteWorkspaceData = HandlersResponseString
 
 export type DeleteWorkspaceError = HandlersErrResponse
 
-export type GetAllWorkspaceData = HandlersResponseWorkspace
+export type GetAllWorkspaceData = HandlersResponseArrayWorkspaceData
 
 export type GetAllWorkspaceError = HandlersErrResponse
 
@@ -79,7 +98,7 @@ export interface GetWorkspaceBody {
   id: number
 }
 
-export type GetWorkspaceData = HandlersResponseWorkspace
+export type GetWorkspaceData = HandlersResponseWorkspaceData
 
 export type GetWorkspaceError = HandlersErrResponse
 
@@ -95,9 +114,23 @@ export interface HandlersOkResponse {
   timestamp?: string
 }
 
+export interface HandlersResponseArrayWorkspaceData {
+  code?: number
+  data?: WorkspaceData[]
+  message?: string
+  timestamp?: string
+}
+
 export interface HandlersResponseCurrentUserResponse {
   code?: number
   data?: CurrentUserResponse
+  message?: string
+  timestamp?: string
+}
+
+export interface HandlersResponseHandlersUserInWorkspace {
+  code?: number
+  data?: HandlersUserInWorkspace
   message?: string
   timestamp?: string
 }
@@ -130,11 +163,19 @@ export interface HandlersResponseVideoInterviewQuestionResponse {
   timestamp?: string
 }
 
-export interface HandlersResponseWorkspace {
+export interface HandlersResponseWorkspaceData {
   code?: number
-  data?: Workspace
+  data?: WorkspaceData
   message?: string
   timestamp?: string
+}
+
+export interface HandlersUserInWorkspace {
+  id?: number
+  isInterest?: boolean
+  status?: string
+  userId?: number
+  workspaceId?: number
 }
 
 export interface LoginBody {
@@ -212,7 +253,7 @@ export interface VideoInterviewQuestionSetting {
   timeToPrepare: number
 }
 
-export interface Workspace {
+export interface WorkspaceData {
   id?: number
   iscoding?: boolean
   isvideo?: boolean
@@ -347,6 +388,44 @@ export namespace User {
     export type RequestBody = UserDeleteBody
     export type RequestHeaders = {}
     export type ResponseBody = DeleteUserData
+  }
+}
+
+export namespace UserInWorkspace {
+  /**
+   * No description
+   * @tags userInWorkspace
+   * @name AddUserToWorkspace
+   * @summary Add User To Workspace
+   * @request POST:/userInWorkspace.create
+   * @response `200` `AddUserToWorkspaceData` OK
+   * @response `400` `HandlersErrResponse` Bad Request
+   * @response `500` `HandlersErrResponse` Internal Server Error
+   */
+  export namespace AddUserToWorkspace {
+    export type RequestParams = {}
+    export type RequestQuery = {}
+    export type RequestBody = AddUserToWorkspaceBody
+    export type RequestHeaders = {}
+    export type ResponseBody = AddUserToWorkspaceData
+  }
+
+  /**
+   * No description
+   * @tags userInWorkspace
+   * @name DeleteUserFromWorkspace
+   * @summary Delete User From Workspace
+   * @request DELETE:/userInWorkspace.delete
+   * @response `200` `DeleteUserFromWorkspaceData` OK
+   * @response `400` `HandlersErrResponse` Bad Request
+   * @response `500` `HandlersErrResponse` Internal Server Error
+   */
+  export namespace DeleteUserFromWorkspace {
+    export type RequestParams = {}
+    export type RequestQuery = {}
+    export type RequestBody = DeleteUserFromWorkspaceBody
+    export type RequestHeaders = {}
+    export type ResponseBody = DeleteUserFromWorkspaceData
   }
 }
 
@@ -766,6 +845,49 @@ export class Server<SecurityDataType extends unknown> extends HttpClient<Securit
       this.request<DeleteUserData, DeleteUserError>({
         path: `/user.deleteUser`,
         method: "POST",
+        body: payload,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+  }
+  userInWorkspace = {
+    /**
+     * No description
+     *
+     * @tags userInWorkspace
+     * @name AddUserToWorkspace
+     * @summary Add User To Workspace
+     * @request POST:/userInWorkspace.create
+     * @response `200` `AddUserToWorkspaceData` OK
+     * @response `400` `HandlersErrResponse` Bad Request
+     * @response `500` `HandlersErrResponse` Internal Server Error
+     */
+    addUserToWorkspace: (payload: AddUserToWorkspaceBody, params: RequestParams = {}) =>
+      this.request<AddUserToWorkspaceData, AddUserToWorkspaceError>({
+        path: `/userInWorkspace.create`,
+        method: "POST",
+        body: payload,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags userInWorkspace
+     * @name DeleteUserFromWorkspace
+     * @summary Delete User From Workspace
+     * @request DELETE:/userInWorkspace.delete
+     * @response `200` `DeleteUserFromWorkspaceData` OK
+     * @response `400` `HandlersErrResponse` Bad Request
+     * @response `500` `HandlersErrResponse` Internal Server Error
+     */
+    deleteUserFromWorkspace: (payload: DeleteUserFromWorkspaceBody, params: RequestParams = {}) =>
+      this.request<DeleteUserFromWorkspaceData, DeleteUserFromWorkspaceError>({
+        path: `/userInWorkspace.delete`,
+        method: "DELETE",
         body: payload,
         type: ContentType.Json,
         format: "json",

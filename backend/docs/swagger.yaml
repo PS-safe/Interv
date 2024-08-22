@@ -1,5 +1,18 @@
 basePath: /api
 definitions:
+  AddUserToWorkspaceBody:
+    properties:
+      status:
+        type: string
+      user_id:
+        type: integer
+      workspace_id:
+        type: integer
+    required:
+    - status
+    - user_id
+    - workspace_id
+    type: object
   CreateWorkspaceBody:
     properties:
       iscoding:
@@ -37,6 +50,16 @@ definitions:
     - role
     - updated_at
     - username
+    type: object
+  DeleteUserFromWorkspaceBody:
+    properties:
+      user_id:
+        type: integer
+      workspace_id:
+        type: integer
+    required:
+    - user_id
+    - workspace_id
     type: object
   DeleteWorkspaceBody:
     properties:
@@ -146,7 +169,7 @@ definitions:
     - timeToAnswer
     - timeToPrepare
     type: object
-  Workspace:
+  WorkspaceData:
     properties:
       id:
         type: integer
@@ -225,12 +248,36 @@ definitions:
       timestamp:
         type: string
     type: object
-  handlers.Response-Workspace:
+  handlers.Response-WorkspaceData:
     properties:
       code:
         type: integer
       data:
-        $ref: '#/definitions/Workspace'
+        $ref: '#/definitions/WorkspaceData'
+      message:
+        type: string
+      timestamp:
+        type: string
+    type: object
+  handlers.Response-array_WorkspaceData:
+    properties:
+      code:
+        type: integer
+      data:
+        items:
+          $ref: '#/definitions/WorkspaceData'
+        type: array
+      message:
+        type: string
+      timestamp:
+        type: string
+    type: object
+  handlers.Response-handlers_UserInWorkspace:
+    properties:
+      code:
+        type: integer
+      data:
+        $ref: '#/definitions/handlers.UserInWorkspace'
       message:
         type: string
       timestamp:
@@ -246,6 +293,19 @@ definitions:
         type: string
       timestamp:
         type: string
+    type: object
+  handlers.UserInWorkspace:
+    properties:
+      id:
+        type: integer
+      isInterest:
+        type: boolean
+      status:
+        type: string
+      userId:
+        type: integer
+      workspaceId:
+        type: integer
     type: object
 info:
   contact: {}
@@ -434,6 +494,66 @@ paths:
       summary: Delete user
       tags:
       - user
+  /userInWorkspace.create:
+    post:
+      consumes:
+      - application/json
+      operationId: AddUserToWorkspace
+      parameters:
+      - description: AddUserToWorkspaceBody
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/AddUserToWorkspaceBody'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.Response-handlers_UserInWorkspace'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.ErrResponse'
+      summary: Add User To Workspace
+      tags:
+      - userInWorkspace
+  /userInWorkspace.delete:
+    delete:
+      consumes:
+      - application/json
+      operationId: DeleteUserFromWorkspace
+      parameters:
+      - description: DeleteUserFromWorkspaceBody
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/DeleteUserFromWorkspaceBody'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.Response-handlers_UserInWorkspace'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.ErrResponse'
+      summary: Delete User From Workspace
+      tags:
+      - userInWorkspace
   /videoInterview.getVideoInterviewContext:
     get:
       consumes:
@@ -541,7 +661,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/handlers.Response-Workspace'
+            $ref: '#/definitions/handlers.Response-WorkspaceData'
         "400":
           description: Bad Request
           schema:
@@ -601,7 +721,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/handlers.Response-Workspace'
+            $ref: '#/definitions/handlers.Response-WorkspaceData'
         "400":
           description: Bad Request
           schema:
@@ -624,7 +744,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/handlers.Response-Workspace'
+            $ref: '#/definitions/handlers.Response-array_WorkspaceData'
         "400":
           description: Bad Request
           schema:
