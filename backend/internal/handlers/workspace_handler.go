@@ -21,7 +21,7 @@ func NewWorkspaceHandler(workspaceService services.IWorkspaceService) WorkspaceH
 // @Summary Get workspace
 // @Accept json
 // @Produce json
-// @Param payload body GetWorkspaceBody true "GetspaceBody"
+// @Param payload body GetWorkspaceBody true "GetWorkspaceBody"
 // @Success 200 {object} Response[WorkspaceData]
 // @Failure 400 {object} ErrResponse
 // @Failure 500 {object} ErrResponse

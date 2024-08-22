@@ -18,12 +18,12 @@ type CreateWorkspaceBody struct {
 	IsCoding  *bool     `json:"iscoding" validate:"required"`
 	StartDate time.Time `json:"startdate" validate:"required"`
 	StopDate  time.Time `json:"stopdate" validate:"required"`
-} // @name WorkspaceCreateBody
+} // @name CreateWorkspaceBody
 
 type GetWorkspaceBody struct {
 	Id *uint `json:"id" validate:"required"`
-} // @name WorkspaceGetBody
+} // @name GetWorkspaceBody
 
 type DeleteWorkspaceBody struct {
 	Id *uint `json:"id" validate:"required"`
-} // @name WorkspaceDeleteBody
+} // @name DeleteWorkspaceBody
