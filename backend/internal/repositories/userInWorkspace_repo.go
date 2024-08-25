@@ -24,6 +24,13 @@ func (uiw *userInWorkspaceRepository) Create(UserInWorkspace domains.UserInWorks
 	return &UserInWorkspace, nil
 }
 
+func (uiw *userInWorkspaceRepository) GetUserNumberInWorkspace(workspaceId uint) (userNum int64, err error) {
+	if err := uiw.DB.Model(&domains.UserInWorkspace{}).Where("workspace_id = ?", workspaceId).Count(&userNum).Error; err != nil {
+		return 0, err
+	}
+	return userNum, nil
+}
+
 func (uiw *userInWorkspaceRepository) FindByUserId(userId uint) (userInWorkspace *[]domains.UserInWorkspace, err error) {
 	foundUserInWorkspace := new([]domains.UserInWorkspace)
 	if err := uiw.DB.Find(&foundUserInWorkspace, "user_id = ?", userId).Error; err != nil {

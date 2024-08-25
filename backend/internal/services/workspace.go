@@ -15,6 +15,7 @@ var (
 type IWorkspaceService interface {
 	Get(id uint) (workspace *domains.Workspace, err error)
 	GetAll(owner_id *uint) (workspace *[]domains.Workspace, err error)
+	GetUserNumInWorkspace(owner_id *uint) (workspace []uint, err error)
 	Create(title string, isCoding *bool, isVideo *bool, startDate time.Time, stopDate time.Time, owner *uint) (workspace *domains.Workspace, err error)
 	Delete(id uint) (err error)
 

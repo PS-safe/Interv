@@ -10,6 +10,7 @@ type WorkspaceData struct {
 	StartDate time.Time `json:"startdate"`
 	StopDate  time.Time `json:"stopdate"`
 	Owner     uint      `json:"owner"`
+	MemberNum uint
 } // @name WorkspaceData
 
 type CreateWorkspaceBody struct {

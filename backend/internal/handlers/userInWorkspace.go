@@ -6,7 +6,7 @@ type UserInWorkspace struct {
 	WorkspaceId uint
 	Status      string
 	IsInterest  bool
-}
+} // @name UserInWorkspace
 
 type AddUserToWorkspaceBody struct {
 	UserId      uint   `json:"user_id" validate:"required"`

@@ -61,9 +61,14 @@ func (w WorkspaceHandler) GetAllWorkspace(c *fiber.Ctx) error {
 	if err != nil {
 		return err
 	}
+
+	member, err := w.workspaceService.GetUserNumInWorkspace(userId)
+	if err != nil {
+		return err
+	}
 	var res []WorkspaceData
 
-	for _, v := range *response {
+	for index, v := range *response {
 		res = append(res, WorkspaceData{
 			ID:        v.ID,
 			Title:     v.Title,
@@ -72,6 +77,7 @@ func (w WorkspaceHandler) GetAllWorkspace(c *fiber.Ctx) error {
 			StartDate: v.StartDate,
 			StopDate:  v.StopDate,
 			Owner:     v.Owner,
+			MemberNum: member[index],
 		})
 	}
 
