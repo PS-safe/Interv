@@ -313,7 +313,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/handlers.Response-handlers_UserInWorkspace"
+                            "$ref": "#/definitions/handlers.Response-UserInWorkspace"
                         }
                     },
                     "400": {
@@ -359,7 +359,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/handlers.Response-handlers_UserInWorkspace"
+                            "$ref": "#/definitions/handlers.Response-UserInWorkspace"
                         }
                     },
                     "400": {
@@ -878,6 +878,26 @@
                 }
             }
         },
+        "UserInWorkspace": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "isInterest": {
+                    "type": "boolean"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "integer"
+                },
+                "workspaceId": {
+                    "type": "integer"
+                }
+            }
+        },
         "VideoInterviewContextResponse": {
             "type": "object",
             "required": [
@@ -950,6 +970,9 @@
                 "isvideo": {
                     "type": "boolean"
                 },
+                "membernum": {
+                    "type": "integer"
+                },
                 "owner": {
                     "type": "integer"
                 },
@@ -1017,6 +1040,23 @@
                 },
                 "data": {
                     "$ref": "#/definitions/User"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "timestamp": {
+                    "type": "string"
+                }
+            }
+        },
+        "handlers.Response-UserInWorkspace": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/UserInWorkspace"
                 },
                 "message": {
                     "type": "string"
@@ -1097,23 +1137,6 @@
                 }
             }
         },
-        "handlers.Response-handlers_UserInWorkspace": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "integer"
-                },
-                "data": {
-                    "$ref": "#/definitions/handlers.UserInWorkspace"
-                },
-                "message": {
-                    "type": "string"
-                },
-                "timestamp": {
-                    "type": "string"
-                }
-            }
-        },
         "handlers.Response-string": {
             "type": "object",
             "properties": {
@@ -1128,26 +1151,6 @@
                 },
                 "timestamp": {
                     "type": "string"
-                }
-            }
-        },
-        "handlers.UserInWorkspace": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "isInterest": {
-                    "type": "boolean"
-                },
-                "status": {
-                    "type": "string"
-                },
-                "userId": {
-                    "type": "integer"
-                },
-                "workspaceId": {
-                    "type": "integer"
                 }
             }
         }

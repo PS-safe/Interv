@@ -16,6 +16,7 @@ const Dashboard = () => {
       </SideBar>
       <MainPanel>
         <Button
+          key={"button"}
           className={
             "w-52 h-14 text-center font-semibold text-xl rounded-xl disabled:opacity-100"
           }
@@ -23,28 +24,16 @@ const Dashboard = () => {
         >
           Add new group
         </Button>
-        {data?.data == null ? (
-          <></>
-        ) : (
-          data.data.map((Workspace) => {
-            if (
-              Workspace.title == undefined ||
-              Workspace.startdate == undefined
-            ) {
-              return <></>
-            } else {
-              return (
-                <>
-                  <WorkspaceCard
-                    title={Workspace.title}
-                    createAt={Workspace.startdate}
-                    member={10}
-                  />
-                </>
-              )
-            }
-          })
-        )}
+        {data?.data?.map((Workspace) => {
+          return (
+            <WorkspaceCard
+              key={Workspace.id}
+              title={Workspace.title ?? ""}
+              createAt={Workspace.startdate ?? ""}
+              member={Workspace.membernum ?? 0}
+            />
+          )
+        })}
       </MainPanel>
     </>
   )

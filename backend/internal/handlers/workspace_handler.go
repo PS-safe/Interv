@@ -124,6 +124,7 @@ func (w WorkspaceHandler) CreateWorkspace(c *fiber.Ctx) error {
 		StartDate: response.StartDate,
 		StopDate:  response.StopDate,
 		Owner:     response.Owner,
+		MemberNum: 0,
 	})
 }
 
