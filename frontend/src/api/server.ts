@@ -15,7 +15,7 @@ export interface AddUserToWorkspaceBody {
   workspace_id: number
 }
 
-export type AddUserToWorkspaceData = HandlersResponseUserInWorkspace
+export type AddUserToWorkspaceData = HandlersResponseHandlersUserInWorkspace
 
 export type AddUserToWorkspaceError = HandlersErrResponse
 
@@ -52,7 +52,7 @@ export interface DeleteUserFromWorkspaceBody {
   workspace_id: number
 }
 
-export type DeleteUserFromWorkspaceData = HandlersResponseUserInWorkspace
+export type DeleteUserFromWorkspaceData = HandlersResponseHandlersUserInWorkspace
 
 export type DeleteUserFromWorkspaceError = HandlersErrResponse
 
@@ -128,6 +128,13 @@ export interface HandlersResponseCurrentUserResponse {
   timestamp?: string
 }
 
+export interface HandlersResponseHandlersUserInWorkspace {
+  code?: number
+  data?: HandlersUserInWorkspace
+  message?: string
+  timestamp?: string
+}
+
 export interface HandlersResponseString {
   code?: number
   data?: string
@@ -138,13 +145,6 @@ export interface HandlersResponseString {
 export interface HandlersResponseUser {
   code?: number
   data?: User
-  message?: string
-  timestamp?: string
-}
-
-export interface HandlersResponseUserInWorkspace {
-  code?: number
-  data?: UserInWorkspace
   message?: string
   timestamp?: string
 }
@@ -168,6 +168,14 @@ export interface HandlersResponseWorkspaceData {
   data?: WorkspaceData
   message?: string
   timestamp?: string
+}
+
+export interface HandlersUserInWorkspace {
+  id?: number
+  isInterest?: boolean
+  status?: string
+  userId?: number
+  workspaceId?: number
 }
 
 export interface LoginBody {
@@ -227,14 +235,6 @@ export interface UserDeleteBody {
   id: number
 }
 
-export interface UserInWorkspace {
-  id?: number
-  isInterest?: boolean
-  status?: string
-  userId?: number
-  workspaceId?: number
-}
-
 export interface VideoInterviewContextResponse {
   questionSetting: VideoInterviewQuestionSetting[]
   totalQuestions: number
@@ -257,7 +257,6 @@ export interface WorkspaceData {
   id?: number
   iscoding?: boolean
   isvideo?: boolean
-  membernum?: number
   owner?: number
   startdate?: string
   stopdate?: string

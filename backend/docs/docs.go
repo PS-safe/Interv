@@ -321,7 +321,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/handlers.Response-UserInWorkspace"
+                            "$ref": "#/definitions/handlers.Response-handlers_UserInWorkspace"
                         }
                     },
                     "400": {
@@ -367,7 +367,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/handlers.Response-UserInWorkspace"
+                            "$ref": "#/definitions/handlers.Response-handlers_UserInWorkspace"
                         }
                     },
                     "400": {
@@ -886,26 +886,6 @@ const docTemplate = `{
                 }
             }
         },
-        "UserInWorkspace": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "isInterest": {
-                    "type": "boolean"
-                },
-                "status": {
-                    "type": "string"
-                },
-                "userId": {
-                    "type": "integer"
-                },
-                "workspaceId": {
-                    "type": "integer"
-                }
-            }
-        },
         "VideoInterviewContextResponse": {
             "type": "object",
             "required": [
@@ -978,9 +958,6 @@ const docTemplate = `{
                 "isvideo": {
                     "type": "boolean"
                 },
-                "membernum": {
-                    "type": "integer"
-                },
                 "owner": {
                     "type": "integer"
                 },
@@ -1048,23 +1025,6 @@ const docTemplate = `{
                 },
                 "data": {
                     "$ref": "#/definitions/User"
-                },
-                "message": {
-                    "type": "string"
-                },
-                "timestamp": {
-                    "type": "string"
-                }
-            }
-        },
-        "handlers.Response-UserInWorkspace": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "integer"
-                },
-                "data": {
-                    "$ref": "#/definitions/UserInWorkspace"
                 },
                 "message": {
                     "type": "string"
@@ -1145,6 +1105,23 @@ const docTemplate = `{
                 }
             }
         },
+        "handlers.Response-handlers_UserInWorkspace": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/handlers.UserInWorkspace"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "timestamp": {
+                    "type": "string"
+                }
+            }
+        },
         "handlers.Response-string": {
             "type": "object",
             "properties": {
@@ -1159,6 +1136,26 @@ const docTemplate = `{
                 },
                 "timestamp": {
                     "type": "string"
+                }
+            }
+        },
+        "handlers.UserInWorkspace": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "isInterest": {
+                    "type": "boolean"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "integer"
+                },
+                "workspaceId": {
+                    "type": "integer"
                 }
             }
         }

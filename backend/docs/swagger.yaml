@@ -128,19 +128,6 @@ definitions:
     required:
     - id
     type: object
-  UserInWorkspace:
-    properties:
-      id:
-        type: integer
-      isInterest:
-        type: boolean
-      status:
-        type: string
-      userId:
-        type: integer
-      workspaceId:
-        type: integer
-    type: object
   VideoInterviewContextResponse:
     properties:
       questionSetting:
@@ -190,8 +177,6 @@ definitions:
         type: boolean
       isvideo:
         type: boolean
-      membernum:
-        type: integer
       owner:
         type: integer
       startdate:
@@ -236,17 +221,6 @@ definitions:
         type: integer
       data:
         $ref: '#/definitions/User'
-      message:
-        type: string
-      timestamp:
-        type: string
-    type: object
-  handlers.Response-UserInWorkspace:
-    properties:
-      code:
-        type: integer
-      data:
-        $ref: '#/definitions/UserInWorkspace'
       message:
         type: string
       timestamp:
@@ -298,6 +272,17 @@ definitions:
       timestamp:
         type: string
     type: object
+  handlers.Response-handlers_UserInWorkspace:
+    properties:
+      code:
+        type: integer
+      data:
+        $ref: '#/definitions/handlers.UserInWorkspace'
+      message:
+        type: string
+      timestamp:
+        type: string
+    type: object
   handlers.Response-string:
     properties:
       code:
@@ -308,6 +293,19 @@ definitions:
         type: string
       timestamp:
         type: string
+    type: object
+  handlers.UserInWorkspace:
+    properties:
+      id:
+        type: integer
+      isInterest:
+        type: boolean
+      status:
+        type: string
+      userId:
+        type: integer
+      workspaceId:
+        type: integer
     type: object
 info:
   contact: {}
@@ -514,7 +512,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/handlers.Response-UserInWorkspace'
+            $ref: '#/definitions/handlers.Response-handlers_UserInWorkspace'
         "400":
           description: Bad Request
           schema:
@@ -544,7 +542,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/handlers.Response-UserInWorkspace'
+            $ref: '#/definitions/handlers.Response-handlers_UserInWorkspace'
         "400":
           description: Bad Request
           schema:
