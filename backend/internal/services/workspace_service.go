@@ -24,26 +24,26 @@ func (w *workspaceService) Get(id uint) (workspace *domains.Workspace, err error
 	return w.workspaceReposity.FindById(id)
 }
 
-func (w *workspaceService) GetAll(owner_id *uint) (workspace *[]domains.Workspace, err error) {
-	return w.workspaceReposity.FindByOwner(owner_id)
+func (w *workspaceService) GetAll(ownerId *uint) (workspace *[]domains.Workspace, err error) {
+	return w.workspaceReposity.FindByOwner(ownerId)
 }
 
-func (w *workspaceService) GetUserNumInWorkspace(owner_id *uint) (workspace_id []uint, err error) {
-	ListOfWorkspace, err := w.workspaceReposity.FindWorkspaceIdByOwner(owner_id)
+func (w *workspaceService) GetUserNumInWorkspace(ownerId *uint) (workspaceId []uint, err error) {
+	listOfWorkspace, err := w.workspaceReposity.FindWorkspaceIdByOwner(ownerId)
 	if err != nil {
 		return nil, err
 	}
 
-	var UserWorkspace []uint
-	for _, uw := range *ListOfWorkspace {
-		NumberOfUser, err := w.userInWorkspaceReposity.GetUserNumberInWorkspace(uw)
+	var userWorkspace []uint
+	for _, uw := range *listOfWorkspace {
+		numberOfUser, err := w.userInWorkspaceReposity.GetUserNumberInWorkspace(uw)
 		if err != nil {
 			return nil, err
 		}
-		UserWorkspace = append(UserWorkspace, uint(NumberOfUser))
+		userWorkspace = append(userWorkspace, uint(numberOfUser))
 	}
 
-	return UserWorkspace, nil
+	return userWorkspace, nil
 }
 
 func (w *workspaceService) Create(title string, isCoding *bool, isVideo *bool, startDate time.Time, stopDate time.Time, owner *uint) (workspace *domains.Workspace, err error) {

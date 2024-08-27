@@ -3,22 +3,22 @@ package handlers
 import "time"
 
 type WorkspaceData struct {
-	ID        uint      `json:"id"`
+	Id        uint      `json:"id"`
 	Title     string    `json:"title"`
-	IsVideo   bool      `json:"isvideo"`
-	IsCoding  bool      `json:"iscoding"`
-	StartDate time.Time `json:"startdate"`
-	StopDate  time.Time `json:"stopdate"`
+	IsVideo   bool      `json:"isVideo"`
+	IsCoding  bool      `json:"isCoding"`
+	StartDate time.Time `json:"startDate"`
+	StopDate  time.Time `json:"stopDate"`
 	Owner     uint      `json:"owner"`
-	MemberNum uint      `json:"membernum"`
+	MemberNum uint      `json:"memberNum"`
 } // @name WorkspaceData
 
 type CreateWorkspaceBody struct {
 	Title     string    `json:"title" validate:"required"`
-	IsVideo   *bool     `json:"isvideo" validate:"required"`
-	IsCoding  *bool     `json:"iscoding" validate:"required"`
-	StartDate time.Time `json:"startdate" validate:"required"`
-	StopDate  time.Time `json:"stopdate" validate:"required"`
+	IsVideo   *bool     `json:"isVideo" validate:"required"`
+	IsCoding  *bool     `json:"isCoding" validate:"required"`
+	StartDate time.Time `json:"startDate" validate:"required"`
+	StopDate  time.Time `json:"stopDate" validate:"required"`
 } // @name CreateWorkspaceBody
 
 type GetWorkspaceBody struct {
@@ -28,3 +28,22 @@ type GetWorkspaceBody struct {
 type DeleteWorkspaceBody struct {
 	Id *uint `json:"id" validate:"required"`
 } // @name DeleteWorkspaceBody
+
+type UserInWorkspace struct {
+	Id          uint
+	UserId      uint
+	WorkspaceId uint
+	Status      string
+	IsInterest  bool
+} // @name UserInWorkspace
+
+type AddUserToWorkspaceBody struct {
+	UserId      uint   `json:"userId" validate:"required"`
+	WorkspaceId uint   `json:"workspaceId" validate:"required"`
+	Status      string `json:"status" validate:"required"`
+} // @name AddUserToWorkspaceBody
+
+type DeleteUserFromWorkspaceBody struct {
+	UserId      uint `json:"userId" validate:"required"`
+	WorkspaceId uint `json:"workspaceId" validate:"required"`
+} // @name DeleteUserFromWorkspaceBody

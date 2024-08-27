@@ -14,7 +14,7 @@ const (
 )
 
 type UserInWorkspace struct {
-	ID          uint `gorm:"primaryKey"`
+	Id          uint `gorm:"primaryKey"`
 	UserId      uint
 	WorkspaceId uint
 	User        User       `gorm:"foreignKey:UserId"`

@@ -38,7 +38,6 @@ func SetupRoutes() {
 	var videoInterviewHandlers = handlers.NewVideoInterviewHandler(videoInterviewServices)
 	var objectHandlers = handlers.NewObjectHandler(objectServices)
 	var workspaceHandlers = handlers.NewWorkspaceHandler(workspaceService)
-	var UserInWorkspaceHandler = handlers.NewUserInWorkspaceHandler(workspaceService)
 	// Fiber App
 	app := NewFiberApp()
 	app.Use(cors.New(cors.Config{
@@ -83,8 +82,8 @@ func SetupRoutes() {
 	private.Delete("workspace.delete", workspaceHandlers.DeleteWorkspace)
 
 	//// UserInWorkspace
-	private.Post("userInWorkspace.create", UserInWorkspaceHandler.AddUserToWorkspace)
-	private.Delete("userInWorkspace.delete", UserInWorkspaceHandler.DeleteUserFromWorkspace)
+	private.Post("userInWorkspace.create", workspaceHandlers.AddUserToWorkspace)
+	private.Delete("userInWorkspace.delete", workspaceHandlers.DeleteUserFromWorkspace)
 
 	// Object
 	private.Post("object.uploadObject", objectHandlers.UploadObject)
