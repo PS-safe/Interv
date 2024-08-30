@@ -9,6 +9,22 @@
  * ---------------------------------------------------------------
  */
 
+export interface CodingInterviewGenerateCompileTokenQuery {
+  body: DomainsCompilationRequest
+}
+
+export interface CodingInterviewGenerateCompileTokenResponse {
+  token?: string
+}
+
+export interface CodingInterviewGetCompileResultResponse {
+  compileResult?: DomainsCompilationResultResponse
+}
+
+export interface CodingInterviewGetQuestionsResponse {
+  questions?: DomainsCodingQuestionResponse[]
+}
+
 export type CreateUserData = HandlersResponseUser
 
 export type CreateUserError = HandlersErrResponse
@@ -25,6 +41,76 @@ export type DeleteUserData = HandlersResponseString
 
 export type DeleteUserError = HandlersErrResponse
 
+export interface DomainsCodingQuestion {
+  createdAt?: string
+  createdBy?: string
+  description?: string
+  difficulty?: string
+  examples?: DomainsCodingQuestionExample[]
+  id?: number
+  tags?: string[]
+  testCases?: DomainsCodingQuestionTestCase[]
+  title?: string
+  updatedAt?: string
+  updatedBy?: string
+}
+
+export interface DomainsCodingQuestionExample {
+  createdAt?: string
+  id?: number
+  input?: string
+  output?: string
+  question?: DomainsCodingQuestion
+  updatedAt?: string
+}
+
+export interface DomainsCodingQuestionResponse {
+  description?: string
+  example_input?: string
+  example_output?: string
+  id?: number
+  test_case?: DomainsCodingQuestionTestCase[]
+  title?: string
+}
+
+export interface DomainsCodingQuestionTestCase {
+  createdAt?: string
+  expectedOutput?: string
+  id?: number
+  input?: string
+  isHidden?: boolean
+  question?: DomainsCodingQuestion
+  updatedAt?: string
+}
+
+export interface DomainsCompilationRequest {
+  input?: string
+  language?: number
+  source_code?: string
+}
+
+export interface DomainsCompilationResultResponse {
+  compile_output?: string
+  memory?: number
+  message?: string
+  status?: {
+    description?: string
+    id?: number
+  }
+  stderr?: string
+  stdout?: string
+  time?: string
+  token?: string
+}
+
+export type GenerateCompileTokenData = HandlersResponseCodingInterviewGenerateCompileTokenResponse
+
+export type GenerateCompileTokenError = HandlersErrResponse
+
+export type GetCompileResultData = HandlersResponseCodingInterviewGetCompileResultResponse
+
+export type GetCompileResultError = HandlersErrResponse
+
 export interface GetObjectBody {
   bucketName: string
   objectName: string
@@ -33,6 +119,10 @@ export interface GetObjectBody {
 export type GetObjectData = HandlersResponseString
 
 export type GetObjectError = HandlersErrResponse
+
+export type GetQuestionsData = HandlersResponseCodingInterviewGetQuestionsResponse
+
+export type GetQuestionsError = HandlersErrResponse
 
 export type GetVideoInterviewContextData = HandlersResponseVideoInterviewContextResponse
 
@@ -59,6 +149,27 @@ export interface HandlersErrResponse {
 
 export interface HandlersOkResponse {
   code?: number
+  message?: string
+  timestamp?: string
+}
+
+export interface HandlersResponseCodingInterviewGenerateCompileTokenResponse {
+  code?: number
+  data?: CodingInterviewGenerateCompileTokenResponse
+  message?: string
+  timestamp?: string
+}
+
+export interface HandlersResponseCodingInterviewGetCompileResultResponse {
+  code?: number
+  data?: CodingInterviewGetCompileResultResponse
+  message?: string
+  timestamp?: string
+}
+
+export interface HandlersResponseCodingInterviewGetQuestionsResponse {
+  code?: number
+  data?: CodingInterviewGetQuestionsResponse
   message?: string
   timestamp?: string
 }
@@ -222,6 +333,65 @@ export namespace Authentication {
     export type RequestBody = never
     export type RequestHeaders = {}
     export type ResponseBody = MeData
+  }
+}
+
+export namespace CodingInterview {
+  /**
+   * @description Generate compile token for a coding interview
+   * @tags codingInterview
+   * @name GenerateCompileToken
+   * @summary Generate compile token for a coding interview
+   * @request POST:/codingInterview.generateCompileToken
+   * @response `200` `GenerateCompileTokenData` Successful response with the compile token
+   * @response `400` `HandlersErrResponse` Bad Request
+   * @response `500` `HandlersErrResponse` Internal Server Error
+   */
+  export namespace GenerateCompileToken {
+    export type RequestParams = {}
+    export type RequestQuery = {}
+    export type RequestBody = CodingInterviewGenerateCompileTokenQuery
+    export type RequestHeaders = {}
+    export type ResponseBody = GenerateCompileTokenData
+  }
+
+  /**
+   * @description Get compile result for a coding interview
+   * @tags codingInterview
+   * @name GetCompileResult
+   * @summary Get compile result for a coding interview
+   * @request GET:/codingInterview.getCompileResult/{token}
+   * @response `200` `GetCompileResultData` Successful response with the compile result
+   * @response `400` `HandlersErrResponse` Bad Request
+   * @response `500` `HandlersErrResponse` Internal Server Error
+   */
+  export namespace GetCompileResult {
+    export type RequestParams = {
+      /** Token to get the compile result */
+      token: string
+    }
+    export type RequestQuery = {}
+    export type RequestBody = never
+    export type RequestHeaders = {}
+    export type ResponseBody = GetCompileResultData
+  }
+
+  /**
+   * @description Get coding interview questions
+   * @tags codingInterview
+   * @name GetQuestions
+   * @summary Get coding interview questions
+   * @request GET:/codingInterview.getQuestions
+   * @response `200` `GetQuestionsData` Successful response with the coding interview questions
+   * @response `400` `HandlersErrResponse` Bad Request
+   * @response `500` `HandlersErrResponse` Internal Server Error
+   */
+  export namespace GetQuestions {
+    export type RequestParams = {}
+    export type RequestQuery = {}
+    export type RequestBody = never
+    export type RequestHeaders = {}
+    export type ResponseBody = GetQuestionsData
   }
 }
 
@@ -557,6 +727,68 @@ export class Server<SecurityDataType extends unknown> extends HttpClient<Securit
     me: (params: RequestParams = {}) =>
       this.request<MeData, any>({
         path: `/auth.me`,
+        method: "GET",
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+  }
+  codingInterview = {
+    /**
+     * @description Generate compile token for a coding interview
+     *
+     * @tags codingInterview
+     * @name GenerateCompileToken
+     * @summary Generate compile token for a coding interview
+     * @request POST:/codingInterview.generateCompileToken
+     * @response `200` `GenerateCompileTokenData` Successful response with the compile token
+     * @response `400` `HandlersErrResponse` Bad Request
+     * @response `500` `HandlersErrResponse` Internal Server Error
+     */
+    generateCompileToken: (body: CodingInterviewGenerateCompileTokenQuery, params: RequestParams = {}) =>
+      this.request<GenerateCompileTokenData, GenerateCompileTokenError>({
+        path: `/codingInterview.generateCompileToken`,
+        method: "POST",
+        body: body,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Get compile result for a coding interview
+     *
+     * @tags codingInterview
+     * @name GetCompileResult
+     * @summary Get compile result for a coding interview
+     * @request GET:/codingInterview.getCompileResult/{token}
+     * @response `200` `GetCompileResultData` Successful response with the compile result
+     * @response `400` `HandlersErrResponse` Bad Request
+     * @response `500` `HandlersErrResponse` Internal Server Error
+     */
+    getCompileResult: (token: string, params: RequestParams = {}) =>
+      this.request<GetCompileResultData, GetCompileResultError>({
+        path: `/codingInterview.getCompileResult/${token}`,
+        method: "GET",
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Get coding interview questions
+     *
+     * @tags codingInterview
+     * @name GetQuestions
+     * @summary Get coding interview questions
+     * @request GET:/codingInterview.getQuestions
+     * @response `200` `GetQuestionsData` Successful response with the coding interview questions
+     * @response `400` `HandlersErrResponse` Bad Request
+     * @response `500` `HandlersErrResponse` Internal Server Error
+     */
+    getQuestions: (params: RequestParams = {}) =>
+      this.request<GetQuestionsData, GetQuestionsError>({
+        path: `/codingInterview.getQuestions`,
         method: "GET",
         type: ContentType.Json,
         format: "json",
