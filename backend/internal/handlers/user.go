@@ -11,9 +11,10 @@ type UserData struct {
 } // @name User
 
 type CreateUserBody struct {
-	Username string `json:"username" validate:"required"`
-	Password string `json:"password" validate:"required"`
-	Role     string `json:"role" validate:"required"`
+	Username    string `json:"username" validate:"required"`
+	Password    string `json:"password" validate:"required"`
+	Role        string `json:"role" validate:"required"`
+	WorkspaceId uint   `json:"workspaceId" validate:"required"`
 } // @name UserCreateBody
 
 type DeleteUserBody struct {

@@ -26,7 +26,7 @@ func SetupRoutes() {
 	var userInWorkspaceRepositories = repositories.NewUserInWorkspaceRepository(*DB)
 
 	// Services
-	var userServices = services.NewUserService(userRepositories)
+	var userServices = services.NewUserService(userRepositories, userInWorkspaceRepositories)
 	var authServices = services.NewAuthService(userRepositories)
 	var videoInterviewServices = services.NewVideoInterviewService(objectRepositories)
 	var objectServices = services.NewObjectService(objectRepositories)

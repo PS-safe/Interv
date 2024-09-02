@@ -11,6 +11,6 @@ var (
 )
 
 type IUserService interface {
-	Create(username string, password string, role string) (user *domains.User, err error)
+	Create(username string, password string, role string, workspaceId uint) (newUser *domains.User, newUserInworkspace *domains.UserInWorkspace, err error)
 	Delete(id uint) (err error)
 }

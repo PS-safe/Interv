@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"fmt"
+
 	"csgit.sit.kmutt.ac.th/interv/interv-platform/internal/services"
 	"github.com/gofiber/fiber/v2"
 )
@@ -28,7 +30,6 @@ func NewUserHandler(userService services.IUserService) UserHandler {
 // @Router /user.createUser [post]
 func (u UserHandler) CreateUser(c *fiber.Ctx) error {
 	body := CreateUserBody{}
-
 	if err := c.BodyParser(&body); err != nil {
 		return err
 	}
@@ -37,18 +38,20 @@ func (u UserHandler) CreateUser(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 
-	response, err := u.userService.Create(body.Username, body.Password, body.Role)
+	userResponse, inWorkspaceResponse, err := u.userService.Create(body.Username, body.Password, body.Role, body.WorkspaceId)
 
 	if err != nil {
 		return err
 	}
 
+	fmt.Print(inWorkspaceResponse)
+
 	return Created(c, UserData{
-		ID:        response.ID,
-		Username:  response.Username,
-		Role:      (string)(response.Role),
-		CreatedAt: response.CreatedAt,
-		UpdatedAt: response.UpdatedAt,
+		ID:        userResponse.ID,
+		Username:  userResponse.Username,
+		Role:      (string)(userResponse.Role),
+		CreatedAt: userResponse.CreatedAt,
+		UpdatedAt: userResponse.UpdatedAt,
 	})
 }
 

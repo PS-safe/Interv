@@ -11,11 +11,11 @@
 
 export interface AddUserToWorkspaceBody {
   status: string
-  user_id: number
-  workspace_id: number
+  userId: number
+  workspaceId: number
 }
 
-export type AddUserToWorkspaceData = HandlersResponseHandlersUserInWorkspace
+export type AddUserToWorkspaceData = HandlersResponseUserInWorkspace
 
 export type AddUserToWorkspaceError = HandlersErrResponse
 
@@ -24,10 +24,10 @@ export type CreateUserData = HandlersResponseUser
 export type CreateUserError = HandlersErrResponse
 
 export interface CreateWorkspaceBody {
-  iscoding: boolean
-  isvideo: boolean
-  startdate: string
-  stopdate: string
+  isCoding: boolean
+  isVideo: boolean
+  startDate: string
+  stopDate: string
   title: string
 }
 
@@ -48,11 +48,11 @@ export type DeleteUserData = HandlersResponseString
 export type DeleteUserError = HandlersErrResponse
 
 export interface DeleteUserFromWorkspaceBody {
-  user_id: number
-  workspace_id: number
+  userId: number
+  workspaceId: number
 }
 
-export type DeleteUserFromWorkspaceData = HandlersResponseHandlersUserInWorkspace
+export type DeleteUserFromWorkspaceData = HandlersResponseUserInWorkspace
 
 export type DeleteUserFromWorkspaceError = HandlersErrResponse
 
@@ -128,13 +128,6 @@ export interface HandlersResponseCurrentUserResponse {
   timestamp?: string
 }
 
-export interface HandlersResponseHandlersUserInWorkspace {
-  code?: number
-  data?: HandlersUserInWorkspace
-  message?: string
-  timestamp?: string
-}
-
 export interface HandlersResponseString {
   code?: number
   data?: string
@@ -145,6 +138,13 @@ export interface HandlersResponseString {
 export interface HandlersResponseUser {
   code?: number
   data?: User
+  message?: string
+  timestamp?: string
+}
+
+export interface HandlersResponseUserInWorkspace {
+  code?: number
+  data?: UserInWorkspace
   message?: string
   timestamp?: string
 }
@@ -168,14 +168,6 @@ export interface HandlersResponseWorkspaceData {
   data?: WorkspaceData
   message?: string
   timestamp?: string
-}
-
-export interface HandlersUserInWorkspace {
-  id?: number
-  isInterest?: boolean
-  status?: string
-  userId?: number
-  workspaceId?: number
 }
 
 export interface LoginBody {
@@ -229,10 +221,19 @@ export interface UserCreateBody {
   password: string
   role: string
   username: string
+  workspaceId: number
 }
 
 export interface UserDeleteBody {
   id: number
+}
+
+export interface UserInWorkspace {
+  id?: number
+  isInterest?: boolean
+  status?: string
+  userId?: number
+  workspaceId?: number
 }
 
 export interface VideoInterviewContextResponse {
@@ -255,11 +256,12 @@ export interface VideoInterviewQuestionSetting {
 
 export interface WorkspaceData {
   id?: number
-  iscoding?: boolean
-  isvideo?: boolean
+  isCoding?: boolean
+  isVideo?: boolean
+  memberNum?: number
   owner?: number
-  startdate?: string
-  stopdate?: string
+  startDate?: string
+  stopDate?: string
   title?: string
 }
 
