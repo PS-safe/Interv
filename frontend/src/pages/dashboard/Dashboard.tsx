@@ -8,7 +8,7 @@ import ListWorkspaceCard from "./components/ListWorkspace.tsx"
 import { Input } from "@/components/ui/input.tsx"
 import Papa from "papaparse"
 import React, { useState } from "react"
-import { server } from "@/contexts/swr.tsx"
+// import { server } from "@/contexts/swr.tsx"
 
 const Dashboard = () => {
   const { data } = useGetListWorkspace()
