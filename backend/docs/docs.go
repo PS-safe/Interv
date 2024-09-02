@@ -321,7 +321,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/handlers.Response-handlers_UserInWorkspace"
+                            "$ref": "#/definitions/handlers.Response-UserInWorkspace"
                         }
                     },
                     "400": {
@@ -367,7 +367,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/handlers.Response-handlers_UserInWorkspace"
+                            "$ref": "#/definitions/handlers.Response-UserInWorkspace"
                         }
                     },
                     "400": {
@@ -700,17 +700,17 @@ const docTemplate = `{
             "type": "object",
             "required": [
                 "status",
-                "user_id",
-                "workspace_id"
+                "userId",
+                "workspaceId"
             ],
             "properties": {
                 "status": {
                     "type": "string"
                 },
-                "user_id": {
+                "userId": {
                     "type": "integer"
                 },
-                "workspace_id": {
+                "workspaceId": {
                     "type": "integer"
                 }
             }
@@ -718,23 +718,23 @@ const docTemplate = `{
         "CreateWorkspaceBody": {
             "type": "object",
             "required": [
-                "iscoding",
-                "isvideo",
-                "startdate",
-                "stopdate",
+                "isCoding",
+                "isVideo",
+                "startDate",
+                "stopDate",
                 "title"
             ],
             "properties": {
-                "iscoding": {
+                "isCoding": {
                     "type": "boolean"
                 },
-                "isvideo": {
+                "isVideo": {
                     "type": "boolean"
                 },
-                "startdate": {
+                "startDate": {
                     "type": "string"
                 },
-                "stopdate": {
+                "stopDate": {
                     "type": "string"
                 },
                 "title": {
@@ -772,14 +772,14 @@ const docTemplate = `{
         "DeleteUserFromWorkspaceBody": {
             "type": "object",
             "required": [
-                "user_id",
-                "workspace_id"
+                "userId",
+                "workspaceId"
             ],
             "properties": {
-                "user_id": {
+                "userId": {
                     "type": "integer"
                 },
-                "workspace_id": {
+                "workspaceId": {
                     "type": "integer"
                 }
             }
@@ -861,7 +861,8 @@ const docTemplate = `{
             "required": [
                 "password",
                 "role",
-                "username"
+                "username",
+                "workspaceId"
             ],
             "properties": {
                 "password": {
@@ -872,6 +873,9 @@ const docTemplate = `{
                 },
                 "username": {
                     "type": "string"
+                },
+                "workspaceId": {
+                    "type": "integer"
                 }
             }
         },
@@ -882,6 +886,26 @@ const docTemplate = `{
             ],
             "properties": {
                 "id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "UserInWorkspace": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "isInterest": {
+                    "type": "boolean"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "integer"
+                },
+                "workspaceId": {
                     "type": "integer"
                 }
             }
@@ -952,19 +976,22 @@ const docTemplate = `{
                 "id": {
                     "type": "integer"
                 },
-                "iscoding": {
+                "isCoding": {
                     "type": "boolean"
                 },
-                "isvideo": {
+                "isVideo": {
                     "type": "boolean"
+                },
+                "memberNum": {
+                    "type": "integer"
                 },
                 "owner": {
                     "type": "integer"
                 },
-                "startdate": {
+                "startDate": {
                     "type": "string"
                 },
-                "stopdate": {
+                "stopDate": {
                     "type": "string"
                 },
                 "title": {
@@ -1025,6 +1052,23 @@ const docTemplate = `{
                 },
                 "data": {
                     "$ref": "#/definitions/User"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "timestamp": {
+                    "type": "string"
+                }
+            }
+        },
+        "handlers.Response-UserInWorkspace": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/UserInWorkspace"
                 },
                 "message": {
                     "type": "string"
@@ -1105,23 +1149,6 @@ const docTemplate = `{
                 }
             }
         },
-        "handlers.Response-handlers_UserInWorkspace": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "integer"
-                },
-                "data": {
-                    "$ref": "#/definitions/handlers.UserInWorkspace"
-                },
-                "message": {
-                    "type": "string"
-                },
-                "timestamp": {
-                    "type": "string"
-                }
-            }
-        },
         "handlers.Response-string": {
             "type": "object",
             "properties": {
@@ -1136,26 +1163,6 @@ const docTemplate = `{
                 },
                 "timestamp": {
                     "type": "string"
-                }
-            }
-        },
-        "handlers.UserInWorkspace": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "isInterest": {
-                    "type": "boolean"
-                },
-                "status": {
-                    "type": "string"
-                },
-                "userId": {
-                    "type": "integer"
-                },
-                "workspaceId": {
-                    "type": "integer"
                 }
             }
         }

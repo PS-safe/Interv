@@ -2,8 +2,6 @@ package domains
 
 import (
 	"time"
-
-	"gorm.io/gorm"
 )
 
 type Workspace struct {
@@ -14,5 +12,7 @@ type Workspace struct {
 	StartDate time.Time
 	StopDate  time.Time
 	Owner     uint `gorm:"foreignKey:UserId"`
-	gorm.Model
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	// DeletedAt DeletedAt `gorm:"index"`
 }

@@ -4,32 +4,32 @@ definitions:
     properties:
       status:
         type: string
-      user_id:
+      userId:
         type: integer
-      workspace_id:
+      workspaceId:
         type: integer
     required:
     - status
-    - user_id
-    - workspace_id
+    - userId
+    - workspaceId
     type: object
   CreateWorkspaceBody:
     properties:
-      iscoding:
+      isCoding:
         type: boolean
-      isvideo:
+      isVideo:
         type: boolean
-      startdate:
+      startDate:
         type: string
-      stopdate:
+      stopDate:
         type: string
       title:
         type: string
     required:
-    - iscoding
-    - isvideo
-    - startdate
-    - stopdate
+    - isCoding
+    - isVideo
+    - startDate
+    - stopDate
     - title
     type: object
   CurrentUserResponse:
@@ -53,13 +53,13 @@ definitions:
     type: object
   DeleteUserFromWorkspaceBody:
     properties:
-      user_id:
+      userId:
         type: integer
-      workspace_id:
+      workspaceId:
         type: integer
     required:
-    - user_id
-    - workspace_id
+    - userId
+    - workspaceId
     type: object
   DeleteWorkspaceBody:
     properties:
@@ -116,10 +116,13 @@ definitions:
         type: string
       username:
         type: string
+      workspaceId:
+        type: integer
     required:
     - password
     - role
     - username
+    - workspaceId
     type: object
   UserDeleteBody:
     properties:
@@ -127,6 +130,19 @@ definitions:
         type: integer
     required:
     - id
+    type: object
+  UserInWorkspace:
+    properties:
+      id:
+        type: integer
+      isInterest:
+        type: boolean
+      status:
+        type: string
+      userId:
+        type: integer
+      workspaceId:
+        type: integer
     type: object
   VideoInterviewContextResponse:
     properties:
@@ -173,15 +189,17 @@ definitions:
     properties:
       id:
         type: integer
-      iscoding:
+      isCoding:
         type: boolean
-      isvideo:
+      isVideo:
         type: boolean
+      memberNum:
+        type: integer
       owner:
         type: integer
-      startdate:
+      startDate:
         type: string
-      stopdate:
+      stopDate:
         type: string
       title:
         type: string
@@ -221,6 +239,17 @@ definitions:
         type: integer
       data:
         $ref: '#/definitions/User'
+      message:
+        type: string
+      timestamp:
+        type: string
+    type: object
+  handlers.Response-UserInWorkspace:
+    properties:
+      code:
+        type: integer
+      data:
+        $ref: '#/definitions/UserInWorkspace'
       message:
         type: string
       timestamp:
@@ -272,17 +301,6 @@ definitions:
       timestamp:
         type: string
     type: object
-  handlers.Response-handlers_UserInWorkspace:
-    properties:
-      code:
-        type: integer
-      data:
-        $ref: '#/definitions/handlers.UserInWorkspace'
-      message:
-        type: string
-      timestamp:
-        type: string
-    type: object
   handlers.Response-string:
     properties:
       code:
@@ -293,19 +311,6 @@ definitions:
         type: string
       timestamp:
         type: string
-    type: object
-  handlers.UserInWorkspace:
-    properties:
-      id:
-        type: integer
-      isInterest:
-        type: boolean
-      status:
-        type: string
-      userId:
-        type: integer
-      workspaceId:
-        type: integer
     type: object
 info:
   contact: {}
@@ -512,7 +517,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/handlers.Response-handlers_UserInWorkspace'
+            $ref: '#/definitions/handlers.Response-UserInWorkspace'
         "400":
           description: Bad Request
           schema:
@@ -542,7 +547,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/handlers.Response-handlers_UserInWorkspace'
+            $ref: '#/definitions/handlers.Response-UserInWorkspace'
         "400":
           description: Bad Request
           schema:

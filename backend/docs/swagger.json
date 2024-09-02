@@ -313,7 +313,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/handlers.Response-handlers_UserInWorkspace"
+                            "$ref": "#/definitions/handlers.Response-UserInWorkspace"
                         }
                     },
                     "400": {
@@ -359,7 +359,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/handlers.Response-handlers_UserInWorkspace"
+                            "$ref": "#/definitions/handlers.Response-UserInWorkspace"
                         }
                     },
                     "400": {
@@ -692,17 +692,17 @@
             "type": "object",
             "required": [
                 "status",
-                "user_id",
-                "workspace_id"
+                "userId",
+                "workspaceId"
             ],
             "properties": {
                 "status": {
                     "type": "string"
                 },
-                "user_id": {
+                "userId": {
                     "type": "integer"
                 },
-                "workspace_id": {
+                "workspaceId": {
                     "type": "integer"
                 }
             }
@@ -710,23 +710,23 @@
         "CreateWorkspaceBody": {
             "type": "object",
             "required": [
-                "iscoding",
-                "isvideo",
-                "startdate",
-                "stopdate",
+                "isCoding",
+                "isVideo",
+                "startDate",
+                "stopDate",
                 "title"
             ],
             "properties": {
-                "iscoding": {
+                "isCoding": {
                     "type": "boolean"
                 },
-                "isvideo": {
+                "isVideo": {
                     "type": "boolean"
                 },
-                "startdate": {
+                "startDate": {
                     "type": "string"
                 },
-                "stopdate": {
+                "stopDate": {
                     "type": "string"
                 },
                 "title": {
@@ -764,14 +764,14 @@
         "DeleteUserFromWorkspaceBody": {
             "type": "object",
             "required": [
-                "user_id",
-                "workspace_id"
+                "userId",
+                "workspaceId"
             ],
             "properties": {
-                "user_id": {
+                "userId": {
                     "type": "integer"
                 },
-                "workspace_id": {
+                "workspaceId": {
                     "type": "integer"
                 }
             }
@@ -853,7 +853,8 @@
             "required": [
                 "password",
                 "role",
-                "username"
+                "username",
+                "workspaceId"
             ],
             "properties": {
                 "password": {
@@ -864,6 +865,9 @@
                 },
                 "username": {
                     "type": "string"
+                },
+                "workspaceId": {
+                    "type": "integer"
                 }
             }
         },
@@ -874,6 +878,26 @@
             ],
             "properties": {
                 "id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "UserInWorkspace": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "isInterest": {
+                    "type": "boolean"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "integer"
+                },
+                "workspaceId": {
                     "type": "integer"
                 }
             }
@@ -944,19 +968,22 @@
                 "id": {
                     "type": "integer"
                 },
-                "iscoding": {
+                "isCoding": {
                     "type": "boolean"
                 },
-                "isvideo": {
+                "isVideo": {
                     "type": "boolean"
+                },
+                "memberNum": {
+                    "type": "integer"
                 },
                 "owner": {
                     "type": "integer"
                 },
-                "startdate": {
+                "startDate": {
                     "type": "string"
                 },
-                "stopdate": {
+                "stopDate": {
                     "type": "string"
                 },
                 "title": {
@@ -1017,6 +1044,23 @@
                 },
                 "data": {
                     "$ref": "#/definitions/User"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "timestamp": {
+                    "type": "string"
+                }
+            }
+        },
+        "handlers.Response-UserInWorkspace": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/UserInWorkspace"
                 },
                 "message": {
                     "type": "string"
@@ -1097,23 +1141,6 @@
                 }
             }
         },
-        "handlers.Response-handlers_UserInWorkspace": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "integer"
-                },
-                "data": {
-                    "$ref": "#/definitions/handlers.UserInWorkspace"
-                },
-                "message": {
-                    "type": "string"
-                },
-                "timestamp": {
-                    "type": "string"
-                }
-            }
-        },
         "handlers.Response-string": {
             "type": "object",
             "properties": {
@@ -1128,26 +1155,6 @@
                 },
                 "timestamp": {
                     "type": "string"
-                }
-            }
-        },
-        "handlers.UserInWorkspace": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "isInterest": {
-                    "type": "boolean"
-                },
-                "status": {
-                    "type": "string"
-                },
-                "userId": {
-                    "type": "integer"
-                },
-                "workspaceId": {
-                    "type": "integer"
                 }
             }
         }
