@@ -147,6 +147,11 @@ export interface HandlersErrResponse {
   timestamp?: string
 }
 
+export enum HandlersMailPreset {
+  Invite = "invite",
+  Finish = "finish",
+}
+
 export interface HandlersOkResponse {
   code?: number
   message?: string
@@ -220,7 +225,23 @@ export type LoginError = HandlersErrResponse
 
 export type LogoutData = HandlersOkResponse
 
+export interface MailObject {
+  dueDate?: string
+  link?: string
+  name: string
+  to: string
+}
+
 export type MeData = HandlersResponseCurrentUserResponse
+
+export interface SendMailBody {
+  mailList: MailObject[]
+  preset: HandlersMailPreset
+}
+
+export type SendMailData = HandlersResponseString
+
+export type SendMailError = HandlersErrResponse
 
 export type SubmitVideoInterviewData = HandlersResponseString
 
@@ -392,6 +413,23 @@ export namespace CodingInterview {
     export type RequestBody = never
     export type RequestHeaders = {}
     export type ResponseBody = GetQuestionsData
+export namespace Mail {
+  /**
+   * No description
+   * @tags mail
+   * @name SendMail
+   * @summary Send mail to the user
+   * @request POST:/mail.sendMail
+   * @response `200` `SendMailData` OK
+   * @response `400` `HandlersErrResponse` Bad Request
+   * @response `500` `HandlersErrResponse` Internal Server Error
+   */
+  export namespace SendMail {
+    export type RequestParams = {}
+    export type RequestQuery = {}
+    export type RequestBody = SendMailBody
+    export type RequestHeaders = {}
+    export type ResponseBody = SendMailData
   }
 }
 
@@ -790,6 +828,23 @@ export class Server<SecurityDataType extends unknown> extends HttpClient<Securit
       this.request<GetQuestionsData, GetQuestionsError>({
         path: `/codingInterview.getQuestions`,
         method: "GET",
+  mail = {
+    /**
+     * No description
+     *
+     * @tags mail
+     * @name SendMail
+     * @summary Send mail to the user
+     * @request POST:/mail.sendMail
+     * @response `200` `SendMailData` OK
+     * @response `400` `HandlersErrResponse` Bad Request
+     * @response `500` `HandlersErrResponse` Internal Server Error
+     */
+    sendMail: (payload: SendMailBody, params: RequestParams = {}) =>
+      this.request<SendMailData, SendMailError>({
+        path: `/mail.sendMail`,
+        method: "POST",
+        body: payload,
         type: ContentType.Json,
         format: "json",
         ...params,

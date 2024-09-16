@@ -63,6 +63,32 @@ definitions:
     - password
     - username
     type: object
+  MailObject:
+    properties:
+      dueDate:
+        type: string
+      link:
+        type: string
+      name:
+        type: string
+      to:
+        type: string
+    required:
+    - name
+    - to
+    type: object
+  SendMailBody:
+    properties:
+      mailList:
+        items:
+          $ref: '#/definitions/MailObject'
+        type: array
+      preset:
+        $ref: '#/definitions/handlers.MailPreset'
+    required:
+    - mailList
+    - preset
+    type: object
   User:
     properties:
       created_at:
@@ -277,6 +303,14 @@ definitions:
       timestamp:
         type: string
     type: object
+  handlers.MailPreset:
+    enum:
+    - invite
+    - finish
+    type: string
+    x-enum-varnames:
+    - Invite
+    - Finish
   handlers.OkResponse:
     properties:
       code:
@@ -452,6 +486,18 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/CodingInterviewGenerateCompileTokenQuery'
+  /mail.sendMail:
+    post:
+      consumes:
+      - application/json
+      operationId: sendMail
+      parameters:
+      - description: Mail details
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/SendMailBody'
       produces:
       - application/json
       responses:
@@ -459,6 +505,9 @@ paths:
           description: Successful response with the compile token
           schema:
             $ref: '#/definitions/handlers.Response-CodingInterviewGenerateCompileTokenResponse'
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.Response-string'
         "400":
           description: Bad Request
           schema:
@@ -524,6 +573,9 @@ paths:
       summary: Get coding interview questions
       tags:
       - codingInterview
+      summary: Send mail to the user
+      tags:
+      - mail
   /object.getObject:
     post:
       operationId: getObject

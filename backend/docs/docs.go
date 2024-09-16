@@ -111,6 +111,8 @@ const docTemplate = `{
         "/codingInterview.generateCompileToken": {
             "post": {
                 "description": "Generate compile token for a coding interview",
+        "/mail.sendMail": {
+            "post": {
                 "consumes": [
                     "application/json"
                 ],
@@ -130,6 +132,18 @@ const docTemplate = `{
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/CodingInterviewGenerateCompileTokenQuery"
+                    "mail"
+                ],
+                "summary": "Send mail to the user",
+                "operationId": "sendMail",
+                "parameters": [
+                    {
+                        "description": "Mail details",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/SendMailBody"
                         }
                     }
                 ],
@@ -219,6 +233,9 @@ const docTemplate = `{
                         "description": "Successful response with the coding interview questions",
                         "schema": {
                             "$ref": "#/definitions/handlers.Response-CodingInterviewGetQuestionsResponse"
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.Response-string"
                         }
                     },
                     "400": {
@@ -655,6 +672,45 @@ const docTemplate = `{
                 }
             }
         },
+        "MailObject": {
+            "type": "object",
+            "required": [
+                "name",
+                "to"
+            ],
+            "properties": {
+                "dueDate": {
+                    "type": "string"
+                },
+                "link": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "to": {
+                    "type": "string"
+                }
+            }
+        },
+        "SendMailBody": {
+            "type": "object",
+            "required": [
+                "mailList",
+                "preset"
+            ],
+            "properties": {
+                "mailList": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/MailObject"
+                    }
+                },
+                "preset": {
+                    "$ref": "#/definitions/handlers.MailPreset"
+                }
+            }
+        },
         "User": {
             "type": "object",
             "properties": {
@@ -978,6 +1034,17 @@ const docTemplate = `{
                     "type": "string"
                 }
             }
+        },
+        "handlers.MailPreset": {
+            "type": "string",
+            "enum": [
+                "invite",
+                "finish"
+            ],
+            "x-enum-varnames": [
+                "Invite",
+                "Finish"
+            ]
         },
         "handlers.OkResponse": {
             "type": "object",

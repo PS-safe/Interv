@@ -3,9 +3,10 @@ package loaders
 import (
 	"errors"
 	"fmt"
+	"time"
+
 	swagger "github.com/arsmn/fiber-swagger/v2"
 	"github.com/spf13/viper"
-	"time"
 
 	"csgit.sit.kmutt.ac.th/interv/interv-platform/internal/handlers"
 	"csgit.sit.kmutt.ac.th/interv/interv-platform/internal/repositories"
@@ -23,6 +24,7 @@ func SetupRoutes() {
 	var objectRepositories = repositories.NewObjectRepository(*MINIO)
 	var compilationRespositories = repositories.NewCodeCompilationRepository(viper.GetString(EnvCompilerEndpoint))
 	var codingInterviewRepositories = repositories.NewCodingInterviewRepository(*DB)
+	var mailRepositories = repositories.NewMailRepository(*MAILJET)
 
 	// Services
 	var userServices = services.NewUserService(userRepositories)
@@ -30,6 +32,7 @@ func SetupRoutes() {
 	var videoInterviewServices = services.NewVideoInterviewService(objectRepositories)
 	var objectServices = services.NewObjectService(objectRepositories)
 	var codingInterviewServices = services.NewCodingInterviewService(compilationRespositories, codingInterviewRepositories)
+	var mailServices = services.NewMailService(mailRepositories)
 
 	// Handlers
 	var userHandlers = handlers.NewUserHandler(userServices)
@@ -37,6 +40,7 @@ func SetupRoutes() {
 	var videoInterviewHandlers = handlers.NewVideoInterviewHandler(videoInterviewServices)
 	var objectHandlers = handlers.NewObjectHandler(objectServices)
 	var codingInterviewHandlers = handlers.NewCodingInterviewHandler(codingInterviewServices)
+	var mailHandlers = handlers.NewMailHandler(mailServices)
 
 	// Fiber App
 	app := NewFiberApp()
@@ -84,6 +88,9 @@ func SetupRoutes() {
 	// Object
 	private.Post("object.uploadObject", objectHandlers.UploadObject)
 	private.Post("object.getObject", objectHandlers.GetObject)
+
+	// Mail
+	private.Post("mail.sendMail", mailHandlers.SendMail)
 
 	ListenAndServe(app, serverAddr)
 }
