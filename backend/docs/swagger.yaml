@@ -1,5 +1,12 @@
 basePath: /api
 definitions:
+  CodingInterviewCreateQuestionQuery:
+    properties:
+      body:
+        $ref: '#/definitions/domains.CreateCodingQuestionRequest'
+    required:
+    - body
+    type: object
   CodingInterviewGenerateCompileTokenQuery:
     properties:
       body:
@@ -238,14 +245,14 @@ definitions:
         type: string
       deletedAt:
         $ref: '#/definitions/gorm.DeletedAt'
-      expectedOutput:
-        type: string
       id:
         type: integer
       input:
         type: string
       isHidden:
         type: boolean
+      output:
+        type: string
       question:
         $ref: '#/definitions/domains.CodingQuestion'
       questionID:
@@ -284,6 +291,27 @@ definitions:
       time:
         type: string
       token:
+        type: string
+    type: object
+  domains.CreateCodingQuestionRequest:
+    properties:
+      description:
+        type: string
+      difficulty:
+        type: string
+      examples:
+        items:
+          $ref: '#/definitions/domains.CodingQuestionExample'
+        type: array
+      tags:
+        items:
+          type: string
+        type: array
+      test_cases:
+        items:
+          $ref: '#/definitions/domains.CodingQuestionTestCase'
+        type: array
+      title:
         type: string
     type: object
   gorm.DeletedAt:
@@ -397,6 +425,17 @@ definitions:
       timestamp:
         type: string
     type: object
+  handlers.Response-domains_CodingQuestion:
+    properties:
+      code:
+        type: integer
+      data:
+        $ref: '#/definitions/domains.CodingQuestion'
+      message:
+        type: string
+      timestamp:
+        type: string
+    type: object
   handlers.Response-string:
     properties:
       code:
@@ -473,6 +512,37 @@ paths:
       summary: Get current user in the system
       tags:
       - authentication
+  /codingInterview.createQuestion:
+    post:
+      consumes:
+      - application/json
+      description: Create a new coding interview question
+      operationId: CreateQuestion
+      parameters:
+      - description: Request body containing the new question details
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/CodingInterviewCreateQuestionQuery'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful response with the created question
+          schema:
+            $ref: '#/definitions/handlers.Response-domains_CodingQuestion'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.ErrResponse'
+      summary: Create a new coding interview question
+      tags:
+      - codingInterview
   /codingInterview.generateCompileToken:
     post:
       consumes:

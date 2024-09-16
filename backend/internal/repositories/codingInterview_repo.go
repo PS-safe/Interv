@@ -64,3 +64,24 @@ func (c *codingInterviewRepository) GetCodingQuestionTestcaseByID(questionId int
 	}
 	return codingQuestionTestCase, nil
 }
+
+func (c *codingInterviewRepository) SaveCodingQuestion(question domains.CodingQuestion) (domains.CodingQuestion, error) {
+	if err := c.DB.Create(&question).Error; err != nil {
+		return domains.CodingQuestion{}, err
+	}
+	return question, nil
+}
+
+func (c *codingInterviewRepository) SaveCodingQuestionExample(example domains.CodingQuestionExample) (domains.CodingQuestionExample, error) {
+	if err := c.DB.Create(&example).Error; err != nil {
+		return domains.CodingQuestionExample{}, err
+	}
+	return example, nil
+}
+
+func (c *codingInterviewRepository) SaveCodingQuestionTestcase(testcase domains.CodingQuestionTestCase) (domains.CodingQuestionTestCase, error) {
+	if err := c.DB.Create(&testcase).Error; err != nil {
+		return domains.CodingQuestionTestCase{}, err
+	}
+	return testcase, nil
+}

@@ -7,7 +7,12 @@ interface MainPanelProps extends HTMLAttributes<HTMLDivElement> {
 }
 const MainPanel: FC<MainPanelProps> = ({ children, className }) => {
   return (
-    <div className={cn("w-full h-full p-4", className as ClassValue)}>
+    <div
+      className={cn(
+        "w-full h-full p-4 border overflow-y-scroll",
+        className as ClassValue,
+      )}
+    >
       {children}
     </div>
   )

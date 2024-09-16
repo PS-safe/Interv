@@ -43,6 +43,17 @@ func (s *codingInterviewService) GetCompileResult(token string) (domains.Compila
 	return res, nil
 }
 
+func (s *codingInterviewService) CreateCodingQuestion(req domains.CodingQuestion) (domains.CreateCodingQuestionResponse, error) {
+	_, err := s.codingInterviewRepository.SaveCodingQuestion(req)
+	if err != nil {
+		return domains.CreateCodingQuestionResponse{}, ErrorCreateCodingQuestion
+	}
+	return domains.CreateCodingQuestionResponse{
+		Status:  "success",
+		Message: "Coding question created successfully",
+	}, nil
+}
+
 func (*codingInterviewService) SaveCodingSnapshot(code string) (string, error) {
 	panic("unimplemented")
 }

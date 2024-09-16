@@ -19,3 +19,7 @@ type CodingInterviewGetCompileResultResponse struct {
 type CodingInterviewGetQuestionsResponse struct {
 	Questions []domains.CodingQuestionResponse `json:"questions"`
 } // @name CodingInterviewGetQuestionsResponse
+
+type CodingInterviewCreateQuestionQuery struct {
+	Body domains.CreateCodingQuestionRequest `json:"body"  validate:"required"`
+} // @name CodingInterviewCreateQuestionQuery

@@ -15,6 +15,9 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import "react-quill/dist/quill.snow.css"
 import { toast } from "sonner"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Trash2 } from "lucide-react"
+import { server } from "@/contexts/swr"
 
 function CreateCodingQuestion() {
   const formSchema = z.object({
@@ -25,6 +28,8 @@ function CreateCodingQuestion() {
         z.object({
           input: z.string().min(1),
           output: z.string().min(1),
+          isHidden: z.boolean().default(false),
+          isExample: z.boolean().default(false),
         }),
       )
       .min(1),
@@ -35,12 +40,31 @@ function CreateCodingQuestion() {
     defaultValues: {
       title: "",
       description: "",
-      testCases: [], // Start with an empty array instead of a default empty test case
+      testCases: [],
     },
   })
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values)
+    const exampleTestCases = values.testCases.filter(
+      (testCase) => testCase.isExample,
+    )
+    toast.promise(
+      server.codingInterview.createQuestion({
+        body: {
+          title: values.title,
+          description: values.description,
+          test_cases: values.testCases,
+          examples: exampleTestCases,
+          tags: [],
+          difficulty: "easy",
+        },
+      }),
+      {
+        loading: "Creating question...",
+        success: "Question created successfully",
+        error: "Failed to create question",
+      },
+    )
   }
   const editorFormats = [
     "header",
@@ -95,10 +119,21 @@ function CreateCodingQuestion() {
           )
 
           if (validTestCases.length > 0) {
+            // Ensure all imported test cases are hidden by default
+            const hiddenTestCases = validTestCases.map((testCase) => ({
+              ...testCase,
+              isHidden: true,
+              isExample: false, // Ensure isExample is set to false by default
+            }))
+
             // Replace all current test cases with the valid uploaded ones
-            form.setValue("testCases", validTestCases)
+            form.setValue("testCases", hiddenTestCases)
+
+            // Trigger rerender
+            form.trigger("testCases")
+
             toast.message(
-              `${validTestCases.length} test case(s) imported successfully.`,
+              `${hiddenTestCases.length} test case(s) imported successfully.`,
             )
           } else {
             toast.message("No valid test cases found in the file")
@@ -132,6 +167,9 @@ function CreateCodingQuestion() {
                 <FormControl>
                   <Input type="text" className="w-full" {...field} />
                 </FormControl>
+                <p className="text-sm text-gray-500 mt-1">
+                  Enter a concise title for your coding question.
+                </p>
                 <FormMessage />
               </FormItem>
             )}
@@ -154,6 +192,10 @@ function CreateCodingQuestion() {
                     className="bg-white rounded-md"
                   />
                 </FormControl>
+                <p className="text-sm text-gray-500 mt-1">
+                  Provide a detailed description of the coding problem,
+                  including any constraints or special requirements.
+                </p>
                 <FormMessage />
               </FormItem>
             )}
@@ -174,7 +216,12 @@ function CreateCodingQuestion() {
                       const currentTestCases = form.getValues("testCases")
                       form.setValue("testCases", [
                         ...currentTestCases,
-                        { input: "", output: "" },
+                        {
+                          input: "",
+                          output: "",
+                          isHidden: true,
+                          isExample: false,
+                        },
                       ])
                     }}
                     variant="outline"
@@ -182,41 +229,82 @@ function CreateCodingQuestion() {
                     Add Test Case
                   </Button>
                 </FormLabel>
+                <p className="text-sm text-gray-500 mb-2">
+                  Add test cases to validate the solution. You can manually add
+                  test cases or import them from a JSON file.
+                </p>
                 <FormControl>
                   <div className="space-y-2">
-                    {form.watch("testCases").map((_, index) => (
-                      <div key={index} className="flex gap-2">
-                        <Input
-                          placeholder="Input"
-                          {...form.register(`testCases.${index}.input`)}
-                          className="w-full"
-                        />
-                        <Input
-                          placeholder="Output"
-                          {...form.register(`testCases.${index}.output`)}
-                          className="w-full"
-                        />
-                        {index === 0 ? (
-                          <div className="w-[160px]" />
-                        ) : (
-                          <Button
-                            type="button"
-                            onClick={() => {
-                              const currentTestCases =
-                                form.getValues("testCases")
-                              form.setValue(
-                                "testCases",
-                                currentTestCases.filter((_, i) => i !== index),
-                              )
-                            }}
-                            variant="destructive"
-                            className="w-[70px]"
-                          >
-                            Remove
-                          </Button>
-                        )}
-                      </div>
-                    ))}
+                    {form.watch("testCases").length === 0 ? (
+                      <p>No test cases added yet. Import or add a test case.</p>
+                    ) : (
+                      form.watch("testCases").map((testCase, index) => (
+                        <div key={index} className="flex gap-2 items-center">
+                          <Input
+                            placeholder="Input"
+                            {...form.register(`testCases.${index}.input`)}
+                            className="w-full"
+                          />
+                          <Input
+                            placeholder="Output"
+                            {...form.register(`testCases.${index}.output`)}
+                            className="w-full"
+                          />
+                          <div className="flex items-center space-x-2 ml-2">
+                            <Checkbox
+                              id={`hidden-${index}`}
+                              checked={testCase.isHidden}
+                              onCheckedChange={(checked) => {
+                                form.setValue(
+                                  `testCases.${index}.isHidden`,
+                                  checked as boolean,
+                                )
+                              }}
+                            />
+                            <label
+                              htmlFor={`hidden-${index}`}
+                              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                            >
+                              Hidden
+                            </label>
+                          </div>
+                          <div className="flex items-center space-x-2 ml-2">
+                            <Checkbox
+                              id={`example-${index}`}
+                              {...form.register(`testCases.${index}.isExample`)}
+                            />
+                            <label
+                              htmlFor={`example-${index}`}
+                              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                            >
+                              Example
+                            </label>
+                          </div>
+                          {index === 0 ? (
+                            <div className="w-10" />
+                          ) : (
+                            <Button
+                              type="button"
+                              onClick={() => {
+                                const currentTestCases =
+                                  form.getValues("testCases")
+                                form.setValue(
+                                  "testCases",
+                                  currentTestCases.filter(
+                                    (_, i) => i !== index,
+                                  ),
+                                )
+                              }}
+                              variant="ghost"
+                              size="icon"
+                              className="h-10 w-10"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          )}
+                        </div>
+                      ))
+                    )}
                     <div className="flex gap-2">
                       <Input
                         type="file"
@@ -228,6 +316,16 @@ function CreateCodingQuestion() {
                     </div>
                   </div>
                 </FormControl>
+                <div className="mt-2">
+                  <p className="text-sm text-gray-500 mb-1">
+                    <strong>Hidden:</strong> Test cases not visible to the user,
+                    used for final validation.
+                  </p>
+                  <p className="text-sm text-gray-500">
+                    <strong>Example:</strong> Test cases shown to the user as
+                    examples in the problem description.
+                  </p>
+                </div>
                 <FormMessage />
               </FormItem>
             )}

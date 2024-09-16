@@ -9,6 +9,10 @@
  * ---------------------------------------------------------------
  */
 
+export interface CodingInterviewCreateQuestionQuery {
+  body: DomainsCreateCodingQuestionRequest
+}
+
 export interface CodingInterviewGenerateCompileTokenQuery {
   body: DomainsCompilationRequest
 }
@@ -24,6 +28,10 @@ export interface CodingInterviewGetCompileResultResponse {
 export interface CodingInterviewGetQuestionsResponse {
   questions?: DomainsCodingQuestionResponse[]
 }
+
+export type CreateQuestionData = HandlersResponseDomainsCodingQuestion
+
+export type CreateQuestionError = HandlersErrResponse
 
 export type CreateUserData = HandlersResponseUser
 
@@ -79,10 +87,10 @@ export interface DomainsCodingQuestionResponse {
 export interface DomainsCodingQuestionTestCase {
   createdAt?: string
   deletedAt?: GormDeletedAt
-  expectedOutput?: string
   id?: number
   input?: string
   isHidden?: boolean
+  output?: string
   question?: DomainsCodingQuestion
   questionID?: number
   updatedAt?: string
@@ -106,6 +114,15 @@ export interface DomainsCompilationResultResponse {
   stdout?: string
   time?: string
   token?: string
+}
+
+export interface DomainsCreateCodingQuestionRequest {
+  description?: string
+  difficulty?: string
+  examples?: DomainsCodingQuestionExample[]
+  tags?: string[]
+  test_cases?: DomainsCodingQuestionTestCase[]
+  title?: string
 }
 
 export type GenerateCompileTokenData = HandlersResponseCodingInterviewGenerateCompileTokenResponse
@@ -193,6 +210,13 @@ export interface HandlersResponseCodingInterviewGetQuestionsResponse {
 export interface HandlersResponseCurrentUserResponse {
   code?: number
   data?: CurrentUserResponse
+  message?: string
+  timestamp?: string
+}
+
+export interface HandlersResponseDomainsCodingQuestion {
+  code?: number
+  data?: DomainsCodingQuestion
   message?: string
   timestamp?: string
 }
@@ -369,6 +393,24 @@ export namespace Authentication {
 }
 
 export namespace CodingInterview {
+  /**
+   * @description Create a new coding interview question
+   * @tags codingInterview
+   * @name CreateQuestion
+   * @summary Create a new coding interview question
+   * @request POST:/codingInterview.createQuestion
+   * @response `200` `CreateQuestionData` Successful response with the created question
+   * @response `400` `HandlersErrResponse` Bad Request
+   * @response `500` `HandlersErrResponse` Internal Server Error
+   */
+  export namespace CreateQuestion {
+    export type RequestParams = {}
+    export type RequestQuery = {}
+    export type RequestBody = CodingInterviewCreateQuestionQuery
+    export type RequestHeaders = {}
+    export type ResponseBody = CreateQuestionData
+  }
+
   /**
    * @description Generate compile token for a coding interview
    * @tags codingInterview
@@ -786,6 +828,27 @@ export class Server<SecurityDataType extends unknown> extends HttpClient<Securit
       }),
   }
   codingInterview = {
+    /**
+     * @description Create a new coding interview question
+     *
+     * @tags codingInterview
+     * @name CreateQuestion
+     * @summary Create a new coding interview question
+     * @request POST:/codingInterview.createQuestion
+     * @response `200` `CreateQuestionData` Successful response with the created question
+     * @response `400` `HandlersErrResponse` Bad Request
+     * @response `500` `HandlersErrResponse` Internal Server Error
+     */
+    createQuestion: (body: CodingInterviewCreateQuestionQuery, params: RequestParams = {}) =>
+      this.request<CreateQuestionData, CreateQuestionError>({
+        path: `/codingInterview.createQuestion`,
+        method: "POST",
+        body: body,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
     /**
      * @description Generate compile token for a coding interview
      *

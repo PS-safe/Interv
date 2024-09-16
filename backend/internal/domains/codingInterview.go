@@ -33,14 +33,14 @@ type CodingQuestionExample struct {
 }
 
 type CodingQuestionTestCase struct {
-	Id             uint `gorm:"primaryKey;autoIncrement"`
-	QuestionID     uint
-	Question       CodingQuestion `gorm:"foreignKey:Id;references:Id"`
-	Input          string         `gorm:"type:text"`
-	ExpectedOutput string         `gorm:"type:text"`
-	IsHidden       bool           `gorm:"default:false"`
-	CreatedAt      time.Time      `gorm:"autoCreateTime"`
-	UpdatedAt      time.Time      `gorm:"autoUpdateTime"`
+	Id         uint `gorm:"primaryKey;autoIncrement"`
+	QuestionID uint
+	Question   CodingQuestion `gorm:"foreignKey:Id;references:Id"`
+	Input      string         `gorm:"type:text"`
+	Output     string         `gorm:"type:text"`
+	IsHidden   bool           `gorm:"default:false"`
+	CreatedAt  time.Time      `gorm:"autoCreateTime"`
+	UpdatedAt  time.Time      `gorm:"autoUpdateTime"`
 	gorm.Model
 }
 
@@ -51,4 +51,18 @@ type CodingQuestionResponse struct {
 	ExampleInput  string                   `json:"example_input"`
 	ExampleOutput string                   `json:"example_output"`
 	TestCase      []CodingQuestionTestCase `json:"test_case"`
+}
+
+type CreateCodingQuestionRequest struct {
+	Title       string                   `json:"title"`
+	Description string                   `json:"description"`
+	Examples    []CodingQuestionExample  `json:"examples"`
+	TestCases   []CodingQuestionTestCase `json:"test_cases"`
+	Tags        []string                 `json:"tags"`
+	Difficulty  string                   `json:"difficulty"`
+}
+
+type CreateCodingQuestionResponse struct {
+	Status  string `json:"status"`
+	Message string `json:"message"`
 }
