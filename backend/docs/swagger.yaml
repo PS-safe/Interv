@@ -486,18 +486,6 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/CodingInterviewGenerateCompileTokenQuery'
-  /mail.sendMail:
-    post:
-      consumes:
-      - application/json
-      operationId: sendMail
-      parameters:
-      - description: Mail details
-        in: body
-        name: payload
-        required: true
-        schema:
-          $ref: '#/definitions/SendMailBody'
       produces:
       - application/json
       responses:
@@ -505,9 +493,6 @@ paths:
           description: Successful response with the compile token
           schema:
             $ref: '#/definitions/handlers.Response-CodingInterviewGenerateCompileTokenResponse'
-          description: OK
-          schema:
-            $ref: '#/definitions/handlers.Response-string'
         "400":
           description: Bad Request
           schema:
@@ -573,6 +558,33 @@ paths:
       summary: Get coding interview questions
       tags:
       - codingInterview
+  /mail.sendMail:
+    post:
+      consumes:
+      - application/json
+      operationId: sendMail
+      parameters:
+      - description: Mail details
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/SendMailBody'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.Response-string'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.ErrResponse'
       summary: Send mail to the user
       tags:
       - mail

@@ -7,6 +7,7 @@ import Playground from "@/pages/playground/Playground.tsx"
 import Dashboard from "@/pages/dashboard/Dashboard.tsx"
 import CodingInterviewPage from "@/pages/lobby/codingInterview/CodingInterview.tsx"
 import VideoInterviewPage from "@/pages/lobby/videoInterview/VideoInterview.tsx"
+import CreateCodingQuestion from "@/pages/dashboard/workspace/CreateCodingQuestion"
 
 export const router = createBrowserRouter([
   {
@@ -24,6 +25,12 @@ export const router = createBrowserRouter([
           {
             path: "dashboard",
             element: <Dashboard />,
+            children: [
+              {
+                path: "",
+                element: <CreateCodingQuestion />,
+              },
+            ],
           },
         ],
       },

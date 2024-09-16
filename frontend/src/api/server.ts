@@ -44,6 +44,7 @@ export type DeleteUserError = HandlersErrResponse
 export interface DomainsCodingQuestion {
   createdAt?: string
   createdBy?: string
+  deletedAt?: GormDeletedAt
   description?: string
   difficulty?: string
   examples?: DomainsCodingQuestionExample[]
@@ -57,10 +58,12 @@ export interface DomainsCodingQuestion {
 
 export interface DomainsCodingQuestionExample {
   createdAt?: string
+  deletedAt?: GormDeletedAt
   id?: number
   input?: string
   output?: string
   question?: DomainsCodingQuestion
+  questionID?: number
   updatedAt?: string
 }
 
@@ -75,11 +78,13 @@ export interface DomainsCodingQuestionResponse {
 
 export interface DomainsCodingQuestionTestCase {
   createdAt?: string
+  deletedAt?: GormDeletedAt
   expectedOutput?: string
   id?: number
   input?: string
   isHidden?: boolean
   question?: DomainsCodingQuestion
+  questionID?: number
   updatedAt?: string
 }
 
@@ -139,6 +144,12 @@ export type GetVideoInterviewQuestionError = HandlersErrResponse
 export interface GetVideoInterviewQuestionParams {
   lobbyId: string
   questionIndex: number
+}
+
+export interface GormDeletedAt {
+  time?: string
+  /** Valid is true if Time is not NULL */
+  valid?: boolean
 }
 
 export interface HandlersErrResponse {
@@ -413,6 +424,9 @@ export namespace CodingInterview {
     export type RequestBody = never
     export type RequestHeaders = {}
     export type ResponseBody = GetQuestionsData
+  }
+}
+
 export namespace Mail {
   /**
    * No description
@@ -828,6 +842,11 @@ export class Server<SecurityDataType extends unknown> extends HttpClient<Securit
       this.request<GetQuestionsData, GetQuestionsError>({
         path: `/codingInterview.getQuestions`,
         method: "GET",
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+  }
   mail = {
     /**
      * No description
