@@ -16,12 +16,12 @@ func NewUserInWorkspaceRepository(db gorm.DB) IUserInWorkspaceRepository {
 	}
 }
 
-func (uiw *userInWorkspaceRepository) Create(userInWorkspace domains.UserInWorkspace) (newUserInWorkspace *domains.UserInWorkspace, err error) {
+func (uiw *userInWorkspaceRepository) Create(userInWorkspace []*domains.UserInWorkspace) (newUserInWorkspace []*domains.UserInWorkspace, err error) {
 	if err := uiw.DB.Clauses(clause.Returning{}).Create(&userInWorkspace).Error; err != nil {
 		return nil, err
 	}
 
-	return &userInWorkspace, nil
+	return userInWorkspace, nil
 }
 
 func (uiw *userInWorkspaceRepository) GetUserNumberInWorkspace(workspaceId uint) (userNum int64, err error) {

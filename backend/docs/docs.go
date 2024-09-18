@@ -339,52 +339,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/userInWorkspace.create": {
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "userInWorkspace"
-                ],
-                "summary": "Add User To Workspace",
-                "operationId": "AddUserToWorkspace",
-                "parameters": [
-                    {
-                        "description": "AddUserToWorkspaceBody",
-                        "name": "payload",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/AddUserToWorkspaceBody"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/handlers.Response-UserInWorkspace"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/handlers.ErrResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/handlers.ErrResponse"
-                        }
-                    }
-                }
-            }
-        },
         "/userInWorkspace.delete": {
             "delete": {
                 "consumes": [
@@ -742,25 +696,6 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "AddUserToWorkspaceBody": {
-            "type": "object",
-            "required": [
-                "status",
-                "userId",
-                "workspaceId"
-            ],
-            "properties": {
-                "status": {
-                    "type": "string"
-                },
-                "userId": {
-                    "type": "integer"
-                },
-                "workspaceId": {
-                    "type": "integer"
-                }
-            }
-        },
         "CreateWorkspaceBody": {
             "type": "object",
             "required": [
@@ -942,27 +877,7 @@ const docTemplate = `{
             }
         },
         "UserCreateBody": {
-            "type": "object",
-            "required": [
-                "password",
-                "role",
-                "username",
-                "workspaceId"
-            ],
-            "properties": {
-                "password": {
-                    "type": "string"
-                },
-                "role": {
-                    "type": "string"
-                },
-                "username": {
-                    "type": "string"
-                },
-                "workspaceId": {
-                    "type": "integer"
-                }
-            }
+            "type": "object"
         },
         "UserDeleteBody": {
             "type": "object",

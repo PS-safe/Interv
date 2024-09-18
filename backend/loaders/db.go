@@ -1,8 +1,9 @@
 package loaders
 
 import (
-	"csgit.sit.kmutt.ac.th/interv/interv-platform/internal/domains"
 	"fmt"
+
+	"csgit.sit.kmutt.ac.th/interv/interv-platform/internal/domains"
 	"github.com/mailjet/mailjet-apiv3-go/v4"
 	"github.com/minio/minio-go/v7"
 	"github.com/minio/minio-go/v7/pkg/credentials"

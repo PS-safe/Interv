@@ -1,18 +1,5 @@
 basePath: /api
 definitions:
-  AddUserToWorkspaceBody:
-    properties:
-      status:
-        type: string
-      userId:
-        type: integer
-      workspaceId:
-        type: integer
-    required:
-    - status
-    - userId
-    - workspaceId
-    type: object
   CreateWorkspaceBody:
     properties:
       isCoding:
@@ -135,20 +122,6 @@ definitions:
         type: string
     type: object
   UserCreateBody:
-    properties:
-      password:
-        type: string
-      role:
-        type: string
-      username:
-        type: string
-      workspaceId:
-        type: integer
-    required:
-    - password
-    - role
-    - username
-    - workspaceId
     type: object
   UserDeleteBody:
     properties:
@@ -563,36 +536,6 @@ paths:
       summary: Delete user
       tags:
       - user
-  /userInWorkspace.create:
-    post:
-      consumes:
-      - application/json
-      operationId: AddUserToWorkspace
-      parameters:
-      - description: AddUserToWorkspaceBody
-        in: body
-        name: payload
-        required: true
-        schema:
-          $ref: '#/definitions/AddUserToWorkspaceBody'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/handlers.Response-UserInWorkspace'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/handlers.ErrResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/handlers.ErrResponse'
-      summary: Add User To Workspace
-      tags:
-      - userInWorkspace
   /userInWorkspace.delete:
     delete:
       consumes:

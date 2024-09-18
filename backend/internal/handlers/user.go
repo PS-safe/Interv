@@ -1,6 +1,10 @@
 package handlers
 
-import "time"
+import (
+	"time"
+
+	"csgit.sit.kmutt.ac.th/interv/interv-platform/internal/domains"
+)
 
 type UserData struct {
 	ID        uint      `json:"id"`
@@ -11,10 +15,8 @@ type UserData struct {
 } // @name User
 
 type CreateUserBody struct {
-	Username    string `json:"username" validate:"required"`
-	Password    string `json:"password" validate:"required"`
-	Role        string `json:"role" validate:"required"`
-	WorkspaceId uint   `json:"workspaceId" validate:"required"`
+	ListUser    []domains.User `json:"ListUser" validate:"required"`
+	WorkspaceId uint           `json:"workspaceId" validate:"required"`
 } // @name UserCreateBody
 
 type DeleteUserBody struct {

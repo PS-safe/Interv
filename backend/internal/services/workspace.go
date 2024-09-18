@@ -19,6 +19,5 @@ type IWorkspaceService interface {
 	Create(title string, isCoding *bool, isVideo *bool, startDate time.Time, stopDate time.Time, owner *uint) (workspace *domains.Workspace, err error)
 	Delete(id uint) (err error)
 
-	CreateUserInWorkspace(userId uint, workspaceId uint, status string) (newUserInWorkspace *domains.UserInWorkspace, err error)
 	DeleteUserInWorkspace(userId uint, workspaceId uint) (err error)
 }

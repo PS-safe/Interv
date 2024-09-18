@@ -1,8 +1,6 @@
 package handlers
 
 import (
-	"fmt"
-
 	"csgit.sit.kmutt.ac.th/interv/interv-platform/internal/services"
 	"github.com/gofiber/fiber/v2"
 )
@@ -38,21 +36,13 @@ func (u UserHandler) CreateUser(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 
-	userResponse, inWorkspaceResponse, err := u.userService.Create(body.Username, body.Password, body.Role, body.WorkspaceId)
+	err := u.userService.Create(body.ListUser, body.WorkspaceId)
 
 	if err != nil {
 		return err
 	}
 
-	fmt.Print(inWorkspaceResponse)
-
-	return Created(c, UserData{
-		ID:        userResponse.ID,
-		Username:  userResponse.Username,
-		Role:      (string)(userResponse.Role),
-		CreatedAt: userResponse.CreatedAt,
-		UpdatedAt: userResponse.UpdatedAt,
-	})
+	return Ok(c, body.ListUser)
 }
 
 // DeleteUser

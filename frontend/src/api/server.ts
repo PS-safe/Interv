@@ -9,16 +9,6 @@
  * ---------------------------------------------------------------
  */
 
-export interface AddUserToWorkspaceBody {
-  status: string
-  userId: number
-  workspaceId: number
-}
-
-export type AddUserToWorkspaceData = HandlersResponseUserInWorkspace
-
-export type AddUserToWorkspaceError = HandlersErrResponse
-
 export type CreateUserData = HandlersResponseUser
 
 export type CreateUserError = HandlersErrResponse
@@ -238,12 +228,7 @@ export interface User {
   username?: string
 }
 
-export interface UserCreateBody {
-  password: string
-  role: string
-  username: string
-  workspaceId: number
-}
+export type UserCreateBody = object
 
 export interface UserDeleteBody {
   id: number
@@ -435,24 +420,6 @@ export namespace User {
 }
 
 export namespace UserInWorkspace {
-  /**
-   * No description
-   * @tags userInWorkspace
-   * @name AddUserToWorkspace
-   * @summary Add User To Workspace
-   * @request POST:/userInWorkspace.create
-   * @response `200` `AddUserToWorkspaceData` OK
-   * @response `400` `HandlersErrResponse` Bad Request
-   * @response `500` `HandlersErrResponse` Internal Server Error
-   */
-  export namespace AddUserToWorkspace {
-    export type RequestParams = {}
-    export type RequestQuery = {}
-    export type RequestBody = AddUserToWorkspaceBody
-    export type RequestHeaders = {}
-    export type ResponseBody = AddUserToWorkspaceData
-  }
-
   /**
    * No description
    * @tags userInWorkspace
@@ -917,27 +884,6 @@ export class Server<SecurityDataType extends unknown> extends HttpClient<Securit
       }),
   }
   userInWorkspace = {
-    /**
-     * No description
-     *
-     * @tags userInWorkspace
-     * @name AddUserToWorkspace
-     * @summary Add User To Workspace
-     * @request POST:/userInWorkspace.create
-     * @response `200` `AddUserToWorkspaceData` OK
-     * @response `400` `HandlersErrResponse` Bad Request
-     * @response `500` `HandlersErrResponse` Internal Server Error
-     */
-    addUserToWorkspace: (payload: AddUserToWorkspaceBody, params: RequestParams = {}) =>
-      this.request<AddUserToWorkspaceData, AddUserToWorkspaceError>({
-        path: `/userInWorkspace.create`,
-        method: "POST",
-        body: payload,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
     /**
      * No description
      *

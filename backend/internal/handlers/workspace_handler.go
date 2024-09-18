@@ -158,43 +158,6 @@ func (w WorkspaceHandler) DeleteWorkspace(c *fiber.Ctx) error {
 	return Ok(c, form.Id)
 }
 
-// AddUserToWorkspace
-// @ID AddUserToWorkspace
-// @Tags userInWorkspace
-// @Summary Add User To Workspace
-// @Accept json
-// @Produce json
-// @Param payload body AddUserToWorkspaceBody true "AddUserToWorkspaceBody"
-// @Success 200 {object} Response[UserInWorkspace]
-// @Failure 400 {object} ErrResponse
-// @Failure 500 {object} ErrResponse
-// @Router /userInWorkspace.create [post]
-func (w WorkspaceHandler) AddUserToWorkspace(c *fiber.Ctx) error {
-	body := AddUserToWorkspaceBody{}
-
-	if err := c.BodyParser(&body); err != nil {
-		return err
-	}
-
-	if err := validate.Struct(body); err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, err.Error())
-	}
-
-	response, err := w.workspaceService.CreateUserInWorkspace(body.UserId, body.WorkspaceId, body.Status)
-
-	if err != nil {
-		return err
-	}
-
-	return Created(c, UserInWorkspace{
-		Id:          response.Id,
-		UserId:      response.UserId,
-		WorkspaceId: response.WorkspaceId,
-		Status:      (string)(response.Status),
-		IsInterest:  *response.IsInterest,
-	})
-}
-
 // DeleteUserFromWorkspace
 // @ID DeleteUserFromWorkspace
 // @Tags userInWorkspace

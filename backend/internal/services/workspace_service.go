@@ -66,27 +66,6 @@ func (w *workspaceService) Delete(id uint) (err error) {
 	return w.workspaceReposity.DeleteById(id)
 }
 
-func (w *workspaceService) CreateUserInWorkspace(userId uint, workspaceId uint, status string) (newUserInWorkspace *domains.UserInWorkspace, err error) {
-
-	userInWorkspace, err := w.userInWorkspaceReposity.FindByWorkspaceId(workspaceId)
-
-	if err != nil {
-		return nil, err
-	}
-
-	for _, user := range *userInWorkspace {
-		if user.UserId == userId {
-			return nil, ErrorUserInWorkspace
-		}
-	}
-
-	return w.userInWorkspaceReposity.Create(domains.UserInWorkspace{
-		UserId:      userId,
-		WorkspaceId: workspaceId,
-		Status:      domains.StatusType(strings.ToLower(strings.TrimSpace(status))),
-	})
-}
-
 func (w *workspaceService) DeleteUserInWorkspace(userId uint, workspaceId uint) (err error) {
 	return w.userInWorkspaceReposity.DeleteByUserIdAndWorkspaceId(userId, workspaceId)
 }

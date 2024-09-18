@@ -5,7 +5,6 @@ import (
 
 	"csgit.sit.kmutt.ac.th/interv/interv-platform/internal/domains"
 	"csgit.sit.kmutt.ac.th/interv/interv-platform/internal/repositories"
-	"golang.org/x/crypto/bcrypt"
 )
 
 type userService struct {
@@ -20,37 +19,45 @@ func NewUserService(userRepository repositories.IUserRepository, userInWorkspace
 	}
 }
 
-func (u *userService) Create(username string, password string, role string, workspaceId uint) (newUser *domains.User, newUserInworkspace *domains.UserInWorkspace, err error) {
-
-	if _, err := u.userRepository.FindByUsername(strings.TrimSpace(username)); err == nil {
-		return nil, nil, ErrorUserAlreadyExists
-	}
+func (u *userService) Create(importUser []domains.User, workspaceId uint) (err error) {
 
 	defaultInterest := false
-	bytes, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
-	if err != nil {
-		return nil, nil, err
+	var checkedUser []*domains.UserInWorkspace
+
+	for x, aImportUser := range importUser {
+		userFound, err := u.userRepository.FindByUsername(strings.TrimSpace(importUser[x].Username))
+		if err != nil {
+			user, err := u.userRepository.Create(aImportUser)
+			if err != nil {
+				return err
+			}
+			checkedUser = append(checkedUser, &domains.UserInWorkspace{
+				UserId:      user.ID,
+				WorkspaceId: workspaceId,
+				Status:      "unseen",
+				IsInterest:  &defaultInterest,
+			})
+		} else {
+			_, err := u.userInWorkspaceReposity.FindByUserIdAndWorkspaceId(userFound.ID, workspaceId)
+			if err != nil {
+				checkedUser = append(checkedUser, &domains.UserInWorkspace{
+					UserId:      userFound.ID,
+					WorkspaceId: workspaceId,
+					Status:      "unseen",
+					IsInterest:  &defaultInterest,
+				})
+			}
+		}
 	}
-	user, err := u.userRepository.Create(domains.User{
-		Username: strings.TrimSpace(username),
-		Password: strings.TrimSpace(string(bytes)),
-		Role:     domains.UserType(strings.ToLower(strings.TrimSpace(role))),
-	})
-	if err != nil {
-		return nil, nil, err
+
+	_, err = u.userInWorkspaceReposity.Create(checkedUser)
+	if err == nil {
+		return err
 	}
-	uiw, err := u.userInWorkspaceReposity.Create(domains.UserInWorkspace{
-		UserId:      user.ID,
-		WorkspaceId: workspaceId,
-		Status:      "unseen",
-		IsInterest:  &defaultInterest,
-	})
-	if err != nil {
-		return nil, nil, err
-	}
-	return user, uiw, nil
+	return nil
 }
 
 func (u *userService) Delete(id uint) (err error) {
+	u.userInWorkspaceReposity.DeleteByUserId(id)
 	return u.userRepository.DeleteById(id)
 }

@@ -5,7 +5,7 @@ import (
 )
 
 type IUserInWorkspaceRepository interface {
-	Create(userInWorkspace domains.UserInWorkspace) (newUserInWorkspace *domains.UserInWorkspace, err error)
+	Create(userInWorkspace []*domains.UserInWorkspace) (newUserInWorkspace []*domains.UserInWorkspace, err error)
 	FindByUserId(userId uint) (userInWorkspace *[]domains.UserInWorkspace, err error)
 	FindByWorkspaceId(workspaceId uint) (userInWorkspace *[]domains.UserInWorkspace, err error)
 	FindByUserIdAndWorkspaceId(userId uint, workspaceId uint) (userInWorkspace *domains.UserInWorkspace, err error)

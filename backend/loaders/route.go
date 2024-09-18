@@ -85,7 +85,6 @@ func SetupRoutes() {
 	private.Delete("workspace.delete", workspaceHandlers.DeleteWorkspace)
 
 	//// UserInWorkspace
-	private.Post("userInWorkspace.create", workspaceHandlers.AddUserToWorkspace)
 	private.Delete("userInWorkspace.delete", workspaceHandlers.DeleteUserFromWorkspace)
 
 	// Object
