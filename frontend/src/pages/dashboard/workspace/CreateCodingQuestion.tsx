@@ -48,16 +48,18 @@ function CreateCodingQuestion() {
     const exampleTestCases = values.testCases.filter(
       (testCase) => testCase.isExample,
     )
+    const body = {
+      title: values.title || "",
+      description: values.description || "",
+      test_cases: values.testCases || [],
+      examples: exampleTestCases || [],
+      tags: [],
+    }
+    console.log(body)
+
     toast.promise(
       server.codingInterview.createQuestion({
-        body: {
-          title: values.title,
-          description: values.description,
-          test_cases: values.testCases,
-          examples: exampleTestCases,
-          tags: [],
-          difficulty: "easy",
-        },
+        body,
       }),
       {
         loading: "Creating question...",

@@ -74,6 +74,8 @@ func SetupRoutes() {
 	public.Post("codingInterview.generateCompileToken", codingInterviewHandlers.GenerateCompileToken)
 	public.Get("codingInterview.getCompileResult/:token", codingInterviewHandlers.GetCompileResult)
 	public.Get("codingInterview.getQuestions", codingInterviewHandlers.GetQuestions)
+	public.Post("codingInterview.createQuestion", codingInterviewHandlers.CreateQuestion)
+
 	// Private Routes
 	private := app.Group("/api")
 	private.Use(JwtAuthentication)

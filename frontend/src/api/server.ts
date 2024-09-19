@@ -54,7 +54,6 @@ export interface DomainsCodingQuestion {
   createdBy?: string
   deletedAt?: GormDeletedAt
   description?: string
-  difficulty?: string
   examples?: DomainsCodingQuestionExample[]
   id?: number
   tags?: string[]
@@ -65,13 +64,12 @@ export interface DomainsCodingQuestion {
 }
 
 export interface DomainsCodingQuestionExample {
+  codingQuestionID?: number
   createdAt?: string
   deletedAt?: GormDeletedAt
   id?: number
   input?: string
   output?: string
-  question?: DomainsCodingQuestion
-  questionID?: number
   updatedAt?: string
 }
 
@@ -85,14 +83,13 @@ export interface DomainsCodingQuestionResponse {
 }
 
 export interface DomainsCodingQuestionTestCase {
+  codingQuestionID?: number
   createdAt?: string
   deletedAt?: GormDeletedAt
   id?: number
   input?: string
   isHidden?: boolean
   output?: string
-  question?: DomainsCodingQuestion
-  questionID?: number
   updatedAt?: string
 }
 

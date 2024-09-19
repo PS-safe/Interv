@@ -7,6 +7,7 @@ import (
 )
 
 type CodingQuestion struct {
+	gorm.Model
 	Id          uint                     `gorm:"primaryKey;autoIncrement"`
 	Title       string                   `gorm:"type:text"`
 	Description string                   `gorm:"type:text"`
@@ -14,34 +15,24 @@ type CodingQuestion struct {
 	CreatedBy   string                   `gorm:"type:text"`
 	UpdatedAt   time.Time                `gorm:"autoUpdateTime"`
 	UpdatedBy   string                   `gorm:"type:text"`
-	Examples    []CodingQuestionExample  `gorm:"foreignKey:QuestionID"`
-	TestCases   []CodingQuestionTestCase `gorm:"foreignKey:QuestionID"`
+	Examples    []CodingQuestionExample  `gorm:"foreignKey:CodingQuestionID;references:Id"`
+	TestCases   []CodingQuestionTestCase `gorm:"foreignKey:CodingQuestionID;references:Id"`
 	Tags        []string                 `gorm:"type:text"`
-	Difficulty  string                   `gorm:"type:text"`
-	gorm.Model
 }
 
 type CodingQuestionExample struct {
-	Id         uint `gorm:"primaryKey;autoIncrement"`
-	QuestionID uint
-	Question   CodingQuestion `gorm:"foreignKey:Id"`
-	Input      string         `gorm:"type:text"`
-	Output     string         `gorm:"type:text"`
-	CreatedAt  time.Time      `gorm:"autoCreateTime"`
-	UpdatedAt  time.Time      `gorm:"autoUpdateTime"`
 	gorm.Model
+	CodingQuestionID uint   `gorm:"index"`
+	Input            string `gorm:"type:text"`
+	Output           string `gorm:"type:text"`
 }
 
 type CodingQuestionTestCase struct {
-	Id         uint `gorm:"primaryKey;autoIncrement"`
-	QuestionID uint
-	Question   CodingQuestion `gorm:"foreignKey:Id;references:Id"`
-	Input      string         `gorm:"type:text"`
-	Output     string         `gorm:"type:text"`
-	IsHidden   bool           `gorm:"default:false"`
-	CreatedAt  time.Time      `gorm:"autoCreateTime"`
-	UpdatedAt  time.Time      `gorm:"autoUpdateTime"`
 	gorm.Model
+	CodingQuestionID uint   `gorm:"index"`
+	Input            string `gorm:"type:text"`
+	Output           string `gorm:"type:text"`
+	IsHidden         bool   `gorm:"default:false"`
 }
 
 type CodingQuestionResponse struct {
