@@ -22,6 +22,7 @@ func SetupRoutes() {
 	var userRepositories = repositories.NewUserRepository(*DB)
 	var objectRepositories = repositories.NewObjectRepository(*MINIO)
 	var mailRepositories = repositories.NewMailRepository(*MAILJET)
+	var questionRepositories = repositories.NewQuestionRepository(*DB)
 
 	// Services
 	var userServices = services.NewUserService(userRepositories)
@@ -29,6 +30,7 @@ func SetupRoutes() {
 	var videoInterviewServices = services.NewVideoInterviewService(objectRepositories)
 	var objectServices = services.NewObjectService(objectRepositories)
 	var mailServices = services.NewMailService(mailRepositories)
+	var questionServices = services.NewQuestionService(questionRepositories)
 
 	// Handlers
 	var userHandlers = handlers.NewUserHandler(userServices)
@@ -36,6 +38,7 @@ func SetupRoutes() {
 	var videoInterviewHandlers = handlers.NewVideoInterviewHandler(videoInterviewServices)
 	var objectHandlers = handlers.NewObjectHandler(objectServices)
 	var mailHandlers = handlers.NewMailHandler(mailServices)
+	var questionHandlers = handlers.NewQuestionHandler(questionServices)
 
 	// Fiber App
 	app := NewFiberApp()
@@ -65,6 +68,13 @@ func SetupRoutes() {
 	public.Get("videoInterview.getVideoInterviewQuestion", videoInterviewHandlers.GetVideoInterviewQuestion)
 	public.Post("videoInterview.submitVideoInterview", videoInterviewHandlers.SubmitVideoInterview)
 
+	// question
+	public.Post("question.createQuestion", questionHandlers.CreateQuestion)
+	public.Get("question.getQuestion", questionHandlers.GetQuestion)
+	public.Get("question.getQuestionByPortalId", questionHandlers.GetQuestionByPortalId)
+	public.Post("question.updateQuestion", questionHandlers.UpdateQuestion)
+	public.Post("question.deleteQuestion", questionHandlers.DeleteQuestion)
+
 	// Private Routes
 	private := app.Group("/api")
 	private.Use(JwtAuthentication)
@@ -92,7 +102,13 @@ func NewFiberApp() *fiber.App {
 		ErrorHandler: func(ctx *fiber.Ctx, err error) error {
 			// Status code defaults to 500
 			code := fiber.StatusInternalServerError
-			Message := "Something went wrong"
+			Message := ""
+			if err != nil {
+				Message = err.Error()
+				if Message == "" {
+					Message = "Something went wrong"
+				}
+			}
 
 			// Retrieve the custom status code if it's a *fiber.Error
 			var e *fiber.Error

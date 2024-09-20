@@ -33,7 +33,7 @@ func (v VideoInterviewHandler) GetVideoInterviewContext(c *fiber.Ctx) error {
 	}
 
 	if err := validate.Struct(query); err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+		return err
 	}
 
 	var questionSetting []VideoInterviewQuestionSetting
@@ -85,7 +85,7 @@ func (v VideoInterviewHandler) GetVideoInterviewQuestion(c *fiber.Ctx) error {
 	}
 
 	if err := validate.Struct(query); err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+		return err
 	}
 
 	return Ok(c, VideoInterviewQuestionResponse{
@@ -113,7 +113,7 @@ func (v VideoInterviewHandler) SubmitVideoInterview(c *fiber.Ctx) error {
 
 	err = v.videoInterviewService.SubmitVideoInterview(file)
 	if err != nil {
-		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+		return err
 	}
 
 	return Ok(c, "Submit video interview successfully")
