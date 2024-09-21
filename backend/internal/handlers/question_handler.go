@@ -26,7 +26,7 @@ func NewVideoQuestionHandler(videoQuestionService services.IVideoQuestionService
 // @Success 200 {object} Response[CreateVideoQuestionResponse]
 // @Failure 400 {object} ErrResponse
 // @Failure 500 {object} ErrResponse
-// @Router /question.createVideoQuestion [post]
+// @Router /videoQuestion.createVideoQuestion [post]
 func (q VideoQuestionHandler) CreateVideoQuestion(c *fiber.Ctx) error {
 	body := CreateVideoQuestionBody{}
 
@@ -73,7 +73,7 @@ func (q VideoQuestionHandler) CreateVideoQuestion(c *fiber.Ctx) error {
 // @Failure 400 {object} ErrResponse
 // @Failure 404 {object} ErrResponse
 // @Failure 500 {object} ErrResponse
-// @Router /question.getVideoQuestionById/{id} [get]
+// @Router /videoQuestion.getVideoQuestionById/{id} [get]
 func (q VideoQuestionHandler) GetVideoQuestion(c *fiber.Ctx) error {
 	param := GetVideoQuestionByIdParam{}
 	if err := c.QueryParser(&param); err != nil {
@@ -111,7 +111,7 @@ func (q VideoQuestionHandler) GetVideoQuestion(c *fiber.Ctx) error {
 // @Failure 400 {object} ErrResponse
 // @Failure 404 {object} ErrResponse
 // @Failure 500 {object} ErrResponse
-// @Router /question.getVideoQuestionWorkspaceIdId/{id} [get]
+// @Router /videoQuestion.getVideoQuestionWorkspaceIdId/{id} [get]
 func (q VideoQuestionHandler) GetVideoQuestionByWorkspaceId(c *fiber.Ctx) error {
 	var param GetVideoQuestionByWorkspaceIdParam
 	if err := c.QueryParser(&param); err != nil {
@@ -140,7 +140,7 @@ func (q VideoQuestionHandler) GetVideoQuestionByWorkspaceId(c *fiber.Ctx) error 
 // @Failure 400 {object} ErrResponse
 // @Failure 404 {object} ErrResponse
 // @Failure 500 {object} ErrResponse
-// @Router /question.updateVideoQuestion [post]
+// @Router /videoQuestion.updateVideoQuestion [post]
 func (q VideoQuestionHandler) UpdateVideoQuestion(c *fiber.Ctx) error {
 	body := UpdateVideoQuestionBody{}
 
@@ -188,7 +188,7 @@ func (q VideoQuestionHandler) UpdateVideoQuestion(c *fiber.Ctx) error {
 // @Failure 400 {object} ErrResponse
 // @Failure 404 {object} ErrResponse
 // @Failure 500 {object} ErrResponse
-// @Router /question.deleteVideoQuestionById [post]
+// @Router /videoQuestion.deleteVideoQuestionById [post]
 func (q VideoQuestionHandler) DeleteVideoQuestion(c *fiber.Ctx) error {
 	body := DeleteVideoQuestionByIdBody{}
 	if err := c.BodyParser(&body); err != nil {

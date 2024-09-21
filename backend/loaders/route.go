@@ -66,17 +66,17 @@ func SetupRoutes() {
 	public.Post("auth.logout", authHandlers.Logout)
 	public.Get("auth.me", authHandlers.Me)
 
-	// videoInterview
+	// video interview
 	public.Get("videoInterview.getVideoInterviewContext", videoInterviewHandlers.GetVideoInterviewContext)
 	public.Get("videoInterview.getVideoInterviewQuestion", videoInterviewHandlers.GetVideoInterviewQuestion)
 	public.Post("videoInterview.submitVideoInterview", videoInterviewHandlers.SubmitVideoInterview)
 
-	// question
-	public.Post("videoQuestion.createQuestion", questionHandlers.CreateVideoQuestion)
-	public.Get("videoQuestion.getQuestion", questionHandlers.GetVideoQuestion)
-	public.Get("videoQuestion.getQuestionByPortalId", questionHandlers.GetVideoQuestionByWorkspaceId)
-	public.Post("videoQuestion.updateQuestion", questionHandlers.UpdateVideoQuestion)
-	public.Post("videoQuestion.deleteQuestion", questionHandlers.DeleteVideoQuestion)
+	// video question
+	public.Post("videoQuestion.createVideoQuestion", questionHandlers.CreateVideoQuestion)
+	public.Get("videoQuestion.getVideoQuestion", questionHandlers.GetVideoQuestion)
+	public.Get("videoQuestion.getVideoQuestionByPortalId", questionHandlers.GetVideoQuestionByWorkspaceId)
+	public.Post("videoQuestion.updateVideoQuestion", questionHandlers.UpdateVideoQuestion)
+	public.Post("videoQuestion.deleteVideoQuestion", questionHandlers.DeleteVideoQuestion)
 
 	// lobby
 	public.Get("lobby.getLobbyContext", lobbyHandlers.GetLobbyContext)
