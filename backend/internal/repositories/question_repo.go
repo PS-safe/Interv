@@ -5,60 +5,60 @@ import (
 	"gorm.io/gorm"
 )
 
-type IQuestionRepository interface {
-	Create(question domains.Question) (*domains.Question, error)
-	GetById(id uint) (*domains.Question, error)
-	GetByPortalId(id uint) ([]domains.Question, error)
-	Update(question domains.Question) error
+type IVideoQuestionRepository interface {
+	Create(question domains.VideoQuestion) (*domains.VideoQuestion, error)
+	GetById(id uint) (*domains.VideoQuestion, error)
+	GetByWorkspaceId(id uint) ([]domains.VideoQuestion, error)
+	Update(question domains.VideoQuestion) error
 	DeleteById(id uint) error
 }
 
-type questionRepository struct {
+type videoQuestionRepository struct {
 	DB gorm.DB
 }
 
-func NewQuestionRepository(db gorm.DB) IQuestionRepository {
-	return &questionRepository{
+func NewQuestionRepository(db gorm.DB) IVideoQuestionRepository {
+	return &videoQuestionRepository{
 		DB: db,
 	}
 }
 
-func (q questionRepository) Create(question domains.Question) (*domains.Question, error) {
-	if err := q.DB.Create(&question).Error; err != nil { // Do we need .Clauses(clause.Returning{}) here???
+func (v videoQuestionRepository) Create(question domains.VideoQuestion) (*domains.VideoQuestion, error) {
+	if err := v.DB.Create(&question).Error; err != nil { // Do we need .Clauses(clause.Returning{}) here???
 		return nil, err
 	}
 
 	return &question, nil
 }
 
-func (q questionRepository) GetById(id uint) (*domains.Question, error) {
-	question := domains.Question{}
-	if err := q.DB.First(&question, "id = ?", id).Error; err != nil {
+func (v videoQuestionRepository) GetById(id uint) (*domains.VideoQuestion, error) {
+	question := domains.VideoQuestion{}
+	if err := v.DB.First(&question, "id = ?", id).Error; err != nil {
 		return nil, err
 	}
 
 	return &question, nil
 }
 
-func (q questionRepository) GetByPortalId(id uint) ([]domains.Question, error) {
-	var question []domains.Question
-	if err := q.DB.Find(&question, "portal_id = ?", id).Error; err != nil {
+func (v videoQuestionRepository) GetByWorkspaceId(id uint) ([]domains.VideoQuestion, error) {
+	var question []domains.VideoQuestion
+	if err := v.DB.Find(&question, "workspace_id = ?", id).Error; err != nil {
 		return nil, err
 	}
 
 	return question, nil
 }
 
-func (q questionRepository) Update(question domains.Question) error {
-	if err := q.DB.Updates(&question).Error; err != nil {
+func (v videoQuestionRepository) Update(question domains.VideoQuestion) error {
+	if err := v.DB.Updates(&question).Error; err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (q questionRepository) DeleteById(id uint) error {
-	if err := q.DB.Delete(&domains.Question{}, "id = ?", id).Error; err != nil {
+func (v videoQuestionRepository) DeleteById(id uint) error {
+	if err := v.DB.Delete(&domains.VideoQuestion{}, "id = ?", id).Error; err != nil {
 		return err
 	}
 

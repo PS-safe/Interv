@@ -4,12 +4,12 @@ import (
 	"gorm.io/gorm"
 )
 
-type Question struct {
+type VideoQuestion struct {
 	ID            uint `gorm:"primaryKey"`
+	WorkspaceID   uint
 	Title         string
 	TimeToPrepare uint
 	TimeToAnswer  uint
 	RetryAmount   uint
-	PortalId      uint
 	gorm.Model
 }

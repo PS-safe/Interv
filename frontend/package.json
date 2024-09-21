@@ -21,6 +21,7 @@
     "axios": "^1.7.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "dayjs": "^1.11.13",
     "eslint-plugin-prettier": "^5.2.1",
     "lucide-react": "^0.417.0",
     "prettier": "^3.3.3",

@@ -6,29 +6,29 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-type QuestionHandler struct {
-	questionService services.IQuestionService
+type VideoQuestionHandler struct {
+	videoQuestionService services.IVideoQuestionService
 }
 
-func NewQuestionHandler(questionService services.IQuestionService) QuestionHandler {
-	return QuestionHandler{
-		questionService: questionService,
+func NewVideoQuestionHandler(videoQuestionService services.IVideoQuestionService) VideoQuestionHandler {
+	return VideoQuestionHandler{
+		videoQuestionService: videoQuestionService,
 	}
 }
 
-// CreateQuestion
-// @ID createQuestion
-// @Tags question
-// @Summary Create new question
+// CreateVideoQuestion
+// @ID createVideoQuestion
+// @Tags videoQuestion
+// @Summary Create new video question
 // @Accept json
 // @Produce json
-// @Param payload body CreateQuestionBody true "CreateQuestionBody"
-// @Success 200 {object} Response[CreateQuestionResponse]
+// @Param payload body CreateVideoQuestionBody true "CreateVideoQuestionBody"
+// @Success 200 {object} Response[CreateVideoQuestionResponse]
 // @Failure 400 {object} ErrResponse
 // @Failure 500 {object} ErrResponse
-// @Router /question.createQuestion [post]
-func (q QuestionHandler) CreateQuestion(c *fiber.Ctx) error {
-	body := CreateQuestionBody{}
+// @Router /question.createVideoQuestion [post]
+func (q VideoQuestionHandler) CreateVideoQuestion(c *fiber.Ctx) error {
+	body := CreateVideoQuestionBody{}
 
 	if err := c.BodyParser(&body); err != nil {
 		return err
@@ -38,44 +38,44 @@ func (q QuestionHandler) CreateQuestion(c *fiber.Ctx) error {
 		return err
 	}
 
-	response, err := q.questionService.CreateQuestion(domains.Question{
+	response, err := q.videoQuestionService.CreateQuestion(domains.VideoQuestion{
 		Title:         body.Title,
 		TimeToPrepare: body.TimeToPrepare,
 		TimeToAnswer:  body.TimeToAnswer,
 		RetryAmount:   body.RetryAmount,
-		PortalId:      body.PortalId,
+		WorkspaceID:   body.WorkspaceID,
 	})
 
 	if err != nil {
 		return err
 	}
 
-	return Created(c, CreateQuestionResponse{
+	return Created(c, CreateVideoQuestionResponse{
 		ID:            response.ID,
 		Title:         response.Title,
 		TimeToPrepare: response.TimeToPrepare,
 		TimeToAnswer:  response.TimeToAnswer,
 		RetryAmount:   response.RetryAmount,
-		PortalId:      response.PortalId,
+		WorkspaceID:   response.WorkspaceID,
 		CreatedAt:     response.CreatedAt,
 		UpdatedAt:     response.UpdatedAt,
 	})
 }
 
-// GetQuestion
-// @ID getQuestionById
-// @Tags question
-// @Summary Get question by id
+// GetVideoQuestion
+// @ID getVideoQuestionById
+// @Tags videoQuestion
+// @Summary Get video question by id
 // @Accept json
 // @Produce json
-// @Param payload query GetQuestionByIdParam true "Question ID"
-// @Success 200 {object} Response[GetQuestionByIdResponse]
+// @Param payload query GetVideoQuestionByIdParam true "Video question ID"
+// @Success 200 {object} Response[GetVideoQuestionByIdResponse]
 // @Failure 400 {object} ErrResponse
 // @Failure 404 {object} ErrResponse
 // @Failure 500 {object} ErrResponse
-// @Router /question.getQuestionById/{id} [get]
-func (q QuestionHandler) GetQuestion(c *fiber.Ctx) error {
-	param := GetQuestionByIdParam{}
+// @Router /question.getVideoQuestionById/{id} [get]
+func (q VideoQuestionHandler) GetVideoQuestion(c *fiber.Ctx) error {
+	param := GetVideoQuestionByIdParam{}
 	if err := c.QueryParser(&param); err != nil {
 		return err
 	}
@@ -83,37 +83,37 @@ func (q QuestionHandler) GetQuestion(c *fiber.Ctx) error {
 		return err
 	}
 
-	response, err := q.questionService.GetQuestionById(param.ID)
+	response, err := q.videoQuestionService.GetQuestionById(param.ID)
 	if err != nil {
 		return err
 	}
 
-	return Ok(c, GetQuestionByIdResponse{
+	return Ok(c, GetVideoQuestionByIdResponse{
 		ID:            response.ID,
 		Title:         response.Title,
 		TimeToPrepare: response.TimeToPrepare,
 		TimeToAnswer:  response.TimeToAnswer,
 		RetryAmount:   response.RetryAmount,
-		PortalId:      response.PortalId,
+		WorkspaceID:   response.WorkspaceID,
 		CreatedAt:     response.CreatedAt,
 		UpdatedAt:     response.UpdatedAt,
 	})
 }
 
-// GetQuestionByPortalId
-// @ID getQuestionByPortalId
-// @Tags question
-// @Summary Get question by portal id
+// GetVideoQuestionByWorkspaceId
+// @ID getVideoQuestionByWorkspaceId
+// @Tags videoQuestion
+// @Summary Get video question by workspace id
 // @Accept json
 // @Produce json
-// @Param payload query GetQuestionByPortalIdParam true "Portal ID"
-// @Success 200 {array} Response[[]GetQuestionByIdResponse]
+// @Param payload query GetVideoQuestionByWorkspaceIdParam true "Workspace ID"
+// @Success 200 {array} Response[[]GetVideoQuestionByIdResponse]
 // @Failure 400 {object} ErrResponse
 // @Failure 404 {object} ErrResponse
 // @Failure 500 {object} ErrResponse
-// @Router /question.getQuestionByPortalId/{id} [get]
-func (q QuestionHandler) GetQuestionByPortalId(c *fiber.Ctx) error {
-	var param GetQuestionByPortalIdParam
+// @Router /question.getVideoQuestionWorkspaceIdId/{id} [get]
+func (q VideoQuestionHandler) GetVideoQuestionByWorkspaceId(c *fiber.Ctx) error {
+	var param GetVideoQuestionByWorkspaceIdParam
 	if err := c.QueryParser(&param); err != nil {
 		return err
 	}
@@ -121,7 +121,7 @@ func (q QuestionHandler) GetQuestionByPortalId(c *fiber.Ctx) error {
 		return err
 	}
 
-	response, err := q.questionService.GetQuestionByPortalId(param.ID)
+	response, err := q.videoQuestionService.GetQuestionByWorkspaceId(param.ID)
 	if err != nil {
 		return err
 	}
@@ -129,20 +129,20 @@ func (q QuestionHandler) GetQuestionByPortalId(c *fiber.Ctx) error {
 	return Ok(c, response)
 }
 
-// UpdateQuestion
-// @ID updateQuestion
-// @Tags question
-// @Summary Update question
+// UpdateVideoQuestion
+// @ID updateVideoQuestion
+// @Tags videoQuestion
+// @Summary Update video question
 // @Accept json
 // @Produce json
-// @Param payload body UpdateQuestionBody true "UpdateQuestionBody"
-// @Success 200 {object} Response[CreateQuestionResponse]
+// @Param payload body UpdateVideoQuestionBody true "UpdateVideoQuestionBody"
+// @Success 200 {object} Response[CreateVideoQuestionResponse]
 // @Failure 400 {object} ErrResponse
 // @Failure 404 {object} ErrResponse
 // @Failure 500 {object} ErrResponse
-// @Router /question.updateQuestion [post]
-func (q QuestionHandler) UpdateQuestion(c *fiber.Ctx) error {
-	body := UpdateQuestionBody{}
+// @Router /question.updateVideoQuestion [post]
+func (q VideoQuestionHandler) UpdateVideoQuestion(c *fiber.Ctx) error {
+	body := UpdateVideoQuestionBody{}
 
 	if err := c.BodyParser(&body); err != nil {
 		return err
@@ -152,45 +152,45 @@ func (q QuestionHandler) UpdateQuestion(c *fiber.Ctx) error {
 		return err
 	}
 
-	response, err := q.questionService.UpdateQuestion(domains.Question{
+	response, err := q.videoQuestionService.UpdateQuestion(domains.VideoQuestion{
 		ID:            body.ID,
 		Title:         body.Title,
 		TimeToPrepare: body.TimeToPrepare,
 		TimeToAnswer:  body.TimeToAnswer,
 		RetryAmount:   body.RetryAmount,
-		PortalId:      body.PortalId,
+		WorkspaceID:   body.WorkspaceID,
 	})
 
 	if err != nil {
 		return err
 	}
 
-	return Ok(c, CreateQuestionResponse{
+	return Ok(c, CreateVideoQuestionResponse{
 		ID:            response.ID,
 		Title:         response.Title,
 		TimeToPrepare: response.TimeToPrepare,
 		TimeToAnswer:  response.TimeToAnswer,
 		RetryAmount:   response.RetryAmount,
-		PortalId:      response.PortalId,
+		WorkspaceID:   response.WorkspaceID,
 		CreatedAt:     response.CreatedAt,
 		UpdatedAt:     response.UpdatedAt,
 	})
 }
 
-// DeleteQuestion
-// @ID deleteQuestionById
-// @Tags question
-// @Summary Delete question by id
+// DeleteVideoQuestion
+// @ID deleteVideoQuestionById
+// @Tags videoQuestion
+// @Summary Delete video question by id
 // @Accept json
 // @Produce json
-// @Param payload query GetQuestionByIdParam true "Question ID"
+// @Param payload query GetVideoQuestionByIdParam true "Video question ID"
 // @Success 200 {object} Response[string]
 // @Failure 400 {object} ErrResponse
 // @Failure 404 {object} ErrResponse
 // @Failure 500 {object} ErrResponse
-// @Router /question.deleteQuestionById [post]
-func (q QuestionHandler) DeleteQuestion(c *fiber.Ctx) error {
-	body := DeleteQuestionByIdBody{}
+// @Router /question.deleteVideoQuestionById [post]
+func (q VideoQuestionHandler) DeleteVideoQuestion(c *fiber.Ctx) error {
+	body := DeleteVideoQuestionByIdBody{}
 	if err := c.BodyParser(&body); err != nil {
 		return err
 	}
@@ -198,7 +198,7 @@ func (q QuestionHandler) DeleteQuestion(c *fiber.Ctx) error {
 		return err
 	}
 
-	err := q.questionService.DeleteQuestionById(body.ID)
+	err := q.videoQuestionService.DeleteQuestionById(body.ID)
 	if err != nil {
 		return err
 	}

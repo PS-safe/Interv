@@ -22,15 +22,17 @@ func SetupRoutes() {
 	var userRepositories = repositories.NewUserRepository(*DB)
 	var objectRepositories = repositories.NewObjectRepository(*MINIO)
 	var mailRepositories = repositories.NewMailRepository(*MAILJET)
-	var questionRepositories = repositories.NewQuestionRepository(*DB)
+	var videoQuestionRepositories = repositories.NewQuestionRepository(*DB)
+	var lobbyRepositories = repositories.NewLobbyRepository(*DB)
 
 	// Services
 	var userServices = services.NewUserService(userRepositories)
 	var authServices = services.NewAuthService(userRepositories)
-	var videoInterviewServices = services.NewVideoInterviewService(objectRepositories)
+	var videoInterviewServices = services.NewVideoInterviewService(objectRepositories, videoQuestionRepositories, lobbyRepositories)
 	var objectServices = services.NewObjectService(objectRepositories)
 	var mailServices = services.NewMailService(mailRepositories)
-	var questionServices = services.NewQuestionService(questionRepositories)
+	var questionServices = services.NewQuestionService(videoQuestionRepositories)
+	var lobbyServices = services.NewLobbyService(lobbyRepositories)
 
 	// Handlers
 	var userHandlers = handlers.NewUserHandler(userServices)
@@ -38,7 +40,8 @@ func SetupRoutes() {
 	var videoInterviewHandlers = handlers.NewVideoInterviewHandler(videoInterviewServices)
 	var objectHandlers = handlers.NewObjectHandler(objectServices)
 	var mailHandlers = handlers.NewMailHandler(mailServices)
-	var questionHandlers = handlers.NewQuestionHandler(questionServices)
+	var questionHandlers = handlers.NewVideoQuestionHandler(questionServices)
+	var lobbyHandlers = handlers.NewLobbyHandler(lobbyServices)
 
 	// Fiber App
 	app := NewFiberApp()
@@ -69,11 +72,15 @@ func SetupRoutes() {
 	public.Post("videoInterview.submitVideoInterview", videoInterviewHandlers.SubmitVideoInterview)
 
 	// question
-	public.Post("question.createQuestion", questionHandlers.CreateQuestion)
-	public.Get("question.getQuestion", questionHandlers.GetQuestion)
-	public.Get("question.getQuestionByPortalId", questionHandlers.GetQuestionByPortalId)
-	public.Post("question.updateQuestion", questionHandlers.UpdateQuestion)
-	public.Post("question.deleteQuestion", questionHandlers.DeleteQuestion)
+	public.Post("videoQuestion.createQuestion", questionHandlers.CreateVideoQuestion)
+	public.Get("videoQuestion.getQuestion", questionHandlers.GetVideoQuestion)
+	public.Get("videoQuestion.getQuestionByPortalId", questionHandlers.GetVideoQuestionByWorkspaceId)
+	public.Post("videoQuestion.updateQuestion", questionHandlers.UpdateVideoQuestion)
+	public.Post("videoQuestion.deleteQuestion", questionHandlers.DeleteVideoQuestion)
+
+	// lobby
+	public.Get("lobby.getLobbyContext", lobbyHandlers.GetLobbyContext)
+	public.Post("lobby.updateLobbyContext", lobbyHandlers.UpdateLobbyContext)
 
 	// Private Routes
 	private := app.Group("/api")
