@@ -1,5 +1,5 @@
 import * as React from "react"
-import WorkspaceCard from "./Workspace"
+import WorkspaceCard from "./WorkspaceCard"
 import { WorkspaceData } from "@/api/server"
 
 export type ListWorkspaceProps = {
@@ -12,6 +12,7 @@ const ListWorkspaceCard: React.FC<ListWorkspaceProps> = ({ workspace }) => {
         return (
           <WorkspaceCard
             key={Workspace.id}
+            workspaceId={Workspace.id ?? 0}
             title={Workspace.title ?? ""}
             createAt={Workspace.startDate ?? ""}
             member={Workspace.memberNum ?? 0}
