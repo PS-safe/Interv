@@ -3,10 +3,11 @@ package loaders
 import (
 	"errors"
 	"fmt"
-	swagger "github.com/arsmn/fiber-swagger/v2"
+	"github.com/gofiber/swagger"
 	"github.com/spf13/viper"
 	"time"
 
+	_ "csgit.sit.kmutt.ac.th/interv/interv-platform/docs"
 	"csgit.sit.kmutt.ac.th/interv/interv-platform/internal/handlers"
 	"csgit.sit.kmutt.ac.th/interv/interv-platform/internal/repositories"
 	"csgit.sit.kmutt.ac.th/interv/interv-platform/internal/services"
