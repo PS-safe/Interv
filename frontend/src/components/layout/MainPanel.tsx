@@ -14,7 +14,7 @@ const MainPanel: FC<MainPanelProps> = ({
   return (
     <div
       className={cn(
-        "w-full h-full p-10 relative overflow-y-scroll space-y-10",
+        "w-full h-full p-10 relative space-y-10 overflow-y-auto",
         className as ClassValue,
         isPaddingTop ? "pt-12" : undefined,
       )}
