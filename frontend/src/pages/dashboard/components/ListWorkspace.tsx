@@ -1,9 +1,9 @@
 import * as React from "react"
 import WorkspaceCard from "./WorkspaceCard"
-import { WorkspaceData } from "@/api/server"
+import { WorkspaceDetail } from "@/api/server"
 
 export type ListWorkspaceProps = {
-  workspace: WorkspaceData[]
+  workspace: WorkspaceDetail[]
 }
 const ListWorkspaceCard: React.FC<ListWorkspaceProps> = ({ workspace }) => {
   return (
