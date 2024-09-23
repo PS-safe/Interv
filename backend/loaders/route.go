@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/gofiber/swagger"
 	"github.com/spf13/viper"
+	"time"
 
 	_ "csgit.sit.kmutt.ac.th/interv/interv-platform/docs"
 	"csgit.sit.kmutt.ac.th/interv/interv-platform/internal/handlers"
@@ -46,7 +47,7 @@ func SetupRoutes() {
 	var questionHandlers = handlers.NewVideoQuestionHandler(questionServices)
 	var lobbyHandlers = handlers.NewLobbyHandler(lobbyServices)
 	var workspaceHandlers = handlers.NewWorkspaceHandler(workspaceService)
-	
+
 	// Fiber App
 	app := NewFiberApp()
 	app.Use(cors.New(cors.Config{
