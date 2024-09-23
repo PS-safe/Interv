@@ -13,7 +13,7 @@ import ListUser from "./components/ListUser"
 const WorkspaceWithId = () => {
   const [importUser, setImportUser] = useState<UserData[]>()
   const { workspaceId } = useParams()
-  const { data } = useGetWorkspace(Number(workspaceId))
+  const { data, mutate } = useGetWorkspace(Number(workspaceId))
 
   type UserData = {
     name: string
@@ -63,13 +63,10 @@ const WorkspaceWithId = () => {
     console.log(workspaceId)
     console.log(importUser)
     if (importUser) {
-      server.user.createUser(importData)
+      server.user.createUser(importData).finally(() => {
+        mutate()
+      })
     }
-  }
-
-  const handleTest = () => {
-    console.log(workspaceId)
-    console.log(data?.data?.individualUser)
   }
 
   return (
@@ -98,14 +95,6 @@ const WorkspaceWithId = () => {
           }}
         >
           Submit
-        </Button>
-
-        <Button
-          onClick={() => {
-            handleTest()
-          }}
-        >
-          Test
         </Button>
 
         <ListUser listUser={data?.data?.individualUser ?? []} />
