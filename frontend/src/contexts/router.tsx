@@ -20,19 +20,19 @@ export const router = createBrowserRouter([
         element: <LoginPage />,
       },
       {
-        path: "/",
+        path: "workspace",
         element: <MainLayout />,
         children: [
           {
-            path: "workspace",
+            path: "",
             element: <Dashboard />,
           },
           {
-            path: "workspace/create",
+            path: "create",
             element: <CreateWorkspace />,
           },
           {
-            path: "workspace/:workspaceId",
+            path: ":workspaceId",
             element: <WorkspaceWithId />,
           },
         ],

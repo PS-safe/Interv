@@ -13,7 +13,7 @@ const Dashboard = () => {
   return (
     <>
       <SideBar isSignOutEnabled={true}>
-        <SideBarItem title={"Candidate"} isActive={true} />
+        <SideBarItem title={"Workspace"} isActive={true} />
         <SideBarItem title={"Assessment"} isActive={false} onClick={() => {}} />
       </SideBar>
       <MainPanel>
@@ -25,7 +25,7 @@ const Dashboard = () => {
                 "w-52 h-14 text-center font-semibold text-xl rounded-xl disabled:opacity-100"
               }
               onClick={() => {
-                navigate("create")
+                navigate("workspace/create")
               }}
             >
               Add new group
