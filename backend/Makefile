@@ -1,4 +1,4 @@
 swag:
 	swag init
-startdev:
+start-dev:
 	MODE="dev" go run main.go
