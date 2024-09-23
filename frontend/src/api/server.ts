@@ -188,9 +188,9 @@ export interface HandlersResponseWorkspaceDetail {
 }
 
 export interface IndividualUser {
-  id?: number
-  userData?: User
-  userInWorkspace?: UserInWorkspace
+  id: number
+  userData: User
+  userInWorkspace: UserInWorkspace
 }
 
 export interface LoginBody {
@@ -264,11 +264,11 @@ export interface UserDeleteBody {
 }
 
 export interface UserInWorkspace {
-  id?: number
-  isInterest?: boolean
-  status?: string
-  userId?: number
-  workspaceId?: number
+  Id: number
+  IsInterest: boolean
+  Status: string
+  UserId: number
+  WorkspaceId: number
 }
 
 export interface VideoInterviewContextResponse {
@@ -290,8 +290,8 @@ export interface VideoInterviewQuestionSetting {
 }
 
 export interface WorkspaceData {
-  individualUser?: IndividualUser[]
-  workspaceDetail?: WorkspaceDetail
+  individualUser: IndividualUser[]
+  workspaceDetail: WorkspaceDetail
 }
 
 export interface WorkspaceDetail {

@@ -833,6 +833,11 @@ const docTemplate = `{
         },
         "IndividualUser": {
             "type": "object",
+            "required": [
+                "id",
+                "userData",
+                "userInWorkspace"
+            ],
             "properties": {
                 "id": {
                     "type": "integer"
@@ -938,20 +943,27 @@ const docTemplate = `{
         },
         "UserInWorkspace": {
             "type": "object",
+            "required": [
+                "Id",
+                "IsInterest",
+                "Status",
+                "UserId",
+                "WorkspaceId"
+            ],
             "properties": {
-                "id": {
+                "Id": {
                     "type": "integer"
                 },
-                "isInterest": {
+                "IsInterest": {
                     "type": "boolean"
                 },
-                "status": {
+                "Status": {
                     "type": "string"
                 },
-                "userId": {
+                "UserId": {
                     "type": "integer"
                 },
-                "workspaceId": {
+                "WorkspaceId": {
                     "type": "integer"
                 }
             }
@@ -1018,6 +1030,10 @@ const docTemplate = `{
         },
         "WorkspaceData": {
             "type": "object",
+            "required": [
+                "individualUser",
+                "workspaceDetail"
+            ],
             "properties": {
                 "individualUser": {
                     "type": "array",

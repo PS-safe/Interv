@@ -73,6 +73,10 @@ definitions:
         $ref: '#/definitions/User'
       userInWorkspace:
         $ref: '#/definitions/UserInWorkspace'
+    required:
+    - id
+    - userData
+    - userInWorkspace
     type: object
   LoginBody:
     properties:
@@ -136,16 +140,22 @@ definitions:
     type: object
   UserInWorkspace:
     properties:
-      id:
+      Id:
         type: integer
-      isInterest:
+      IsInterest:
         type: boolean
-      status:
+      Status:
         type: string
-      userId:
+      UserId:
         type: integer
-      workspaceId:
+      WorkspaceId:
         type: integer
+    required:
+    - Id
+    - IsInterest
+    - Status
+    - UserId
+    - WorkspaceId
     type: object
   VideoInterviewContextResponse:
     properties:
@@ -196,6 +206,9 @@ definitions:
         type: array
       workspaceDetail:
         $ref: '#/definitions/WorkspaceDetail'
+    required:
+    - individualUser
+    - workspaceDetail
     type: object
   WorkspaceDetail:
     properties:

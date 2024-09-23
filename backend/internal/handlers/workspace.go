@@ -32,11 +32,11 @@ type DeleteWorkspaceBody struct {
 } // @name DeleteWorkspaceBody
 
 type UserInWorkspace struct {
-	Id          uint
-	UserId      uint
-	WorkspaceId uint
-	Status      string
-	IsInterest  bool
+	Id          uint   `json:"id" validate:"required"`
+	UserId      uint   `json:"userId" validate:"required"`
+	WorkspaceId uint   `json:"workspaceId" validate:"required"`
+	Status      string `json:"status" validate:"required"`
+	IsInterest  bool   `json:"isInterest" validate:"required"`
 } // @name UserInWorkspace
 
 type AddUserToWorkspaceBody struct {
@@ -51,12 +51,12 @@ type DeleteUserFromWorkspaceBody struct {
 } // @name DeleteUserFromWorkspaceBody
 
 type WorkspaceData struct {
-	WorkspaceDetail WorkspaceDetail
-	IndividualUser  []IndividualUser
+	WorkspaceDetail WorkspaceDetail  `json:"workspaceDetail" validate:"required"`
+	IndividualUser  []IndividualUser `json:"individualUser" validate:"required"`
 } // @name WorkspaceData
 
 type IndividualUser struct {
-	Id              int
-	UserInWorkspace UserInWorkspace
-	UserData        UserData
+	Id              int             `json:"id" validate:"required"`
+	UserInWorkspace UserInWorkspace `json:"userInWorkspace" validate:"required"`
+	UserData        UserData        `json:"userData" validate:"required"`
 } // @name IndividualUser
