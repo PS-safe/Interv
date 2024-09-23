@@ -32,7 +32,7 @@ func SetupRoutes() {
 	var videoInterviewServices = services.NewVideoInterviewService(objectRepositories)
 	var objectServices = services.NewObjectService(objectRepositories)
 	var mailServices = services.NewMailService(mailRepositories)
-	var workspaceService = services.NewWorkspaceService(workspaceRepositories, userInWorkspaceRepositories)
+	var workspaceService = services.NewWorkspaceService(workspaceRepositories, userInWorkspaceRepositories, userRepositories)
 
 	// Handlers
 	var userHandlers = handlers.NewUserHandler(userServices)
@@ -79,12 +79,13 @@ func SetupRoutes() {
 	// Auth
 
 	// Workspace
-	private.Get("workspace.get", workspaceHandlers.GetWorkspace)
+	private.Get("workspace.get", workspaceHandlers.GetWorkspaceById)
 	private.Get("workspace.getAll", workspaceHandlers.GetAllWorkspace)
 	private.Post("workspace.create", workspaceHandlers.CreateWorkspace)
-	private.Delete("workspace.delete", workspaceHandlers.DeleteWorkspace)
+	private.Delete("workspace.delete", workspaceHandlers.DeleteWorkspaceById)
 
 	//// UserInWorkspace
+	private.Get("userInWorkspace.get", workspaceHandlers.GetUserInWorkspace)
 	private.Delete("userInWorkspace.delete", workspaceHandlers.DeleteUserFromWorkspace)
 
 	// Object

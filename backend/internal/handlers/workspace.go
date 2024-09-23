@@ -1,8 +1,10 @@
 package handlers
 
-import "time"
+import (
+	"time"
+)
 
-type WorkspaceData struct {
+type WorkspaceDetail struct {
 	Id        uint      `json:"id"`
 	Title     string    `json:"title"`
 	IsVideo   bool      `json:"isVideo"`
@@ -11,7 +13,7 @@ type WorkspaceData struct {
 	StopDate  time.Time `json:"stopDate"`
 	Owner     uint      `json:"owner"`
 	MemberNum uint      `json:"memberNum"`
-} // @name WorkspaceData
+} // @name WorkspaceDetail
 
 type CreateWorkspaceBody struct {
 	Title     string    `json:"title" validate:"required"`
@@ -22,11 +24,11 @@ type CreateWorkspaceBody struct {
 } // @name CreateWorkspaceBody
 
 type GetWorkspaceBody struct {
-	Id *uint `json:"id" validate:"required"`
+	Id uint `json:"id" validate:"required"`
 } // @name GetWorkspaceBody
 
 type DeleteWorkspaceBody struct {
-	Id *uint `json:"id" validate:"required"`
+	Id uint `json:"id" validate:"required"`
 } // @name DeleteWorkspaceBody
 
 type UserInWorkspace struct {
@@ -47,3 +49,14 @@ type DeleteUserFromWorkspaceBody struct {
 	UserId      uint `json:"userId" validate:"required"`
 	WorkspaceId uint `json:"workspaceId" validate:"required"`
 } // @name DeleteUserFromWorkspaceBody
+
+type WorkspaceData struct {
+	WorkspaceDetail WorkspaceDetail
+	IndividualUser  []IndividualUser
+} // @name WorkspaceData
+
+type IndividualUser struct {
+	Id              int
+	UserInWorkspace UserInWorkspace
+	UserData        UserData
+} // @name IndividualUser

@@ -11,20 +11,42 @@ import (
 type workspaceService struct {
 	workspaceReposity       repositories.IWorkspaceRepository
 	userInWorkspaceReposity repositories.IUserInWorkspaceRepository
+	userRepository          repositories.IUserRepository
 }
 
-func NewWorkspaceService(workspaceReposity repositories.IWorkspaceRepository, userInWorkspaceReposity repositories.IUserInWorkspaceRepository) IWorkspaceService {
+func NewWorkspaceService(workspaceReposity repositories.IWorkspaceRepository, userInWorkspaceReposity repositories.IUserInWorkspaceRepository, userRepository repositories.IUserRepository) IWorkspaceService {
 	return &workspaceService{
-		workspaceReposity:       workspaceReposity,
 		userInWorkspaceReposity: userInWorkspaceReposity,
+		workspaceReposity:       workspaceReposity,
+		userRepository:          userRepository,
 	}
 }
 
-func (w *workspaceService) Get(id uint) (workspace *domains.Workspace, err error) {
-	return w.workspaceReposity.FindById(id)
+func (w *workspaceService) GetWorkspaceById(id uint) (workspace *domains.Workspace, userInWorkspace *[]domains.UserInWorkspace, userData *[]domains.User, err error) {
+	workspace, err = w.workspaceReposity.FindById(id)
+	if err != nil {
+		return nil, nil, nil, err
+	}
+	userInWorkspace, err = w.userInWorkspaceReposity.FindByWorkspaceId(id)
+	if err != nil {
+		return nil, nil, nil, err
+	}
+
+	ids := make([]uint, len(*userInWorkspace))
+	for i, user := range *userInWorkspace {
+		ids[i] = user.UserId
+	}
+
+	userData, err = w.userRepository.FindAllByIds(ids)
+
+	return workspace, userInWorkspace, userData, nil
 }
 
-func (w *workspaceService) GetAll(ownerId *uint) (workspace *[]domains.Workspace, err error) {
+func (w *workspaceService) GetUserInWorkspace(id uint) (workspace *[]domains.UserInWorkspace, err error) {
+	return w.userInWorkspaceReposity.FindByWorkspaceId(id)
+}
+
+func (w *workspaceService) GetAllOwnWorkspace(ownerId *uint) (workspace *[]domains.Workspace, err error) {
 	return w.workspaceReposity.FindByOwner(ownerId)
 }
 

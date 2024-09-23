@@ -21,7 +21,7 @@ export interface CreateWorkspaceBody {
   title: string
 }
 
-export type CreateWorkspaceData = HandlersResponseWorkspaceData
+export type CreateWorkspaceData = HandlersResponseWorkspaceDetail
 
 export type CreateWorkspaceError = HandlersErrResponse
 
@@ -50,11 +50,11 @@ export interface DeleteWorkspaceBody {
   id: number
 }
 
-export type DeleteWorkspaceData = HandlersResponseString
+export type DeleteWorkspaceByIdData = HandlersResponseString
 
-export type DeleteWorkspaceError = HandlersErrResponse
+export type DeleteWorkspaceByIdError = HandlersErrResponse
 
-export type GetAllWorkspaceData = HandlersResponseArrayWorkspaceData
+export type GetAllWorkspaceData = HandlersResponseArrayWorkspaceDetail
 
 export type GetAllWorkspaceError = HandlersErrResponse
 
@@ -66,6 +66,14 @@ export interface GetObjectBody {
 export type GetObjectData = HandlersResponseString
 
 export type GetObjectError = HandlersErrResponse
+
+export type GetUserInWorkspaceData = HandlersResponseArrayUserInWorkspace
+
+export type GetUserInWorkspaceError = HandlersErrResponse
+
+export interface GetUserInWorkspaceParams {
+  id: number
+}
 
 export type GetVideoInterviewContextData = HandlersResponseVideoInterviewContextResponse
 
@@ -84,13 +92,13 @@ export interface GetVideoInterviewQuestionParams {
   questionIndex: number
 }
 
-export interface GetWorkspaceBody {
-  id: number
-}
-
 export type GetWorkspaceData = HandlersResponseWorkspaceData
 
 export type GetWorkspaceError = HandlersErrResponse
+
+export interface GetWorkspaceParams {
+  id: number
+}
 
 export interface HandlersErrResponse {
   code?: number
@@ -109,9 +117,16 @@ export interface HandlersOkResponse {
   timestamp?: string
 }
 
-export interface HandlersResponseArrayWorkspaceData {
+export interface HandlersResponseArrayUserInWorkspace {
   code?: number
-  data?: WorkspaceData[]
+  data?: UserInWorkspace[]
+  message?: string
+  timestamp?: string
+}
+
+export interface HandlersResponseArrayWorkspaceDetail {
+  code?: number
+  data?: WorkspaceDetail[]
   message?: string
   timestamp?: string
 }
@@ -163,6 +178,19 @@ export interface HandlersResponseWorkspaceData {
   data?: WorkspaceData
   message?: string
   timestamp?: string
+}
+
+export interface HandlersResponseWorkspaceDetail {
+  code?: number
+  data?: WorkspaceDetail
+  message?: string
+  timestamp?: string
+}
+
+export interface IndividualUser {
+  id?: number
+  userData?: User
+  userInWorkspace?: UserInWorkspace
 }
 
 export interface LoginBody {
@@ -223,6 +251,7 @@ export interface UploadObjectPayload {
 export interface User {
   created_at?: string
   id?: number
+  name?: string
   role?: string
   updated_at?: string
   username?: string
@@ -261,6 +290,11 @@ export interface VideoInterviewQuestionSetting {
 }
 
 export interface WorkspaceData {
+  individualUser?: IndividualUser[]
+  workspaceDetail?: WorkspaceDetail
+}
+
+export interface WorkspaceDetail {
   id?: number
   isCoding?: boolean
   isVideo?: boolean
@@ -437,6 +471,26 @@ export namespace UserInWorkspace {
     export type RequestHeaders = {}
     export type ResponseBody = DeleteUserFromWorkspaceData
   }
+
+  /**
+   * No description
+   * @tags userInWorkspace
+   * @name GetUserInWorkspace
+   * @summary Get user In Workspace
+   * @request GET:/userInWorkspace.get
+   * @response `200` `GetUserInWorkspaceData` OK
+   * @response `400` `HandlersErrResponse` Bad Request
+   * @response `500` `HandlersErrResponse` Internal Server Error
+   */
+  export namespace GetUserInWorkspace {
+    export type RequestParams = {}
+    export type RequestQuery = {
+      id: number
+    }
+    export type RequestBody = never
+    export type RequestHeaders = {}
+    export type ResponseBody = GetUserInWorkspaceData
+  }
 }
 
 export namespace VideoInterview {
@@ -522,19 +576,19 @@ export namespace Workspace {
   /**
    * No description
    * @tags workspace
-   * @name DeleteWorkspace
-   * @summary Delete workspace
+   * @name DeleteWorkspaceById
+   * @summary Delete workspace By Id
    * @request POST:/workspace.delete
-   * @response `200` `DeleteWorkspaceData` OK
+   * @response `200` `DeleteWorkspaceByIdData` OK
    * @response `400` `HandlersErrResponse` Bad Request
    * @response `500` `HandlersErrResponse` Internal Server Error
    */
-  export namespace DeleteWorkspace {
+  export namespace DeleteWorkspaceById {
     export type RequestParams = {}
     export type RequestQuery = {}
     export type RequestBody = DeleteWorkspaceBody
     export type RequestHeaders = {}
-    export type ResponseBody = DeleteWorkspaceData
+    export type ResponseBody = DeleteWorkspaceByIdData
   }
 
   /**
@@ -567,8 +621,10 @@ export namespace Workspace {
    */
   export namespace GetWorkspace {
     export type RequestParams = {}
-    export type RequestQuery = {}
-    export type RequestBody = GetWorkspaceBody
+    export type RequestQuery = {
+      id: number
+    }
+    export type RequestBody = never
     export type RequestHeaders = {}
     export type ResponseBody = GetWorkspaceData
   }
@@ -904,6 +960,27 @@ export class Server<SecurityDataType extends unknown> extends HttpClient<Securit
         format: "json",
         ...params,
       }),
+
+    /**
+     * No description
+     *
+     * @tags userInWorkspace
+     * @name GetUserInWorkspace
+     * @summary Get user In Workspace
+     * @request GET:/userInWorkspace.get
+     * @response `200` `GetUserInWorkspaceData` OK
+     * @response `400` `HandlersErrResponse` Bad Request
+     * @response `500` `HandlersErrResponse` Internal Server Error
+     */
+    getUserInWorkspace: (query: GetUserInWorkspaceParams, params: RequestParams = {}) =>
+      this.request<GetUserInWorkspaceData, GetUserInWorkspaceError>({
+        path: `/userInWorkspace.get`,
+        method: "GET",
+        query: query,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
   }
   videoInterview = {
     /**
@@ -995,15 +1072,15 @@ export class Server<SecurityDataType extends unknown> extends HttpClient<Securit
      * No description
      *
      * @tags workspace
-     * @name DeleteWorkspace
-     * @summary Delete workspace
+     * @name DeleteWorkspaceById
+     * @summary Delete workspace By Id
      * @request POST:/workspace.delete
-     * @response `200` `DeleteWorkspaceData` OK
+     * @response `200` `DeleteWorkspaceByIdData` OK
      * @response `400` `HandlersErrResponse` Bad Request
      * @response `500` `HandlersErrResponse` Internal Server Error
      */
-    deleteWorkspace: (payload: DeleteWorkspaceBody, params: RequestParams = {}) =>
-      this.request<DeleteWorkspaceData, DeleteWorkspaceError>({
+    deleteWorkspaceById: (payload: DeleteWorkspaceBody, params: RequestParams = {}) =>
+      this.request<DeleteWorkspaceByIdData, DeleteWorkspaceByIdError>({
         path: `/workspace.delete`,
         method: "POST",
         body: payload,
@@ -1043,11 +1120,11 @@ export class Server<SecurityDataType extends unknown> extends HttpClient<Securit
      * @response `400` `HandlersErrResponse` Bad Request
      * @response `500` `HandlersErrResponse` Internal Server Error
      */
-    getWorkspace: (payload: GetWorkspaceBody, params: RequestParams = {}) =>
+    getWorkspace: (query: GetWorkspaceParams, params: RequestParams = {}) =>
       this.request<GetWorkspaceData, GetWorkspaceError>({
         path: `/workspace.get`,
         method: "GET",
-        body: payload,
+        query: query,
         type: ContentType.Json,
         format: "json",
         ...params,

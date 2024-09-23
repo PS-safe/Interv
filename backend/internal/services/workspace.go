@@ -13,11 +13,12 @@ var (
 )
 
 type IWorkspaceService interface {
-	Get(id uint) (workspace *domains.Workspace, err error)
-	GetAll(ownerId *uint) (workspace *[]domains.Workspace, err error)
+	GetWorkspaceById(id uint) (workspace *domains.Workspace, userInworkspace *[]domains.UserInWorkspace, userData *[]domains.User, err error)
+	GetAllOwnWorkspace(ownerId *uint) (workspace *[]domains.Workspace, err error)
 	GetUserNumInWorkspace(ownerId *uint) (workspace []uint, err error)
 	Create(title string, isCoding *bool, isVideo *bool, startDate time.Time, stopDate time.Time, owner *uint) (workspace *domains.Workspace, err error)
 	Delete(id uint) (err error)
 
+	GetUserInWorkspace(workspaceId uint) (listUser *[]domains.UserInWorkspace, err error)
 	DeleteUserInWorkspace(userId uint, workspaceId uint) (err error)
 }

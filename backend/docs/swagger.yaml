@@ -65,12 +65,14 @@ definitions:
     - bucketName
     - objectName
     type: object
-  GetWorkspaceBody:
+  IndividualUser:
     properties:
       id:
         type: integer
-    required:
-    - id
+      userData:
+        $ref: '#/definitions/User'
+      userInWorkspace:
+        $ref: '#/definitions/UserInWorkspace'
     type: object
   LoginBody:
     properties:
@@ -114,6 +116,8 @@ definitions:
         type: string
       id:
         type: integer
+      name:
+        type: string
       role:
         type: string
       updated_at:
@@ -185,6 +189,15 @@ definitions:
     - timeToPrepare
     type: object
   WorkspaceData:
+    properties:
+      individualUser:
+        items:
+          $ref: '#/definitions/IndividualUser'
+        type: array
+      workspaceDetail:
+        $ref: '#/definitions/WorkspaceDetail'
+    type: object
+  WorkspaceDetail:
     properties:
       id:
         type: integer
@@ -295,13 +308,37 @@ definitions:
       timestamp:
         type: string
     type: object
-  handlers.Response-array_WorkspaceData:
+  handlers.Response-WorkspaceDetail:
+    properties:
+      code:
+        type: integer
+      data:
+        $ref: '#/definitions/WorkspaceDetail'
+      message:
+        type: string
+      timestamp:
+        type: string
+    type: object
+  handlers.Response-array_UserInWorkspace:
     properties:
       code:
         type: integer
       data:
         items:
-          $ref: '#/definitions/WorkspaceData'
+          $ref: '#/definitions/UserInWorkspace'
+        type: array
+      message:
+        type: string
+      timestamp:
+        type: string
+    type: object
+  handlers.Response-array_WorkspaceDetail:
+    properties:
+      code:
+        type: integer
+      data:
+        items:
+          $ref: '#/definitions/WorkspaceDetail'
         type: array
       message:
         type: string
@@ -566,6 +603,34 @@ paths:
       summary: Delete User From Workspace
       tags:
       - userInWorkspace
+  /userInWorkspace.get:
+    get:
+      consumes:
+      - application/json
+      operationId: GetUserInWorkspace
+      parameters:
+      - in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.Response-array_UserInWorkspace'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.ErrResponse'
+      summary: Get user In Workspace
+      tags:
+      - userInWorkspace
   /videoInterview.getVideoInterviewContext:
     get:
       consumes:
@@ -673,7 +738,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/handlers.Response-WorkspaceData'
+            $ref: '#/definitions/handlers.Response-WorkspaceDetail'
         "400":
           description: Bad Request
           schema:
@@ -689,7 +754,7 @@ paths:
     post:
       consumes:
       - application/json
-      operationId: DeleteWorkspace
+      operationId: DeleteWorkspaceById
       parameters:
       - description: DeleteWorkspaceBody
         in: body
@@ -712,7 +777,7 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/handlers.ErrResponse'
-      summary: Delete workspace
+      summary: Delete workspace By Id
       tags:
       - workspace
   /workspace.get:
@@ -721,12 +786,10 @@ paths:
       - application/json
       operationId: GetWorkspace
       parameters:
-      - description: GetWorkspaceBody
-        in: body
-        name: payload
+      - in: query
+        name: id
         required: true
-        schema:
-          $ref: '#/definitions/GetWorkspaceBody'
+        type: integer
       produces:
       - application/json
       responses:
@@ -756,7 +819,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/handlers.Response-array_WorkspaceData'
+            $ref: '#/definitions/handlers.Response-array_WorkspaceDetail'
         "400":
           description: Bad Request
           schema:
