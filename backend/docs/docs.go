@@ -944,26 +944,26 @@ const docTemplate = `{
         "UserInWorkspace": {
             "type": "object",
             "required": [
-                "Id",
-                "IsInterest",
-                "Status",
-                "UserId",
-                "WorkspaceId"
+                "id",
+                "isInterest",
+                "status",
+                "userId",
+                "workspaceId"
             ],
             "properties": {
-                "Id": {
+                "id": {
                     "type": "integer"
                 },
-                "IsInterest": {
+                "isInterest": {
                     "type": "boolean"
                 },
-                "Status": {
+                "status": {
                     "type": "string"
                 },
-                "UserId": {
+                "userId": {
                     "type": "integer"
                 },
-                "WorkspaceId": {
+                "workspaceId": {
                     "type": "integer"
                 }
             }

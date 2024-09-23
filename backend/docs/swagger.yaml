@@ -140,22 +140,22 @@ definitions:
     type: object
   UserInWorkspace:
     properties:
-      Id:
+      id:
         type: integer
-      IsInterest:
+      isInterest:
         type: boolean
-      Status:
+      status:
         type: string
-      UserId:
+      userId:
         type: integer
-      WorkspaceId:
+      workspaceId:
         type: integer
     required:
-    - Id
-    - IsInterest
-    - Status
-    - UserId
-    - WorkspaceId
+    - id
+    - isInterest
+    - status
+    - userId
+    - workspaceId
     type: object
   VideoInterviewContextResponse:
     properties:

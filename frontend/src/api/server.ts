@@ -264,11 +264,11 @@ export interface UserDeleteBody {
 }
 
 export interface UserInWorkspace {
-  Id: number
-  IsInterest: boolean
-  Status: string
-  UserId: number
-  WorkspaceId: number
+  id: number
+  isInterest: boolean
+  status: string
+  userId: number
+  workspaceId: number
 }
 
 export interface VideoInterviewContextResponse {
