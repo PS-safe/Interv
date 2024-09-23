@@ -8,6 +8,7 @@ import React, { useState } from "react"
 import { useParams } from "react-router-dom"
 import { server } from "@/contexts/swr"
 import { useGetWorkspace } from "@/hooks/useGetWorkspace"
+import ListUser from "./components/ListUser"
 
 const WorkspaceWithId = () => {
   const [importUser, setImportUser] = useState<UserData[]>()
@@ -68,7 +69,7 @@ const WorkspaceWithId = () => {
 
   const handleTest = () => {
     console.log(workspaceId)
-    console.log(data)
+    console.log(data?.data?.individualUser)
   }
 
   return (
@@ -106,6 +107,8 @@ const WorkspaceWithId = () => {
         >
           Test
         </Button>
+
+        <ListUser listUser={data?.data?.individualUser ?? []} />
       </MainPanel>
     </>
   )
