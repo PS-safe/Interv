@@ -6,7 +6,7 @@ import { useGetListWorkspace } from "@/hooks/useGetListWorkspace.ts"
 import { useNavigate } from "react-router-dom"
 import ListWorkspaceCard from "./components/ListWorkspace.tsx"
 
-const Dashboard = () => {
+const Portal = () => {
   const { data } = useGetListWorkspace()
   const navigate = useNavigate()
 
@@ -35,4 +35,4 @@ const Dashboard = () => {
   )
 }
 
-export default Dashboard
+export default Portal
