@@ -8,6 +8,7 @@ import Dashboard from "@/pages/dashboard/Dashboard.tsx"
 import CodingInterviewPage from "@/pages/lobby/codingInterview/CodingInterview.tsx"
 import VideoInterviewPage from "@/pages/lobby/videoInterview/VideoInterview.tsx"
 import CreateWorkspace from "@/pages/dashboard/createWorkspace/CreateWorkspace"
+import WorkspaceWithId from "@/pages/dashboard/WorkspaceWithId"
 
 export const router = createBrowserRouter([
   {
@@ -29,6 +30,10 @@ export const router = createBrowserRouter([
           {
             path: "workspace/create",
             element: <CreateWorkspace />,
+          },
+          {
+            path: "workspace/:workspaceId",
+            element: <WorkspaceWithId />,
           },
         ],
       },
