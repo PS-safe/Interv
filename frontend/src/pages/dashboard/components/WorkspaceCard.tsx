@@ -24,12 +24,12 @@ const WorkspaceCard: React.FC<WorkspaceProps> = ({
       onClick={() => navigate(workspaceId.toString())}
     >
       <div className="w-52 grid gap-3">
-        <div className="text-primary text-4xl font-bold">{title}</div>
+        <div className="text-primary text-3xl font-bold">{title}</div>
         <div className="text-2xl font-semibold">
           {member > 1 ? member + " Candidates" : member + " Candidate"}
         </div>
       </div>
-      <div className="text-slate-400 font-normal">
+      <div className="text-slate-400">
         Created on {dayjs(createAt).format("MM/DD/YYYY HH:mm A")}
       </div>
     </div>
