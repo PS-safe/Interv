@@ -107,103 +107,8 @@ const docTemplate = `{
                 }
             }
         },
-        "/codingInterview.createQuestion": {
-            "post": {
-                "description": "Create a new coding interview question",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "codingInterview"
-                ],
-                "summary": "Create a new coding interview question",
-                "operationId": "CreateQuestion",
-                "parameters": [
-                    {
-                        "description": "Request body containing the new question details",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/CodingInterviewCreateQuestionQuery"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful response with the created question",
-                        "schema": {
-                            "$ref": "#/definitions/handlers.Response-domains_CodingQuestion"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/handlers.ErrResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/handlers.ErrResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/codingInterview.generateCompileToken": {
-            "post": {
-                "description": "Generate compile token for a coding interview",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "codingInterview"
-                ],
-                "summary": "Generate compile token for a coding interview",
-                "operationId": "GenerateCompileToken",
-                "parameters": [
-                    {
-                        "description": "Request body containing the code to be compiled",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/CodingInterviewGenerateCompileTokenQuery"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful response with the compile token",
-                        "schema": {
-                            "$ref": "#/definitions/handlers.Response-CodingInterviewGenerateCompileTokenResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/handlers.ErrResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/handlers.ErrResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/codingInterview.getCompileResult/{token}": {
+        "/lobby.getLobbyContext": {
             "get": {
-                "description": "Get compile result for a coding interview",
                 "consumes": [
                     "application/json"
                 ],
@@ -211,24 +116,23 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "codingInterview"
+                    "lobby"
                 ],
-                "summary": "Get compile result for a coding interview",
-                "operationId": "GetCompileResult",
+                "summary": "Get lobby context",
+                "operationId": "getLobbyContext",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "Token to get the compile result",
-                        "name": "token",
-                        "in": "path",
+                        "type": "integer",
+                        "name": "lobbyId",
+                        "in": "query",
                         "required": true
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Successful response with the compile result",
+                        "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/handlers.Response-CodingInterviewGetCompileResultResponse"
+                            "$ref": "#/definitions/handlers.Response-GetLobbyContextResponse"
                         }
                     },
                     "400": {
@@ -246,9 +150,8 @@ const docTemplate = `{
                 }
             }
         },
-        "/codingInterview.getQuestions": {
-            "get": {
-                "description": "Get coding interview questions",
+        "/lobby.updateLobbyContext": {
+            "post": {
                 "consumes": [
                     "application/json"
                 ],
@@ -256,15 +159,26 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "codingInterview"
+                    "lobby"
                 ],
-                "summary": "Get coding interview questions",
-                "operationId": "GetQuestions",
+                "summary": "Update lobby context",
+                "operationId": "updateLobbyContext",
+                "parameters": [
+                    {
+                        "description": "update lobby context",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/UpdateLobbyContextBody"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Successful response with the coding interview questions",
+                        "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/handlers.Response-CodingInterviewGetQuestionsResponse"
+                            "$ref": "#/definitions/handlers.Response-string"
                         }
                     },
                     "400": {
@@ -514,6 +428,95 @@ const docTemplate = `{
                 }
             }
         },
+        "/userInWorkspace.delete": {
+            "delete": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "userInWorkspace"
+                ],
+                "summary": "Delete User From Workspace",
+                "operationId": "DeleteUserFromWorkspace",
+                "parameters": [
+                    {
+                        "description": "DeleteUserFromWorkspaceBody",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/DeleteUserFromWorkspaceBody"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.Response-UserInWorkspace"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ErrResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ErrResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/userInWorkspace.get": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "userInWorkspace"
+                ],
+                "summary": "Get user In Workspace",
+                "operationId": "GetUserInWorkspace",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.Response-array_UserInWorkspace"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ErrResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ErrResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/videoInterview.getVideoInterviewContext": {
             "get": {
                 "consumes": [
@@ -529,7 +532,7 @@ const docTemplate = `{
                 "operationId": "getVideoInterviewContext",
                 "parameters": [
                     {
-                        "type": "string",
+                        "type": "integer",
                         "name": "lobbyId",
                         "in": "query",
                         "required": true
@@ -572,14 +575,8 @@ const docTemplate = `{
                 "operationId": "getVideoInterviewQuestion",
                 "parameters": [
                     {
-                        "type": "string",
-                        "name": "lobbyId",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
                         "type": "integer",
-                        "name": "questionIndex",
+                        "name": "questionId",
                         "in": "query",
                         "required": true
                     }
@@ -649,55 +646,507 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/videoQuestion.createVideoQuestion": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "videoQuestion"
+                ],
+                "summary": "Create new video question",
+                "operationId": "createVideoQuestion",
+                "parameters": [
+                    {
+                        "description": "CreateVideoQuestionBody",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CreateVideoQuestionBody"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.Response-CreateVideoQuestionResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ErrResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ErrResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/videoQuestion.deleteVideoQuestionById": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "videoQuestion"
+                ],
+                "summary": "Delete video question by id",
+                "operationId": "deleteVideoQuestionById",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.Response-string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ErrResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ErrResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ErrResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/videoQuestion.getVideoQuestionById/{id}": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "videoQuestion"
+                ],
+                "summary": "Get video question by id",
+                "operationId": "getVideoQuestionById",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.Response-GetVideoQuestionByIdResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ErrResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ErrResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ErrResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/videoQuestion.getVideoQuestionWorkspaceIdId/{id}": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "videoQuestion"
+                ],
+                "summary": "Get video question by workspace id",
+                "operationId": "getVideoQuestionByWorkspaceId",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/handlers.Response-array_GetVideoQuestionByIdResponse"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ErrResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ErrResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ErrResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/videoQuestion.updateVideoQuestion": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "videoQuestion"
+                ],
+                "summary": "Update video question",
+                "operationId": "updateVideoQuestion",
+                "parameters": [
+                    {
+                        "description": "UpdateVideoQuestionBody",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/UpdateVideoQuestionBody"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.Response-CreateVideoQuestionResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ErrResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ErrResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ErrResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/workspace.create": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "workspace"
+                ],
+                "summary": "Create new workspace",
+                "operationId": "CreateWorkspace",
+                "parameters": [
+                    {
+                        "description": "CreateWorkspaceBody",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CreateWorkspaceBody"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.Response-WorkspaceDetail"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ErrResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ErrResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/workspace.delete": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "workspace"
+                ],
+                "summary": "Delete workspace By Id",
+                "operationId": "DeleteWorkspaceById",
+                "parameters": [
+                    {
+                        "description": "DeleteWorkspaceBody",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/DeleteWorkspaceBody"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.Response-string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ErrResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ErrResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/workspace.get": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "workspace"
+                ],
+                "summary": "Get workspace",
+                "operationId": "GetWorkspace",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.Response-WorkspaceData"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ErrResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ErrResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/workspace.getAll": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "workspace"
+                ],
+                "summary": "Get List of workspace",
+                "operationId": "GetAllWorkspace",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.Response-array_WorkspaceDetail"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ErrResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ErrResponse"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
-        "CodingInterviewCreateQuestionQuery": {
+        "CreateVideoQuestionBody": {
             "type": "object",
             "required": [
-                "body"
+                "retryAmount",
+                "timeToAnswer",
+                "timeToPrepare",
+                "title",
+                "workspaceId"
             ],
             "properties": {
-                "body": {
-                    "$ref": "#/definitions/domains.CreateCodingQuestionRequest"
-                }
-            }
-        },
-        "CodingInterviewGenerateCompileTokenQuery": {
-            "type": "object",
-            "required": [
-                "body"
-            ],
-            "properties": {
-                "body": {
-                    "$ref": "#/definitions/domains.CompilationRequest"
-                }
-            }
-        },
-        "CodingInterviewGenerateCompileTokenResponse": {
-            "type": "object",
-            "properties": {
-                "token": {
+                "retryAmount": {
+                    "type": "integer"
+                },
+                "timeToAnswer": {
+                    "type": "integer"
+                },
+                "timeToPrepare": {
+                    "type": "integer"
+                },
+                "title": {
                     "type": "string"
+                },
+                "workspaceId": {
+                    "type": "integer"
                 }
             }
         },
-        "CodingInterviewGetCompileResultResponse": {
+        "CreateVideoQuestionResponse": {
             "type": "object",
             "properties": {
-                "compileResult": {
-                    "$ref": "#/definitions/domains.CompilationResultResponse"
+                "createdAt": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "retryAmount": {
+                    "type": "integer"
+                },
+                "timeToAnswer": {
+                    "type": "integer"
+                },
+                "timeToPrepare": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
+                "workspaceId": {
+                    "type": "integer"
                 }
             }
         },
-        "CodingInterviewGetQuestionsResponse": {
+        "CreateWorkspaceBody": {
             "type": "object",
+            "required": [
+                "isCoding",
+                "isVideo",
+                "startDate",
+                "stopDate",
+                "title"
+            ],
             "properties": {
-                "questions": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/domains.CodingQuestionResponse"
-                    }
+                "isCoding": {
+                    "type": "boolean"
+                },
+                "isVideo": {
+                    "type": "boolean"
+                },
+                "startDate": {
+                    "type": "string"
+                },
+                "stopDate": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
                 }
             }
         },
@@ -728,6 +1177,75 @@ const docTemplate = `{
                 }
             }
         },
+        "DeleteUserFromWorkspaceBody": {
+            "type": "object",
+            "required": [
+                "userId",
+                "workspaceId"
+            ],
+            "properties": {
+                "userId": {
+                    "type": "integer"
+                },
+                "workspaceId": {
+                    "type": "integer"
+                }
+            }
+        },
+        "DeleteWorkspaceBody": {
+            "type": "object",
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "GetLobbyContextResponse": {
+            "type": "object",
+            "required": [
+                "dueDate",
+                "isCodingDone",
+                "isVideoDone",
+                "lobbyId",
+                "totalCodingQuestion",
+                "totalCodingTime",
+                "totalVideoQuestion",
+                "totalVideoTime",
+                "userId"
+            ],
+            "properties": {
+                "dueDate": {
+                    "type": "string"
+                },
+                "isCodingDone": {
+                    "type": "boolean"
+                },
+                "isVideoDone": {
+                    "type": "boolean"
+                },
+                "lobbyId": {
+                    "type": "integer"
+                },
+                "totalCodingQuestion": {
+                    "type": "integer"
+                },
+                "totalCodingTime": {
+                    "type": "integer"
+                },
+                "totalVideoQuestion": {
+                    "type": "integer"
+                },
+                "totalVideoTime": {
+                    "type": "integer"
+                },
+                "userId": {
+                    "type": "integer"
+                }
+            }
+        },
         "GetObjectBody": {
             "type": "object",
             "required": [
@@ -740,6 +1258,54 @@ const docTemplate = `{
                 },
                 "objectName": {
                     "type": "string"
+                }
+            }
+        },
+        "GetVideoQuestionByIdResponse": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "retryAmount": {
+                    "type": "integer"
+                },
+                "timeToAnswer": {
+                    "type": "integer"
+                },
+                "timeToPrepare": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
+                "workspaceId": {
+                    "type": "integer"
+                }
+            }
+        },
+        "IndividualUser": {
+            "type": "object",
+            "required": [
+                "id",
+                "userData",
+                "userInWorkspace"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "userData": {
+                    "$ref": "#/definitions/User"
+                },
+                "userInWorkspace": {
+                    "$ref": "#/definitions/UserInWorkspace"
                 }
             }
         },
@@ -797,6 +1363,67 @@ const docTemplate = `{
                 }
             }
         },
+        "UpdateLobbyContextBody": {
+            "type": "object",
+            "required": [
+                "lobbyId"
+            ],
+            "properties": {
+                "dueDate": {
+                    "type": "string"
+                },
+                "isCodingDone": {
+                    "type": "boolean"
+                },
+                "isVideoDone": {
+                    "type": "boolean"
+                },
+                "lobbyId": {
+                    "type": "integer"
+                },
+                "totalCodingQuestion": {
+                    "type": "integer"
+                },
+                "totalCodingTime": {
+                    "type": "integer"
+                },
+                "totalVideoQuestion": {
+                    "type": "integer"
+                },
+                "totalVideoTime": {
+                    "type": "integer"
+                },
+                "userId": {
+                    "type": "integer"
+                }
+            }
+        },
+        "UpdateVideoQuestionBody": {
+            "type": "object",
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "retryAmount": {
+                    "type": "integer"
+                },
+                "timeToAnswer": {
+                    "type": "integer"
+                },
+                "timeToPrepare": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "workspaceId": {
+                    "type": "integer"
+                }
+            }
+        },
         "User": {
             "type": "object",
             "properties": {
@@ -805,6 +1432,9 @@ const docTemplate = `{
                 },
                 "id": {
                     "type": "integer"
+                },
+                "name": {
+                    "type": "string"
                 },
                 "role": {
                     "type": "string"
@@ -818,23 +1448,7 @@ const docTemplate = `{
             }
         },
         "UserCreateBody": {
-            "type": "object",
-            "required": [
-                "password",
-                "role",
-                "username"
-            ],
-            "properties": {
-                "password": {
-                    "type": "string"
-                },
-                "role": {
-                    "type": "string"
-                },
-                "username": {
-                    "type": "string"
-                }
-            }
+            "type": "object"
         },
         "UserDeleteBody": {
             "type": "object",
@@ -843,6 +1457,33 @@ const docTemplate = `{
             ],
             "properties": {
                 "id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "UserInWorkspace": {
+            "type": "object",
+            "required": [
+                "id",
+                "isInterest",
+                "status",
+                "userId",
+                "workspaceId"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "isInterest": {
+                    "type": "boolean"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "integer"
+                },
+                "workspaceId": {
                     "type": "integer"
                 }
             }
@@ -869,13 +1510,13 @@ const docTemplate = `{
             "type": "object",
             "required": [
                 "question",
-                "questionIndex"
+                "questionId"
             ],
             "properties": {
                 "question": {
                     "type": "string"
                 },
-                "questionIndex": {
+                "questionId": {
                     "type": "integer"
                 }
             }
@@ -884,6 +1525,7 @@ const docTemplate = `{
             "type": "object",
             "required": [
                 "isLast",
+                "questionId",
                 "questionIndex",
                 "retry",
                 "timeToAnswer",
@@ -892,6 +1534,9 @@ const docTemplate = `{
             "properties": {
                 "isLast": {
                     "type": "boolean"
+                },
+                "questionId": {
+                    "type": "integer"
                 },
                 "questionIndex": {
                     "type": "integer"
@@ -907,235 +1552,50 @@ const docTemplate = `{
                 }
             }
         },
-        "domains.CodingQuestion": {
+        "WorkspaceData": {
             "type": "object",
+            "required": [
+                "individualUser",
+                "workspaceDetail"
+            ],
             "properties": {
-                "createdAt": {
-                    "type": "string"
-                },
-                "createdBy": {
-                    "type": "string"
-                },
-                "deletedAt": {
-                    "$ref": "#/definitions/gorm.DeletedAt"
-                },
-                "description": {
-                    "type": "string"
-                },
-                "difficulty": {
-                    "type": "string"
-                },
-                "examples": {
+                "individualUser": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/domains.CodingQuestionExample"
+                        "$ref": "#/definitions/IndividualUser"
                     }
                 },
-                "id": {
-                    "type": "integer"
-                },
-                "tags": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "testCases": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/domains.CodingQuestionTestCase"
-                    }
-                },
-                "title": {
-                    "type": "string"
-                },
-                "updatedAt": {
-                    "type": "string"
-                },
-                "updatedBy": {
-                    "type": "string"
+                "workspaceDetail": {
+                    "$ref": "#/definitions/WorkspaceDetail"
                 }
             }
         },
-        "domains.CodingQuestionExample": {
+        "WorkspaceDetail": {
             "type": "object",
             "properties": {
-                "createdAt": {
-                    "type": "string"
-                },
-                "deletedAt": {
-                    "$ref": "#/definitions/gorm.DeletedAt"
-                },
                 "id": {
                     "type": "integer"
                 },
-                "input": {
-                    "type": "string"
-                },
-                "output": {
-                    "type": "string"
-                },
-                "question": {
-                    "$ref": "#/definitions/domains.CodingQuestion"
-                },
-                "questionID": {
-                    "type": "integer"
-                },
-                "updatedAt": {
-                    "type": "string"
-                }
-            }
-        },
-        "domains.CodingQuestionResponse": {
-            "type": "object",
-            "properties": {
-                "description": {
-                    "type": "string"
-                },
-                "example_input": {
-                    "type": "string"
-                },
-                "example_output": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "test_case": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/domains.CodingQuestionTestCase"
-                    }
-                },
-                "title": {
-                    "type": "string"
-                }
-            }
-        },
-        "domains.CodingQuestionTestCase": {
-            "type": "object",
-            "properties": {
-                "createdAt": {
-                    "type": "string"
-                },
-                "deletedAt": {
-                    "$ref": "#/definitions/gorm.DeletedAt"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "input": {
-                    "type": "string"
-                },
-                "isHidden": {
+                "isCoding": {
                     "type": "boolean"
                 },
-                "output": {
-                    "type": "string"
+                "isVideo": {
+                    "type": "boolean"
                 },
-                "question": {
-                    "$ref": "#/definitions/domains.CodingQuestion"
-                },
-                "questionID": {
+                "memberNum": {
                     "type": "integer"
                 },
-                "updatedAt": {
-                    "type": "string"
-                }
-            }
-        },
-        "domains.CompilationRequest": {
-            "type": "object",
-            "properties": {
-                "input": {
-                    "type": "string"
-                },
-                "language": {
+                "owner": {
                     "type": "integer"
                 },
-                "source_code": {
-                    "type": "string"
-                }
-            }
-        },
-        "domains.CompilationResultResponse": {
-            "type": "object",
-            "properties": {
-                "compile_output": {
+                "startDate": {
                     "type": "string"
                 },
-                "memory": {
-                    "type": "integer"
-                },
-                "message": {
+                "stopDate": {
                     "type": "string"
-                },
-                "status": {
-                    "type": "object",
-                    "properties": {
-                        "description": {
-                            "type": "string"
-                        },
-                        "id": {
-                            "type": "integer"
-                        }
-                    }
-                },
-                "stderr": {
-                    "type": "string"
-                },
-                "stdout": {
-                    "type": "string"
-                },
-                "time": {
-                    "type": "string"
-                },
-                "token": {
-                    "type": "string"
-                }
-            }
-        },
-        "domains.CreateCodingQuestionRequest": {
-            "type": "object",
-            "properties": {
-                "description": {
-                    "type": "string"
-                },
-                "difficulty": {
-                    "type": "string"
-                },
-                "examples": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/domains.CodingQuestionExample"
-                    }
-                },
-                "tags": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "test_cases": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/domains.CodingQuestionTestCase"
-                    }
                 },
                 "title": {
                     "type": "string"
-                }
-            }
-        },
-        "gorm.DeletedAt": {
-            "type": "object",
-            "properties": {
-                "time": {
-                    "type": "string"
-                },
-                "valid": {
-                    "description": "Valid is true if Time is not NULL",
-                    "type": "boolean"
                 }
             }
         },
@@ -1178,48 +1638,14 @@ const docTemplate = `{
                 }
             }
         },
-        "handlers.Response-CodingInterviewGenerateCompileTokenResponse": {
+        "handlers.Response-CreateVideoQuestionResponse": {
             "type": "object",
             "properties": {
                 "code": {
                     "type": "integer"
                 },
                 "data": {
-                    "$ref": "#/definitions/CodingInterviewGenerateCompileTokenResponse"
-                },
-                "message": {
-                    "type": "string"
-                },
-                "timestamp": {
-                    "type": "string"
-                }
-            }
-        },
-        "handlers.Response-CodingInterviewGetCompileResultResponse": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "integer"
-                },
-                "data": {
-                    "$ref": "#/definitions/CodingInterviewGetCompileResultResponse"
-                },
-                "message": {
-                    "type": "string"
-                },
-                "timestamp": {
-                    "type": "string"
-                }
-            }
-        },
-        "handlers.Response-CodingInterviewGetQuestionsResponse": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "integer"
-                },
-                "data": {
-                    "$ref": "#/definitions/CodingInterviewGetQuestionsResponse"
+                    "$ref": "#/definitions/CreateVideoQuestionResponse"
                 },
                 "message": {
                     "type": "string"
@@ -1246,6 +1672,40 @@ const docTemplate = `{
                 }
             }
         },
+        "handlers.Response-GetLobbyContextResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/GetLobbyContextResponse"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "timestamp": {
+                    "type": "string"
+                }
+            }
+        },
+        "handlers.Response-GetVideoQuestionByIdResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/GetVideoQuestionByIdResponse"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "timestamp": {
+                    "type": "string"
+                }
+            }
+        },
         "handlers.Response-User": {
             "type": "object",
             "properties": {
@@ -1254,6 +1714,23 @@ const docTemplate = `{
                 },
                 "data": {
                     "$ref": "#/definitions/User"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "timestamp": {
+                    "type": "string"
+                }
+            }
+        },
+        "handlers.Response-UserInWorkspace": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/UserInWorkspace"
                 },
                 "message": {
                     "type": "string"
@@ -1297,14 +1774,91 @@ const docTemplate = `{
                 }
             }
         },
-        "handlers.Response-domains_CodingQuestion": {
+        "handlers.Response-WorkspaceData": {
             "type": "object",
             "properties": {
                 "code": {
                     "type": "integer"
                 },
                 "data": {
-                    "$ref": "#/definitions/domains.CodingQuestion"
+                    "$ref": "#/definitions/WorkspaceData"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "timestamp": {
+                    "type": "string"
+                }
+            }
+        },
+        "handlers.Response-WorkspaceDetail": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/WorkspaceDetail"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "timestamp": {
+                    "type": "string"
+                }
+            }
+        },
+        "handlers.Response-array_GetVideoQuestionByIdResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/GetVideoQuestionByIdResponse"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "timestamp": {
+                    "type": "string"
+                }
+            }
+        },
+        "handlers.Response-array_UserInWorkspace": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/UserInWorkspace"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "timestamp": {
+                    "type": "string"
+                }
+            }
+        },
+        "handlers.Response-array_WorkspaceDetail": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/WorkspaceDetail"
+                    }
                 },
                 "message": {
                     "type": "string"
