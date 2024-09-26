@@ -60,8 +60,6 @@ const WorkspaceWithId = () => {
       listUser: importUser ?? [],
       workspaceId: Number(workspaceId),
     }
-    console.log(workspaceId)
-    console.log(importUser)
     if (importUser) {
       server.user.createUser(importData).finally(() => {
         mutate()

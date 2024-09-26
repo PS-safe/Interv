@@ -8,7 +8,7 @@ import Portal from "@/pages/portal/Portal.tsx"
 import CodingInterviewPage from "@/pages/lobby/codingInterview/CodingInterview.tsx"
 import VideoInterviewPage from "@/pages/lobby/videoInterview/VideoInterview.tsx"
 import CreateCodingQuestion from "@/pages/portal/assessment/components/AssessmentCreateCodingQuestionForm"
-import CreateWorkspace from "@/pages/portal/createWorkspace/CreateWorkspace"
+import CreateWorkspace from "@/pages/portal/CreateWorkspace"
 import WorkspaceWithId from "@/pages/portal/WorkspaceWithId"
 
 export const router = createBrowserRouter([

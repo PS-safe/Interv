@@ -28,7 +28,7 @@ const Portal = () => {
           <Button
             className={"text-center"}
             onClick={() => {
-              navigate("workspace/create")
+              navigate("create")
             }}
           >
             Add new group
