@@ -1,19 +1,24 @@
-import React, { useState } from "react"
+interface DatePickerProps {
+  startDate: string
+  setStartDate: React.Dispatch<React.SetStateAction<string>>
+  endDate: string
+  setEndDate: React.Dispatch<React.SetStateAction<string>>
+}
 
-const DatePicker: React.FC = () => {
-  const [startDate, setStartDate] = useState<string>("")
-  const [endDate, setEndDate] = useState<string>("")
-
-  // Handle the change in start date
+const DatePicker: React.FC<DatePickerProps> = ({
+  startDate,
+  setStartDate,
+  endDate,
+  setEndDate,
+}) => {
   const handleStartDateChange = (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const selectedDate = event.target.value
     setStartDate(selectedDate)
-    setEndDate("") // Optionally reset end date if start date changes
+    setEndDate("")
   }
 
-  // Handle the change in end date
   const handleEndDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEndDate(event.target.value)
   }
@@ -34,8 +39,8 @@ const DatePicker: React.FC = () => {
         id="end"
         value={endDate}
         onChange={handleEndDateChange}
-        min={startDate} // Set min date to selected start date
-        disabled={!startDate} // Disable until a start date is selected
+        min={startDate}
+        disabled={!startDate}
       />
     </div>
   )

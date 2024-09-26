@@ -70,8 +70,17 @@ const WorkspaceWithId = () => {
   return (
     <>
       <SideBar isSignOutEnabled={true}>
-        <SideBarItem title={"Candidate"} isActive={true} />
-        <SideBarItem title={"Assessment"} isActive={false} onClick={() => {}} />
+        <SideBarItem title={"Home"} isActive={true} />
+        <SideBarItem
+          title={"Candidate List"}
+          isActive={false}
+          onClick={() => {}}
+        />
+        <SideBarItem
+          title={"Interest List"}
+          isActive={false}
+          onClick={() => {}}
+        />
       </SideBar>
       <MainPanel>
         <Input
