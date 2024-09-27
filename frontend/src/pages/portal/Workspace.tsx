@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input.tsx"
 import Papa from "papaparse"
 import React, { useState } from "react"
-import {useNavigate, useParams} from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { server } from "@/contexts/swr"
 import { useGetWorkspace } from "@/hooks/useGetWorkspace"
 import ListUser from "./components/ListUser"
@@ -74,7 +74,13 @@ const Workspace = () => {
     <>
       <SideBar isSignOutEnabled={true}>
         <SideBarItem title={"Workspace"} isActive={true} />
-        <SideBarItem title={"Assessment"} isActive={false} onClick={() => {navigate("assessment")}} />
+        <SideBarItem
+          title={"Assessment"}
+          isActive={false}
+          onClick={() => {
+            navigate("assessment")
+          }}
+        />
       </SideBar>
       <MainPanel>
         <Input
