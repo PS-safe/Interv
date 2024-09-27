@@ -8,14 +8,14 @@ import (
 )
 
 type userService struct {
-	userRepository          repositories.IUserRepository
-	userInWorkspaceReposity repositories.IUserInWorkspaceRepository
+	userRepository            repositories.IUserRepository
+	userInWorkspaceRepository repositories.IUserInWorkspaceRepository
 }
 
-func NewUserService(userRepository repositories.IUserRepository, userInWorkspaceReposity repositories.IUserInWorkspaceRepository) IUserService {
+func NewUserService(userRepository repositories.IUserRepository, userInWorkspaceRepository repositories.IUserInWorkspaceRepository) IUserService {
 	return &userService{
-		userRepository:          userRepository,
-		userInWorkspaceReposity: userInWorkspaceReposity,
+		userRepository:            userRepository,
+		userInWorkspaceRepository: userInWorkspaceRepository,
 	}
 }
 
@@ -38,7 +38,7 @@ func (u *userService) Create(importUser []domains.User, workspaceId uint) (err e
 				IsInterest:  &defaultInterest,
 			})
 		} else {
-			_, err := u.userInWorkspaceReposity.FindByUserIdAndWorkspaceId(userFound.ID, workspaceId)
+			_, err := u.userInWorkspaceRepository.FindByUserIdAndWorkspaceId(userFound.ID, workspaceId)
 			if err != nil {
 				checkedUser = append(checkedUser, &domains.UserInWorkspace{
 					UserId:      userFound.ID,
@@ -50,7 +50,7 @@ func (u *userService) Create(importUser []domains.User, workspaceId uint) (err e
 		}
 	}
 
-	_, err = u.userInWorkspaceReposity.Create(checkedUser)
+	_, err = u.userInWorkspaceRepository.Create(checkedUser)
 	if err == nil {
 		return err
 	}
@@ -58,6 +58,6 @@ func (u *userService) Create(importUser []domains.User, workspaceId uint) (err e
 }
 
 func (u *userService) Delete(id uint) (err error) {
-	u.userInWorkspaceReposity.DeleteByUserId(id)
+	u.userInWorkspaceRepository.DeleteByUserId(id)
 	return u.userRepository.DeleteById(id)
 }
