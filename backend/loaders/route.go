@@ -55,7 +55,7 @@ func SetupRoutes() {
 	var mailHandlers = handlers.NewMailHandler(mailServices)
 	var questionHandlers = handlers.NewVideoQuestionHandler(questionServices)
 	var lobbyHandlers = handlers.NewLobbyHandler(lobbyServices)
-	var workspaceHandlers = handlers.NewWorkspaceHandler(workspaceService, userInportalService)
+	var workspaceHandlers = handlers.NewWorkspaceHandler(workspaceService, userInportalService, authServices)
 	var portalHandler = handlers.NewPortalHandler(portalService)
 
 	// Fiber App
