@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom"
+import { createBrowserRouter, Outlet } from "react-router-dom"
 import AppLayout from "@/components/layout/AppLayout.tsx"
 import MainLayout from "@/components/layout/MainLayout.tsx"
 import LoginPage from "@/pages/login/Login.tsx"
@@ -12,6 +12,8 @@ import CreateWorkspace from "@/pages/portal/createWorkspace/CreateWorkspace"
 import AssessmentCreateVideoQuestionForm from "@/pages/portal/assessment/components/AssessmentCreateVideoQuestionForm.tsx"
 import AssessmentPage from "@/pages/portal/assessment/AssessmentPage.tsx"
 import Workspace from "@/pages/portal/Workspace.tsx"
+import MainLayoutRevamp from "@/components/layout/MainLayoutRevamp.tsx"
+import AssessmentCreateCodingQuestionForm from "@/pages/portal/assessment/components/AssessmentCreateCodingQuestionForm"
 
 export const router = createBrowserRouter([
   {
@@ -24,7 +26,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "portal",
-        element: <MainLayout />,
+        element: <MainLayoutRevamp />,
         children: [
           {
             path: "workspace",
@@ -39,15 +41,27 @@ export const router = createBrowserRouter([
             element: <Workspace />,
           },
           {
-            path: "assessment",
-            element: <AssessmentPage />,
+            path: "assessment/coding",
             children: [
               {
-                path: "coding",
-                element: <CreateCodingQuestion />,
+                path: "",
+                element: "coding list page",
               },
               {
-                path: "video",
+                path: "create",
+                element: <AssessmentCreateCodingQuestionForm />,
+              },
+            ],
+          },
+          {
+            path: "assessment/video",
+            children: [
+              {
+                path: "",
+                element: "video list page",
+              },
+              {
+                path: "create",
                 element: <AssessmentCreateVideoQuestionForm />,
               },
             ],

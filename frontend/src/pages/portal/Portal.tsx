@@ -1,49 +1,45 @@
-import SideBarItem from "@/components/layout/SideBarItem.tsx"
-import SideBar from "@/components/layout/SideBar.tsx"
-import MainPanel from "@/components/layout/MainPanel.tsx"
-import { Button } from "@/components/ui/button"
 import { useGetListWorkspace } from "@/hooks/useGetListWorkspace.ts"
-import { useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import ListWorkspaceCard from "./components/ListWorkspace.tsx"
+import { ContentLayout } from "@/components/layout/ContentLayout.tsx"
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb.tsx"
+import ContentPanel from "@/components/layout/ContentPanel.tsx"
 
 const Portal = () => {
   const { data } = useGetListWorkspace()
-  const navigate = useNavigate()
 
   return (
-    <>
-      <SideBar isSignOutEnabled={true}>
-        <SideBarItem
-          title={"Workspace"}
-          isActive={true}
-          onClick={() => {
-            navigate("/portal/workspace")
-          }}
-        />
-        <SideBarItem
-          title={"Assessment"}
-          isActive={false}
-          onClick={() => {
-            navigate("/portal/assessment")
-          }}
-        />
-      </SideBar>
-      <MainPanel isPaddingTop>
-        <div className="flex justify-between">
-          <p className="text-3xl font-bold">Candidate Group</p>
-          <Button
-            className={"text-center"}
-            onClick={() => {
-              navigate("workspace/create")
-            }}
-          >
-            Add new group
-          </Button>
-        </div>
-
+    <ContentLayout title={"Candidate Group"}>
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <Link to="/">Home</Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <Link to="/dashboard">Dashboard</Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>Account</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+      <ContentPanel>
         <ListWorkspaceCard workspace={data?.data ?? []} />
-      </MainPanel>
-    </>
+      </ContentPanel>
+    </ContentLayout>
   )
 }
 
