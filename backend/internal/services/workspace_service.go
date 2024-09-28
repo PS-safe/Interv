@@ -46,12 +46,12 @@ func (w *workspaceService) GetUserInWorkspace(id uint) (workspace *[]domains.Use
 	return w.userInWorkspaceRepository.FindByWorkspaceId(id)
 }
 
-func (w *workspaceService) GetAllOwnWorkspace(ownerId *uint) (workspace *[]domains.Workspace, err error) {
-	return w.workspaceRepository.FindByOwner(ownerId)
+func (w *workspaceService) GetAllOwnWorkspace(portalId *uint) (workspace *[]domains.Workspace, err error) {
+	return w.workspaceRepository.FindByPortalId(portalId)
 }
 
-func (w *workspaceService) GetUserNumInWorkspace(ownerId *uint) (workspaceId []uint, err error) {
-	listOfWorkspace, err := w.workspaceRepository.FindWorkspaceIdByOwner(ownerId)
+func (w *workspaceService) GetUserNumInWorkspace(portalId *uint) (workspaceId []uint, err error) {
+	listOfWorkspace, err := w.workspaceRepository.FindWorkspaceIdByPortalId(portalId)
 	if err != nil {
 		return nil, err
 	}
@@ -68,7 +68,7 @@ func (w *workspaceService) GetUserNumInWorkspace(ownerId *uint) (workspaceId []u
 	return userWorkspace, nil
 }
 
-func (w *workspaceService) Create(title string, isCoding *bool, isVideo *bool, startDate time.Time, stopDate time.Time, owner *uint) (workspace *domains.Workspace, err error) {
+func (w *workspaceService) Create(title string, isCoding *bool, isVideo *bool, startDate time.Time, stopDate time.Time, portalId *uint) (workspace *domains.Workspace, err error) {
 
 	if _, err := w.workspaceRepository.FindByTitle(strings.TrimSpace(title)); err == nil {
 		return nil, ErrorWorkspaceExists
@@ -80,7 +80,6 @@ func (w *workspaceService) Create(title string, isCoding *bool, isVideo *bool, s
 		IsCoding:  isCoding,
 		StartDate: startDate,
 		StopDate:  stopDate,
-		Owner:     *owner,
 	})
 }
 
