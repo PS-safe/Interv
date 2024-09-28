@@ -22,6 +22,7 @@ export function Menu({ isOpen }: MenuProps) {
   const location = useLocation()
   const menuList = getMenuList(location.pathname)
   const navigate = useNavigate()
+
   const handleSignOut = () => {
     toast.promise(server.authentication.logout, {
       loading: "Signing in...",
@@ -134,7 +135,7 @@ export function Menu({ isOpen }: MenuProps) {
                         isOpen === false ? "opacity-0 hidden" : "opacity-100",
                       )}
                     >
-                      Sign out
+                      Sign Out
                     </p>
                   </Button>
                 </TooltipTrigger>
