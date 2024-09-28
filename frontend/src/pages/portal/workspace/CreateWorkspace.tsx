@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/breadcrumb.tsx"
 import ContentPanel from "@/components/layout/ContentPanel.tsx"
 import { Link } from "react-router-dom"
+import CreateWorkspaceForm from "./components/CreateWorkspaceForm"
 
 const CreateWorkspace = () => {
   return (
@@ -26,7 +27,9 @@ const CreateWorkspace = () => {
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <ContentPanel>Create workspace</ContentPanel>
+      <ContentPanel>
+        <CreateWorkspaceForm />
+      </ContentPanel>
     </ContentLayout>
   )
 }
