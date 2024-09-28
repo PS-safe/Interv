@@ -55,7 +55,7 @@ func SetupRoutes() {
 	var mailHandlers = handlers.NewMailHandler(mailServices)
 	var questionHandlers = handlers.NewVideoQuestionHandler(questionServices)
 	var lobbyHandlers = handlers.NewLobbyHandler(lobbyServices)
-	var workspaceHandlers = handlers.NewWorkspaceHandler(workspaceService)
+	var workspaceHandlers = handlers.NewWorkspaceHandler(workspaceService, userInportalService)
 	var portalHandler = handlers.NewPortalHandler(portalService)
 
 	// Fiber App
@@ -121,7 +121,7 @@ func SetupRoutes() {
 
 	// Workspace
 	private.Get("workspace.get", workspaceHandlers.GetWorkspaceById)
-	private.Get("workspace.getAll", workspaceHandlers.GetAllWorkspace)
+	private.Get("workspace.getByPortal", workspaceHandlers.GetPortalWorkspace)
 	private.Post("workspace.create", workspaceHandlers.CreateWorkspace)
 	private.Delete("workspace.delete", workspaceHandlers.DeleteWorkspaceById)
 

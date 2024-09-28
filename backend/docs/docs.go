@@ -1386,7 +1386,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/workspace.getAll": {
+        "/workspace.getByPortal": {
             "get": {
                 "consumes": [
                     "application/json"
@@ -1398,7 +1398,7 @@ const docTemplate = `{
                     "workspace"
                 ],
                 "summary": "Get List of workspace",
-                "operationId": "GetAllWorkspace",
+                "operationId": "GetPortalWorkspace",
                 "responses": {
                     "200": {
                         "description": "OK",

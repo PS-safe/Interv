@@ -1738,11 +1738,11 @@ paths:
       summary: Get workspace
       tags:
       - workspace
-  /workspace.getAll:
+  /workspace.getByPortal:
     get:
       consumes:
       - application/json
-      operationId: GetAllWorkspace
+      operationId: GetPortalWorkspace
       produces:
       - application/json
       responses:
