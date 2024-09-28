@@ -55,7 +55,7 @@ func (u UserHandler) CreateUser(c *fiber.Ctx) error {
 // @Success 200 {object} Response[UserData]
 // @Failure 400 {object} ErrResponse
 // @Failure 500 {object} ErrResponse
-// @Router /user.createUser [post]
+// @Router /user.createAdmin [post]
 func (u UserHandler) CreateAdmin(c *fiber.Ctx) error {
 	body := CreateAdminBody{}
 	if err := c.BodyParser(&body); err != nil {

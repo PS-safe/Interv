@@ -1255,7 +1255,7 @@ paths:
       summary: Get portal
       tags:
       - portal
-  /user.createUser:
+  /user.createAdmin:
     post:
       consumes:
       - application/json
@@ -1283,6 +1283,36 @@ paths:
           schema:
             $ref: '#/definitions/handlers.ErrResponse'
       summary: Create new admin
+      tags:
+      - user
+  /user.createUser:
+    post:
+      consumes:
+      - application/json
+      operationId: createUser
+      parameters:
+      - description: CreateUserBody
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/UserCreateBody'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.Response-User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.ErrResponse'
+      summary: Create new user
       tags:
       - user
   /user.deleteUser:

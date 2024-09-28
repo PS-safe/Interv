@@ -50,6 +50,10 @@ export type CreateQuestionData = HandlersResponseDomainsCodingQuestion
 
 export type CreateQuestionError = HandlersErrResponse
 
+export type CreateUserData = HandlersResponseUser
+
+export type CreateUserError = HandlersErrResponse
+
 export interface CreateVideoQuestionBody {
   retryAmount: number
   timeToAnswer: number
@@ -928,7 +932,7 @@ export namespace User {
    * @tags user
    * @name CreateAdmin
    * @summary Create new admin
-   * @request POST:/user.createUser
+   * @request POST:/user.createAdmin
    * @response `200` `CreateAdminData` OK
    * @response `400` `HandlersErrResponse` Bad Request
    * @response `500` `HandlersErrResponse` Internal Server Error
@@ -939,6 +943,24 @@ export namespace User {
     export type RequestBody = AdminCreateBody
     export type RequestHeaders = {}
     export type ResponseBody = CreateAdminData
+  }
+
+  /**
+   * No description
+   * @tags user
+   * @name CreateUser
+   * @summary Create new user
+   * @request POST:/user.createUser
+   * @response `200` `CreateUserData` OK
+   * @response `400` `HandlersErrResponse` Bad Request
+   * @response `500` `HandlersErrResponse` Internal Server Error
+   */
+  export namespace CreateUser {
+    export type RequestParams = {}
+    export type RequestQuery = {}
+    export type RequestBody = UserCreateBody
+    export type RequestHeaders = {}
+    export type ResponseBody = CreateUserData
   }
 
   /**
@@ -1705,13 +1727,34 @@ export class Server<SecurityDataType extends unknown> extends HttpClient<Securit
      * @tags user
      * @name CreateAdmin
      * @summary Create new admin
-     * @request POST:/user.createUser
+     * @request POST:/user.createAdmin
      * @response `200` `CreateAdminData` OK
      * @response `400` `HandlersErrResponse` Bad Request
      * @response `500` `HandlersErrResponse` Internal Server Error
      */
     createAdmin: (payload: AdminCreateBody, params: RequestParams = {}) =>
       this.request<CreateAdminData, CreateAdminError>({
+        path: `/user.createAdmin`,
+        method: "POST",
+        body: payload,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags user
+     * @name CreateUser
+     * @summary Create new user
+     * @request POST:/user.createUser
+     * @response `200` `CreateUserData` OK
+     * @response `400` `HandlersErrResponse` Bad Request
+     * @response `500` `HandlersErrResponse` Internal Server Error
+     */
+    createUser: (payload: UserCreateBody, params: RequestParams = {}) =>
+      this.request<CreateUserData, CreateUserError>({
         path: `/user.createUser`,
         method: "POST",
         body: payload,
