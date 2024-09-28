@@ -60,18 +60,12 @@ const AssessmentCreateVideoQuestionForm = () => {
     )
   }
   return (
-    <ContentLayout title={"Create video assessment"}>
+    <ContentLayout title={"Create Video Assessment"}>
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <Link to="/portal/workspace">Portal</Link>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <Link to="/portal/assessment/video">Video assessments</Link>
+              <Link to="/portal/assessment/video">Video Assessments</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />

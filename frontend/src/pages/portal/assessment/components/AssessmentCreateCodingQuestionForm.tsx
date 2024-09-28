@@ -163,18 +163,12 @@ function CreateCodingQuestion() {
   }
 
   return (
-    <ContentLayout title={"Create coding assessment"}>
+    <ContentLayout title={"Create Coding Assessment"}>
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <Link to="/portal/workspace">Portal</Link>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <Link to="/portal/assessment/coding">Coding assessments</Link>
+              <Link to="/portal/assessment/coding">Coding Assessments</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />

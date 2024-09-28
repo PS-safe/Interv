@@ -1,19 +1,19 @@
-import { createBrowserRouter, Outlet } from "react-router-dom"
+import { createBrowserRouter } from "react-router-dom"
 import AppLayout from "@/components/layout/AppLayout.tsx"
 import MainLayout from "@/components/layout/MainLayout.tsx"
 import LoginPage from "@/pages/login/Login.tsx"
 import LobbyPage from "@/pages/lobby/Lobby.tsx"
 import Playground from "@/pages/playground/Playground.tsx"
-import Portal from "@/pages/portal/Portal.tsx"
+import WorkspaceListPage from "@/pages/portal/WorkspaceListPage.tsx"
 import CodingInterviewPage from "@/pages/lobby/codingInterview/CodingInterview.tsx"
 import VideoInterviewPage from "@/pages/lobby/videoInterview/VideoInterview.tsx"
-import CreateCodingQuestion from "@/pages/portal/assessment/components/AssessmentCreateCodingQuestionForm"
 import CreateWorkspace from "@/pages/portal/createWorkspace/CreateWorkspace"
 import AssessmentCreateVideoQuestionForm from "@/pages/portal/assessment/components/AssessmentCreateVideoQuestionForm.tsx"
-import AssessmentPage from "@/pages/portal/assessment/AssessmentPage.tsx"
-import Workspace from "@/pages/portal/Workspace.tsx"
+import WorkspaceDetailPage from "@/pages/portal/WorkspaceDetailPage.tsx"
 import MainLayoutRevamp from "@/components/layout/MainLayoutRevamp.tsx"
 import AssessmentCreateCodingQuestionForm from "@/pages/portal/assessment/components/AssessmentCreateCodingQuestionForm"
+import AssessmentVideoListPage from "@/pages/portal/assessment/AssessmentVideoListPage.tsx"
+import AssessmentCodingListPage from "@/pages/portal/assessment/AssessmentCodingListPage.tsx"
 
 export const router = createBrowserRouter([
   {
@@ -30,22 +30,27 @@ export const router = createBrowserRouter([
         children: [
           {
             path: "workspace",
-            element: <Portal />,
-          },
-          {
-            path: "create",
-            element: <CreateWorkspace />,
-          },
-          {
-            path: ":workspaceId",
-            element: <Workspace />,
+            children: [
+              {
+                path: "",
+                element: <WorkspaceListPage />,
+              },
+              {
+                path: "create",
+                element: <CreateWorkspace />,
+              },
+              {
+                path: ":workspaceId",
+                element: <WorkspaceDetailPage />,
+              },
+            ],
           },
           {
             path: "assessment/coding",
             children: [
               {
                 path: "",
-                element: "coding list page",
+                element: <AssessmentCodingListPage />,
               },
               {
                 path: "create",
@@ -58,7 +63,7 @@ export const router = createBrowserRouter([
             children: [
               {
                 path: "",
-                element: "video list page",
+                element: <AssessmentVideoListPage />,
               },
               {
                 path: "create",

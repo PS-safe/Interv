@@ -34,7 +34,7 @@ export function getMenuList(pathname: string): Group[] {
       menus: [
         {
           href: "/portal/workspace",
-          label: "All workspaces",
+          label: "Workspaces",
           active: pathname.includes("/portal/workspace"),
           icon: SquarePen,
           submenus: [],
@@ -59,12 +59,12 @@ export function getMenuList(pathname: string): Group[] {
           submenus: [
             {
               href: "/portal/assessment/video",
-              label: "All video assessments",
+              label: "Video Assessments",
               active: pathname === "/portal/assessment/video",
             },
             {
               href: "/portal/assessment/video/create",
-              label: "Create video assessment",
+              label: "Create",
               active: pathname === "/portal/assessment/video/create",
             },
           ],
@@ -77,12 +77,12 @@ export function getMenuList(pathname: string): Group[] {
           submenus: [
             {
               href: "/portal/assessment/coding",
-              label: "All coding assessments",
+              label: "Coding assessments",
               active: pathname === "/portal/assessment/coding",
             },
             {
               href: "/portal/assessment/coding/create",
-              label: "Create coding assessment",
+              label: "Create",
               active: pathname === "/portal/assessment/coding/create",
             },
           ],
