@@ -1578,6 +1578,7 @@
             "required": [
                 "created_at",
                 "id",
+                "portalId",
                 "role",
                 "updated_at",
                 "username"
@@ -1587,6 +1588,9 @@
                     "type": "string"
                 },
                 "id": {
+                    "type": "integer"
+                },
+                "portalId": {
                     "type": "integer"
                 },
                 "role": {
@@ -2043,6 +2047,9 @@
                     "type": "boolean"
                 },
                 "memberNum": {
+                    "type": "integer"
+                },
+                "portalId": {
                     "type": "integer"
                 },
                 "startDate": {

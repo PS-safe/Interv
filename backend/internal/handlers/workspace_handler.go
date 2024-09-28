@@ -8,12 +8,14 @@ import (
 type WorkspaceHandler struct {
 	workspaceService    services.IWorkspaceService
 	userInPortalService services.IUserInPortalService
+	authService         services.IAuthService
 }
 
-func NewWorkspaceHandler(workspaceService services.IWorkspaceService, userInPortalService services.IUserInPortalService) WorkspaceHandler {
+func NewWorkspaceHandler(workspaceService services.IWorkspaceService, userInPortalService services.IUserInPortalService, authService services.IAuthService) WorkspaceHandler {
 	return WorkspaceHandler{
 		workspaceService:    workspaceService,
 		userInPortalService: userInPortalService,
+		authService:         authService,
 	}
 }
 
@@ -113,19 +115,17 @@ func (w WorkspaceHandler) GetUserInWorkspace(c *fiber.Ctx) error {
 // @Router /workspace.getByPortal [get]
 func (w WorkspaceHandler) GetPortalWorkspace(c *fiber.Ctx) error {
 	userId, err := GetCurrentUser(c)
-	if err != nil {
-		return err
-	}
-	protalId, err := w.userInPortalService.GetPortalByUserId(userId)
-	if err != nil {
-		return err
-	}
-	response, err := w.workspaceService.GetPortalWorkspace(protalId)
+	_, portalId, err := w.authService.Me(*userId)
 	if err != nil {
 		return err
 	}
 
-	member, err := w.workspaceService.GetUserNumInWorkspace(protalId)
+	response, err := w.workspaceService.GetPortalWorkspace(portalId)
+	if err != nil {
+		return err
+	}
+
+	member, err := w.workspaceService.GetUserNumInWorkspace(portalId)
 	if err != nil {
 		return err
 	}

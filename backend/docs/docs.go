@@ -1586,6 +1586,7 @@ const docTemplate = `{
             "required": [
                 "created_at",
                 "id",
+                "portalId",
                 "role",
                 "updated_at",
                 "username"
@@ -1595,6 +1596,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "id": {
+                    "type": "integer"
+                },
+                "portalId": {
                     "type": "integer"
                 },
                 "role": {
@@ -2051,6 +2055,9 @@ const docTemplate = `{
                     "type": "boolean"
                 },
                 "memberNum": {
+                    "type": "integer"
+                },
+                "portalId": {
                     "type": "integer"
                 },
                 "startDate": {
