@@ -6,8 +6,6 @@ import { Menu } from "@/components/layout/Menu.tsx"
 import { SidebarToggle } from "@/components/layout/SidebarToggle.tsx"
 import { Link } from "react-router-dom"
 import IntervLogo from "@/assets/interv-logo.png"
-import {toast} from "sonner";
-import {server} from "@/contexts/swr.tsx";
 
 export function SideBarRevamp() {
   const sidebar = useStore(useSidebarToggle, (state) => state)

@@ -8,7 +8,8 @@
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "gen-client": "cd ../backend && make swag && cd ../frontend && swagger-typescript-api --silent --responses --unwrap-response-data --extract-request-params --extract-request-body --extract-response-body --extract-response-error --patch --clean-output --api-class-name Server --module-name-first-tag --debug --extract-enums --sort-routes --sort-types --axios --route-types  -p ../backend/docs/swagger.json -o ./src/api -n server.ts"
+    "gen-client": "cd ../backend && make swag && cd ../frontend && swagger-typescript-api --silent --responses --unwrap-response-data --extract-request-params --extract-request-body --extract-response-body --extract-response-error --patch --clean-output --api-class-name Server --module-name-first-tag --debug --extract-enums --sort-routes --sort-types --axios --route-types  -p ../backend/docs/swagger.json -o ./src/api -n server.ts",
+    "lint-fix": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0 --fix"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
