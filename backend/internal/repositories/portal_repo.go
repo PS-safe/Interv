@@ -6,13 +6,6 @@ import (
 	"gorm.io/gorm/clause"
 )
 
-type IPortalRepository interface {
-	Create(portal domains.Portal) (newPortal *domains.Portal, err error)
-	FindByTitle(title string) (portal *domains.Portal, err error)
-	FindById(id uint) (portal *domains.Portal, err error)
-	DeleteById(id uint) (err error)
-}
-
 type portalRepository struct {
 	DB gorm.DB
 }
@@ -34,7 +27,7 @@ func (p *portalRepository) Create(portal domains.Portal) (newPortal *domains.Por
 
 func (p *portalRepository) FindByTitle(title string) (portal *domains.Portal, err error) {
 	foundportal := new(domains.Portal)
-	if err := p.DB.First(&foundportal, "companyName = ? ", title).Error; err != nil {
+	if err := p.DB.First(&foundportal, "company_name = ? ", title).Error; err != nil {
 		return nil, err
 	}
 	return foundportal, nil

@@ -5,6 +5,12 @@ import (
 
 	"csgit.sit.kmutt.ac.th/interv/interv-platform/internal/domains"
 	"csgit.sit.kmutt.ac.th/interv/interv-platform/internal/repositories"
+	"github.com/gofiber/fiber/v2"
+)
+
+var (
+	ErrorPortalExists = fiber.NewError(fiber.StatusBadRequest, "portal already exists")
+	ErrorUserInPortal = fiber.NewError(fiber.StatusBadRequest, "user alreadt in portal")
 )
 
 type IPortalService interface {
@@ -43,7 +49,7 @@ func (p *portalService) GetPortalByName(companyName string) (portal *domains.Por
 func (p *portalService) Create(companyName string) (portal *domains.Portal, err error) {
 
 	if _, err := p.portalRepository.FindByTitle(strings.TrimSpace(companyName)); err == nil {
-		return nil, ErrorWorkspaceExists
+		return nil, ErrorPortalExists
 	}
 
 	return p.portalRepository.Create(domains.Portal{
@@ -54,4 +60,3 @@ func (p *portalService) Create(companyName string) (portal *domains.Portal, err 
 func (p *portalService) Delete(id uint) (err error) {
 	return p.portalRepository.DeleteById(id)
 }
-
