@@ -12,13 +12,15 @@ type workspaceService struct {
 	workspaceRepository       repositories.IWorkspaceRepository
 	userInWorkspaceRepository repositories.IUserInWorkspaceRepository
 	userRepository            repositories.IUserRepository
+	userInPortalService       IUserInPortalService
 }
 
-func NewWorkspaceService(workspaceRepository repositories.IWorkspaceRepository, userInWorkspaceRepository repositories.IUserInWorkspaceRepository, userRepository repositories.IUserRepository) IWorkspaceService {
+func NewWorkspaceService(workspaceRepository repositories.IWorkspaceRepository, userInWorkspaceRepository repositories.IUserInWorkspaceRepository, userRepository repositories.IUserRepository, userInPortalService IUserInPortalService) IWorkspaceService {
 	return &workspaceService{
 		userInWorkspaceRepository: userInWorkspaceRepository,
 		workspaceRepository:       workspaceRepository,
 		userRepository:            userRepository,
+		userInPortalService:       userInPortalService,
 	}
 }
 
@@ -68,11 +70,12 @@ func (w *workspaceService) GetUserNumInWorkspace(portalId *uint) (workspaceId []
 	return userWorkspace, nil
 }
 
-func (w *workspaceService) Create(title string, isCoding *bool, isVideo *bool, startDate time.Time, stopDate time.Time, portalId *uint) (workspace *domains.Workspace, err error) {
+func (w *workspaceService) Create(title string, isCoding *bool, isVideo *bool, startDate time.Time, stopDate time.Time, userId *uint) (workspace *domains.Workspace, err error) {
 
 	if _, err := w.workspaceRepository.FindByTitle(strings.TrimSpace(title)); err == nil {
 		return nil, ErrorWorkspaceExists
 	}
+	portalId, err := w.userInPortalService.GetPortalByUserId(*userId)
 
 	return w.workspaceRepository.Create(domains.Workspace{
 		Title:     strings.TrimSpace(title),
@@ -80,6 +83,7 @@ func (w *workspaceService) Create(title string, isCoding *bool, isVideo *bool, s
 		IsCoding:  isCoding,
 		StartDate: startDate,
 		StopDate:  stopDate,
+		PortalId:  portalId,
 	})
 }
 

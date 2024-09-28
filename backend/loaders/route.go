@@ -42,8 +42,9 @@ func SetupRoutes() {
 	var mailServices = services.NewMailService(mailRepositories)
 	var questionServices = services.NewQuestionService(videoQuestionRepositories)
 	var lobbyServices = services.NewLobbyService(lobbyRepositories)
-	var workspaceService = services.NewWorkspaceService(workspaceRepositories, userInWorkspaceRepositories, userRepositories)
 	var portalService = services.NewPortalService(portalRepository)
+	var userInportalService = services.NewUserInPortalService(userInPoratlRepository)
+	var workspaceService = services.NewWorkspaceService(workspaceRepositories, userInWorkspaceRepositories, userRepositories, userInportalService)
 
 	// Handlers
 	var userHandlers = handlers.NewUserHandler(userServices)
