@@ -61,11 +61,13 @@ const CreateWorkspace = () => {
   })
   const { setValue, watch } = form
   const onSubmit = (values: z.infer<typeof formSchema>) => {
+    const sD = new Date(values.date.startDate)
+    const eD = new Date(values.date.endDate)
     toast.promise(
       server.workspace.createWorkspace({
         ...values,
-        endDate: values.date.endDate,
-        startDate: values.date.startDate,
+        endDate: eD.toISOString(),
+        startDate: sD.toISOString(),
         portalId: currentUser.portalId,
       }),
       {

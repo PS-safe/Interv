@@ -17,16 +17,16 @@ type WorkspaceDetail struct {
 } // @name WorkspaceDetail
 
 type CreateWorkspaceBody struct {
-	Title         string    `json:"title" validate:"required"`
-	StartDate     time.Time `json:"startDate" validate:"required"`
-	EndDate       time.Time `json:"endDate" validate:"required"`
-	IsVideo       *bool     `json:"isVideo" validate:"required"`
-	IsCoding      *bool     `json:"isCoding" validate:"required"`
-	CodingTime    uint      `json:"codingTime" validate:"required"`
-	ReqScreen     *bool     `json:"reqScreen" validate:"required"`
-	ReqMicrophone *bool     `json:"reqMicrophone" validate:"required"`
-	ReqCamera     *bool     `json:"reqCamera" validate:"required"`
-	PortalId      uint      `json:"portalId" validate:"required"`
+	Title         string `json:"title" validate:"required"`
+	StartDate     string `json:"startDate" validate:"required"`
+	EndDate       string `json:"endDate" validate:"required"`
+	IsVideo       *bool  `json:"isVideo" validate:"required"`
+	IsCoding      *bool  `json:"isCoding" validate:"required"`
+	CodingTime    uint   `json:"codingTime" validate:"required"`
+	ReqScreen     *bool  `json:"reqScreen" validate:"required"`
+	ReqMicrophone *bool  `json:"reqMicrophone" validate:"required"`
+	ReqCamera     *bool  `json:"reqCamera" validate:"required"`
+	PortalId      uint   `json:"portalId" validate:"required"`
 } // @name CreateWorkspaceBody
 
 type GetWorkspaceBody struct {

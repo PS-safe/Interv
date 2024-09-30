@@ -77,8 +77,8 @@ func (w *workspaceService) GetUserNumInWorkspace(portalId *uint) (workspaceId []
 
 func (w *workspaceService) Create(
 	title string,
-	startDate time.Time,
-	endDate time.Time,
+	startDate string,
+	endDate string,
 	isVideo *bool,
 	isCoding *bool,
 	codingTime uint,
@@ -87,15 +87,23 @@ func (w *workspaceService) Create(
 	reqCamera *bool,
 	portalId uint,
 ) (workspace *domains.Workspace, err error) {
-
+	const layout = "2006-01-02T15:04:05Z07:00"
 	if _, err := w.workspaceRepository.FindByTitle(strings.TrimSpace(title)); err == nil {
 		return nil, ErrorWorkspaceExists
+	}
+	startdate, err := time.Parse(layout, startDate)
+	if err != nil {
+		return nil, err
+	}
+	enddate, err := time.Parse(layout, endDate)
+	if err != nil {
+		return nil, err
 	}
 
 	return w.workspaceRepository.Create(domains.Workspace{
 		Title:         strings.TrimSpace(title),
-		StartDate:     startDate,
-		EndDate:       endDate,
+		StartDate:     startdate,
+		EndDate:       enddate,
 		IsVideo:       isVideo,
 		IsCoding:      isCoding,
 		CodingTime:    codingTime,
