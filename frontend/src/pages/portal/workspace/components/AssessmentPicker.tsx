@@ -17,7 +17,7 @@ const AssessmentPicker: React.FC<AssessmentPickerProps> = ({
     "w-full h-60 border-solid border-2 border-slate-950 overflow-auto flex flex-col gap-0.5 rounded-md shadow-lg"
 
   return (
-    <div className="size-3/4 flex flex-row size-60 gap-10">
+    <div className="size-4/5 flex flex-row size-60 gap-10">
       <div className="w-1/2">
         <Label>Stock Assessment</Label>
         <div className={assessmentBox}>

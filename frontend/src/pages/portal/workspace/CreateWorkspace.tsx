@@ -25,26 +25,32 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { useState } from "react"
+import { server } from "@/contexts/swr"
+import { toast } from "sonner"
+import useCurrentUser from "@/hooks/UseCurrentUser"
+
+// Zod schema for form validation
+const formSchema = z.object({
+  title: z.string().min(1, { message: "Required" }),
+  date: z.object({
+    startDate: z.string().min(1, { message: "Start date is required" }),
+    endDate: z.string().min(1, { message: "End date is required" }),
+  }),
+  isVideo: z.boolean().default(false),
+  isCoding: z.boolean().default(false),
+  codingTime: z.number().min(1, { message: "Required" }),
+  reqScreen: z.boolean().default(false),
+  reqMicrophone: z.boolean().default(false),
+  reqCamera: z.boolean().default(false),
+})
 
 const CreateWorkspace = () => {
-  const formSchema = z.object({
-    title: z.string().min(1, { message: "Required" }),
-    date: z.object({
-      startDate: z.string().date().min(1, { message: "Required" }),
-      endDate: z.string().date().min(1, { message: "Required" }),
-    }),
-    isVideo: z.boolean().default(false),
-    isCoding: z.boolean().default(false),
-    codingTime: z.number().min(1, { message: "Required" }),
-    reqScreen: z.boolean().default(false),
-    reqMicrophone: z.boolean().default(false),
-    reqCamera: z.boolean().default(false),
-  })
+  const { currentUser } = useCurrentUser()
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: "",
-      date: {},
+      date: { startDate: "", endDate: "" },
       isVideo: false,
       isCoding: false,
       codingTime: 0,
@@ -53,10 +59,41 @@ const CreateWorkspace = () => {
       reqCamera: false,
     },
   })
+  const { setValue, watch } = form
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values)
+    toast.promise(
+      server.workspace.createWorkspace({
+        ...values,
+        endDate: values.date.endDate,
+        startDate: values.date.startDate,
+        portalId: currentUser.portalId,
+      }),
+      {
+        loading: "Creating question...",
+        success: () => {
+          return "Created successfully"
+        },
+        error: (err) => {
+          return err.response.data.message
+        },
+      },
+    )
   }
 
+  // Watch date values
+  const startDate = watch("date.startDate")
+  const endDate = watch("date.endDate")
+
+  // Handlers for date changes
+  const handleStartDateChange = (date: string) => {
+    setValue("date.startDate", date, { shouldValidate: true })
+  }
+
+  const handleEndDateChange = (date: string) => {
+    setValue("date.endDate", date, { shouldValidate: true })
+  }
+
+  // State for assessments
   const [codeStockAssessment, setCodeStockAssessment] = useState<string[]>([
     "a",
     "b",
@@ -73,8 +110,14 @@ const CreateWorkspace = () => {
   const [videoCurrentAssessment, setVideoCurrentAssessment] = useState<
     string[]
   >([])
-  const [startDate, setStartDate] = useState<string>("")
-  const [endDate, setEndDate] = useState<string>("")
+
+  // Automatically update isVideo and isCoding fields based on currentAssessment
+  const isVideo = videoCurrentAssessment.length > 0
+  const isCoding = codeCurrentAssessment.length > 0
+
+  // Update these values in the form when they change
+  setValue("isVideo", isVideo)
+  setValue("isCoding", isCoding)
 
   return (
     <ContentLayout title={"Create workspace"}>
@@ -110,16 +153,15 @@ const CreateWorkspace = () => {
             <FormField
               control={form.control}
               name="date"
-              render={(field) => (
+              render={() => (
                 <FormItem>
                   <FormLabel>Date</FormLabel>
                   <FormControl>
                     <DatePicker
                       startDate={startDate}
-                      setStartDate={setStartDate}
+                      setStartDate={handleStartDateChange}
                       endDate={endDate}
-                      setEndDate={setEndDate}
-                      {...field}
+                      setEndDate={handleEndDateChange}
                     />
                   </FormControl>
                   <FormMessage />
@@ -134,10 +176,10 @@ const CreateWorkspace = () => {
                   <FormLabel>Video Assessment</FormLabel>
                   <FormControl>
                     <AssessmentPicker
-                      currentAssessment={codeCurrentAssessment}
-                      setCurrentAssessment={setCodeCurrentAssessment}
-                      stockAssessment={codeStockAssessment}
-                      setStockAssessment={setCodeStockAssessment}
+                      currentAssessment={videoCurrentAssessment}
+                      setCurrentAssessment={setVideoCurrentAssessment}
+                      stockAssessment={videoStockAssessment}
+                      setStockAssessment={setVideoStockAssessment}
                     />
                   </FormControl>
                   <FormMessage />
@@ -152,10 +194,10 @@ const CreateWorkspace = () => {
                   <FormLabel>Coding Assessment</FormLabel>
                   <FormControl>
                     <AssessmentPicker
-                      currentAssessment={videoCurrentAssessment}
-                      setCurrentAssessment={setVideoCurrentAssessment}
-                      stockAssessment={videoStockAssessment}
-                      setStockAssessment={setVideoStockAssessment}
+                      currentAssessment={codeCurrentAssessment}
+                      setCurrentAssessment={setCodeCurrentAssessment}
+                      stockAssessment={codeStockAssessment}
+                      setStockAssessment={setCodeStockAssessment}
                     />
                   </FormControl>
                   <FormMessage />
@@ -165,11 +207,16 @@ const CreateWorkspace = () => {
             <FormField
               control={form.control}
               name="codingTime"
-              render={(field) => (
+              render={({ field }) => (
                 <FormItem>
                   <FormLabel>Coding Time</FormLabel>
                   <FormControl>
-                    <Input type="number" {...field} />
+                    <Input
+                      type="number"
+                      {...field}
+                      value={field.value ?? ""} // Ensure the field value doesn't start as undefined
+                      onChange={(e) => field.onChange(Number(e.target.value))} // Convert string to number
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -178,10 +225,18 @@ const CreateWorkspace = () => {
             <FormField
               control={form.control}
               name="reqScreen"
-              render={(field) => (
+              render={({ field }) => (
                 <FormItem className="flex flex-row">
                   <FormControl>
-                    <Input className="size-4" type="checkbox" {...field} />
+                    <Input
+                      className="size-4"
+                      type="checkbox"
+                      checked={field.value} // Set checked to the boolean value
+                      onChange={field.onChange} // Update the form state when checkbox changes
+                      onBlur={field.onBlur}
+                      name={field.name}
+                      ref={field.ref}
+                    />
                   </FormControl>
                   <FormLabel>Require screen record</FormLabel>
                   <FormMessage />
@@ -191,10 +246,18 @@ const CreateWorkspace = () => {
             <FormField
               control={form.control}
               name="reqMicrophone"
-              render={(field) => (
+              render={({ field }) => (
                 <FormItem className="flex flex-row">
                   <FormControl>
-                    <Input className="size-4" type="checkbox" {...field} />
+                    <Input
+                      className="size-4"
+                      type="checkbox"
+                      checked={field.value} // Set checked to the boolean value
+                      onChange={field.onChange} // Update the form state when checkbox changes
+                      onBlur={field.onBlur}
+                      name={field.name}
+                      ref={field.ref}
+                    />
                   </FormControl>
                   <FormLabel>Require microphone record</FormLabel>
                   <FormMessage />
@@ -204,10 +267,16 @@ const CreateWorkspace = () => {
             <FormField
               control={form.control}
               name="reqCamera"
-              render={(field) => (
+              render={({ field }) => (
                 <FormItem className="flex flex-row">
                   <FormControl>
-                    <Input className="size-4" type="checkbox" {...field} />
+                    <Input
+                      className="size-4"
+                      type="checkbox"
+                      checked={field.value} // Set checked to the boolean value
+                      onChange={field.onChange} // Update the form state when checkbox changes
+                      name={field.name}
+                    />
                   </FormControl>
                   <FormLabel>Require camera record</FormLabel>
                   <FormMessage />

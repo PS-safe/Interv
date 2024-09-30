@@ -169,26 +169,20 @@ func (w WorkspaceHandler) CreateWorkspace(c *fiber.Ctx) error {
 		return err
 	}
 
-	userId, err := GetCurrentUser(c)
-	if err != nil {
-		return err
-	}
-	_, portalId, err := w.authService.Me(*userId)
-	if err != nil {
-		return err
-	}
-	response, err := w.workspaceService.Create(form.Title, form.IsVideo, form.IsCoding, form.StartDate, form.EndDate, portalId, form.ReqScreen, form.ReqMicrophone, form.ReqCamera)
+	response, err := w.workspaceService.Create(form.Title, form.StartDate, form.EndDate, form.IsVideo, form.IsCoding, form.CodingTime, form.ReqScreen, form.ReqMicrophone, form.ReqCamera, form.PortalId)
 	if err != nil {
 		return err
 	}
 
 	return Created(c, WorkspaceDetail{
-		Id:        response.Id,
-		Title:     response.Title,
-		IsVideo:   *response.IsVideo,
-		IsCoding:  *response.IsCoding,
-		StartDate: response.StartDate,
-		EndDate:   response.EndDate,
+		Id:         response.Id,
+		Title:      response.Title,
+		StartDate:  response.StartDate,
+		EndDate:    response.EndDate,
+		IsVideo:    *response.IsVideo,
+		IsCoding:   *response.IsCoding,
+		CodingTime: response.CodingTime,
+		PortalId:   response.PortalId,
 	})
 }
 

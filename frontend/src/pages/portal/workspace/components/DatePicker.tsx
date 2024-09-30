@@ -2,9 +2,9 @@ import React from "react"
 
 interface DatePickerProps {
   startDate: string
-  setStartDate: React.Dispatch<React.SetStateAction<string>>
+  setStartDate: (date: string) => void
   endDate: string
-  setEndDate: React.Dispatch<React.SetStateAction<string>>
+  setEndDate: (date: string) => void
 }
 
 const DatePicker: React.FC<DatePickerProps> = ({
@@ -16,13 +16,11 @@ const DatePicker: React.FC<DatePickerProps> = ({
   const handleStartDateChange = (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    const selectedDate = event.target.value
-    setStartDate(selectedDate) // Update parent's state
-    setEndDate("") // Clear end date when start date changes
+    setStartDate(event.target.value)
   }
 
   const handleEndDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEndDate(event.target.value) // Update parent's state
+    setEndDate(event.target.value)
   }
 
   return (
@@ -46,7 +44,6 @@ const DatePicker: React.FC<DatePickerProps> = ({
           value={endDate}
           onChange={handleEndDateChange}
           min={startDate}
-          disabled={!startDate}
         />
       </div>
     </div>

@@ -77,14 +77,15 @@ func (w *workspaceService) GetUserNumInWorkspace(portalId *uint) (workspaceId []
 
 func (w *workspaceService) Create(
 	title string,
-	isCoding *bool,
-	isVideo *bool,
 	startDate time.Time,
 	endDate time.Time,
-	portalId *uint,
+	isVideo *bool,
+	isCoding *bool,
+	codingTime uint,
 	reqScreen *bool,
 	reqMicrophone *bool,
 	reqCamera *bool,
+	portalId uint,
 ) (workspace *domains.Workspace, err error) {
 
 	if _, err := w.workspaceRepository.FindByTitle(strings.TrimSpace(title)); err == nil {
@@ -93,14 +94,15 @@ func (w *workspaceService) Create(
 
 	return w.workspaceRepository.Create(domains.Workspace{
 		Title:         strings.TrimSpace(title),
-		IsVideo:       isVideo,
-		IsCoding:      isCoding,
 		StartDate:     startDate,
 		EndDate:       endDate,
-		PortalId:      *portalId,
+		IsVideo:       isVideo,
+		IsCoding:      isCoding,
+		CodingTime:    codingTime,
 		ReqScreen:     reqScreen,
 		ReqMicrophone: reqMicrophone,
 		ReqCamera:     reqCamera,
+		PortalId:      portalId,
 	})
 }
 

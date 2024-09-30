@@ -85,6 +85,7 @@ export interface CreateWorkspaceBody {
   endDate: string
   isCoding: boolean
   isVideo: boolean
+  portalId: number
   reqCamera: boolean
   reqMicrophone: boolean
   reqScreen: boolean
@@ -640,6 +641,7 @@ export interface WorkspaceData {
 }
 
 export interface WorkspaceDetail {
+  codingTime?: number
   endDate?: string
   id?: number
   isCoding?: boolean

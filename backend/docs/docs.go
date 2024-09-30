@@ -1573,6 +1573,7 @@ const docTemplate = `{
                 "endDate",
                 "isCoding",
                 "isVideo",
+                "portalId",
                 "reqCamera",
                 "reqMicrophone",
                 "reqScreen",
@@ -1591,6 +1592,9 @@ const docTemplate = `{
                 },
                 "isVideo": {
                     "type": "boolean"
+                },
+                "portalId": {
+                    "type": "integer"
                 },
                 "reqCamera": {
                     "type": "boolean"
@@ -2073,6 +2077,9 @@ const docTemplate = `{
         "WorkspaceDetail": {
             "type": "object",
             "properties": {
+                "codingTime": {
+                    "type": "integer"
+                },
                 "endDate": {
                     "type": "string"
                 },

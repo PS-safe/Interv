@@ -1565,6 +1565,7 @@
                 "endDate",
                 "isCoding",
                 "isVideo",
+                "portalId",
                 "reqCamera",
                 "reqMicrophone",
                 "reqScreen",
@@ -1583,6 +1584,9 @@
                 },
                 "isVideo": {
                     "type": "boolean"
+                },
+                "portalId": {
+                    "type": "integer"
                 },
                 "reqCamera": {
                     "type": "boolean"
@@ -2065,6 +2069,9 @@
         "WorkspaceDetail": {
             "type": "object",
             "properties": {
+                "codingTime": {
+                    "type": "integer"
+                },
                 "endDate": {
                     "type": "string"
                 },
