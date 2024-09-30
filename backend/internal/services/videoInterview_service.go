@@ -40,13 +40,13 @@ func (v videoInterviewService) GetVideoInterviewContext(lobbyId uint) ([]domains
 		return nil, ErrorFindLobby
 	}
 
-	videoQuestionInWorkspace, err := v.videoQuestionRepo.GetByWorkspaceId(lobby.WorkspaceID)
+	workspace, err := v.videoQuestionRepo.GetByWorkspaceId(lobby.WorkspaceID)
 	if err != nil {
 		return nil, ErrorFindQuestion
 	}
 
 	var videoQuestion []domains.VideoQuestion
-	for _, v := range videoQuestionInWorkspace.VideoQuestion {
+	for _, v := range workspace.VideoQuestion {
 		videoQuestion = append(videoQuestion, *v)
 	}
 
