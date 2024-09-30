@@ -2,13 +2,22 @@ basePath: /api
 definitions:
   AdminCreateBody:
     properties:
+      name:
+        type: string
+      password:
+        type: string
       portalId:
         type: integer
-      user:
-        $ref: '#/definitions/domains.User'
+      role:
+        type: string
+      username:
+        type: string
     required:
+    - name
+    - password
     - portalId
-    - user
+    - role
+    - username
     type: object
   CodingInterviewAddQuestionQuery:
     properties:
@@ -84,21 +93,33 @@ definitions:
     type: object
   CreateWorkspaceBody:
     properties:
+      codingTime:
+        type: integer
+      endDate:
+        type: string
       isCoding:
         type: boolean
       isVideo:
         type: boolean
+      reqCamera:
+        type: boolean
+      reqMicrophone:
+        type: boolean
+      reqScreen:
+        type: boolean
       startDate:
-        type: string
-      stopDate:
         type: string
       title:
         type: string
     required:
+    - codingTime
+    - endDate
     - isCoding
     - isVideo
+    - reqCamera
+    - reqMicrophone
+    - reqScreen
     - startDate
-    - stopDate
     - title
     type: object
   CurrentUserResponse:
@@ -417,6 +438,8 @@ definitions:
     type: object
   WorkspaceDetail:
     properties:
+      endDate:
+        type: string
       id:
         type: integer
       isCoding:
@@ -428,8 +451,6 @@ definitions:
       portalId:
         type: integer
       startDate:
-        type: string
-      stopDate:
         type: string
       title:
         type: string
