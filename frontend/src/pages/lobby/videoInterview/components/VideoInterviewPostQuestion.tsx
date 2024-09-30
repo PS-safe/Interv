@@ -39,6 +39,7 @@ export const VideoInterviewPostQuestion: FC<VideoInterviewPostQuestion> = ({
         handleNextQuestion()
         setMediaBlob([])
         setRecordState("pre")
+        // check if all video questions are done
         server.lobby.updateLobbyContext({
           lobbyId: Number(lobbyId),
           isVideoDone: true,
