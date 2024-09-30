@@ -201,6 +201,51 @@ const docTemplate = `{
                 }
             }
         },
+        "/codingInterview.deleteQuestion/{codingQuestionID}": {
+            "delete": {
+                "description": "Delete a coding interview question",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "codingInterview"
+                ],
+                "summary": "Delete a coding interview question",
+                "operationId": "DeleteQuestion",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Coding Question ID",
+                        "name": "codingQuestionID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response with a message",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.Response-string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ErrResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ErrResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/codingInterview.getCompileResult": {
             "post": {
                 "description": "Get compile result for a coding interview",

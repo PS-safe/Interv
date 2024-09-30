@@ -105,6 +105,10 @@ export type DeletePortalByIdData = HandlersResponseString
 
 export type DeletePortalByIdError = HandlersErrResponse
 
+export type DeleteQuestionData = HandlersResponseString
+
+export type DeleteQuestionError = HandlersErrResponse
+
 export type DeleteUserData = HandlersResponseString
 
 export type DeleteUserError = HandlersErrResponse
@@ -775,6 +779,27 @@ export namespace CodingInterview {
     export type RequestBody = CodingInterviewCreateQuestionQuery
     export type RequestHeaders = {}
     export type ResponseBody = CreateQuestionData
+  }
+
+  /**
+   * @description Delete a coding interview question
+   * @tags codingInterview
+   * @name DeleteQuestion
+   * @summary Delete a coding interview question
+   * @request DELETE:/codingInterview.deleteQuestion/{codingQuestionID}
+   * @response `200` `DeleteQuestionData` Successful response with a message
+   * @response `400` `HandlersErrResponse` Bad Request
+   * @response `500` `HandlersErrResponse` Internal Server Error
+   */
+  export namespace DeleteQuestion {
+    export type RequestParams = {
+      /** Coding Question ID */
+      codingQuestionId: number
+    }
+    export type RequestQuery = {}
+    export type RequestBody = never
+    export type RequestHeaders = {}
+    export type ResponseBody = DeleteQuestionData
   }
 
   /**
@@ -1587,6 +1612,26 @@ export class Server<SecurityDataType extends unknown> extends HttpClient<Securit
         path: `/codingInterview.createQuestion`,
         method: "POST",
         body: body,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Delete a coding interview question
+     *
+     * @tags codingInterview
+     * @name DeleteQuestion
+     * @summary Delete a coding interview question
+     * @request DELETE:/codingInterview.deleteQuestion/{codingQuestionID}
+     * @response `200` `DeleteQuestionData` Successful response with a message
+     * @response `400` `HandlersErrResponse` Bad Request
+     * @response `500` `HandlersErrResponse` Internal Server Error
+     */
+    deleteQuestion: (codingQuestionId: number, params: RequestParams = {}) =>
+      this.request<DeleteQuestionData, DeleteQuestionError>({
+        path: `/codingInterview.deleteQuestion/${codingQuestionId}`,
+        method: "DELETE",
         type: ContentType.Json,
         format: "json",
         ...params,
