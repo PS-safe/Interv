@@ -8,9 +8,16 @@ import {
   BreadcrumbPage,
 } from "@/components/ui/breadcrumb.tsx"
 import ContentPanel from "@/components/layout/ContentPanel.tsx"
+import { Button } from "@/components/ui/button.tsx"
+import { useNavigate } from "react-router-dom"
+import { Plus } from "lucide-react"
 
 const WorkspaceListPage = () => {
   const { data } = useGetListWorkspace()
+  const navigate = useNavigate()
+  const handleAdd = () => {
+    navigate("/portal/assessment/video/create")
+  }
 
   return (
     <ContentLayout
@@ -22,6 +29,14 @@ const WorkspaceListPage = () => {
               <BreadcrumbPage>Workspaces</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
+          <Button
+            variant="outline"
+            onClick={() => handleAdd()}
+            className="flex flex-row items-center gap-2"
+          >
+            <Plus />
+            Create new
+          </Button>
         </Breadcrumb>
       }
     >

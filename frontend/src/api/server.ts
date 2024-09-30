@@ -347,12 +347,23 @@ export interface GetVideoQuestionByIdResponse {
   updatedAt?: string
 }
 
-export type GetVideoQuestionByPortalIdData = HandlersResponseArrayGetVideoQuestionByIdResponse[]
+export type GetVideoQuestionByPortalIdData = HandlersResponseArrayGetVideoQuestionByPortalIdResponse
 
 export type GetVideoQuestionByPortalIdError = HandlersErrResponse
 
 export interface GetVideoQuestionByPortalIdParams {
   id: number
+}
+
+export interface GetVideoQuestionByPortalIdResponse {
+  createdAt?: string
+  id?: number
+  portalId?: number
+  retryAmount?: number
+  timeToAnswer?: number
+  timeToPrepare?: number
+  title?: string
+  updatedAt?: string
 }
 
 export type GetWorkspaceData = HandlersResponseWorkspaceData
@@ -396,9 +407,9 @@ export interface HandlersOkResponse {
   timestamp?: string
 }
 
-export interface HandlersResponseArrayGetVideoQuestionByIdResponse {
+export interface HandlersResponseArrayGetVideoQuestionByPortalIdResponse {
   code?: number
-  data?: GetVideoQuestionByIdResponse[]
+  data?: GetVideoQuestionByPortalIdResponse[]
   message?: string
   timestamp?: string
 }

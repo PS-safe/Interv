@@ -1309,10 +1309,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/handlers.Response-array_GetVideoQuestionByIdResponse"
-                            }
+                            "$ref": "#/definitions/handlers.Response-array_GetVideoQuestionByPortalIdResponse"
                         }
                     },
                     "400": {
@@ -1841,6 +1838,35 @@ const docTemplate = `{
             }
         },
         "GetVideoQuestionByIdResponse": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "portalId": {
+                    "type": "integer"
+                },
+                "retryAmount": {
+                    "type": "integer"
+                },
+                "timeToAnswer": {
+                    "type": "integer"
+                },
+                "timeToPrepare": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "GetVideoQuestionByPortalIdResponse": {
             "type": "object",
             "properties": {
                 "createdAt": {
@@ -2765,7 +2791,7 @@ const docTemplate = `{
                 }
             }
         },
-        "handlers.Response-array_GetVideoQuestionByIdResponse": {
+        "handlers.Response-array_GetVideoQuestionByPortalIdResponse": {
             "type": "object",
             "properties": {
                 "code": {
@@ -2774,7 +2800,7 @@ const docTemplate = `{
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/GetVideoQuestionByIdResponse"
+                        "$ref": "#/definitions/GetVideoQuestionByPortalIdResponse"
                     }
                 },
                 "message": {

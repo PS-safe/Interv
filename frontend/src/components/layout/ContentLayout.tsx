@@ -16,7 +16,9 @@ export function ContentLayout({
     <>
       <Navbar title={title} />
       {breadcrumb}
-      <div className="container py-8 px-8 h-full max-w-[1200px]">{children}</div>
+      <div className="container py-8 px-8 h-full max-w-[1200px]">
+        {children}
+      </div>
     </>
   )
 }
