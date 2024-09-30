@@ -13,14 +13,18 @@ const WorkspaceListPage = () => {
   const { data } = useGetListWorkspace()
 
   return (
-    <ContentLayout title={"Workspace"}>
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbPage>Workspaces</BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+    <ContentLayout
+      title={"Workspace"}
+      breadcrumb={
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbPage>Workspaces</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+      }
+    >
       <ContentPanel>
         <ListWorkspaceCard workspace={data?.data ?? []} />
       </ContentPanel>

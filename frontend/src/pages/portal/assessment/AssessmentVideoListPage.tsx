@@ -9,14 +9,18 @@ import ContentPanel from "@/components/layout/ContentPanel.tsx"
 
 const AssessmentVideoListPage = () => {
   return (
-    <ContentLayout title={"Video Assessments"}>
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbPage>Video Assessments</BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+    <ContentLayout
+      title={"Video Assessments"}
+      breadcrumb={
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbPage>Video Assessments</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+      }
+    >
       <ContentPanel>All Video Assessments</ContentPanel>
     </ContentLayout>
   )

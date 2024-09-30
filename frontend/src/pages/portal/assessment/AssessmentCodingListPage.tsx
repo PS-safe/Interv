@@ -4,6 +4,7 @@ import {
   BreadcrumbItem,
   BreadcrumbList,
   BreadcrumbPage,
+  BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb.tsx"
 import ContentPanel from "@/components/layout/ContentPanel.tsx"
 import { useGetCodingInterviewQuestionByPortalId } from "@/hooks/useGetCodingInterviewQuestionByPortalId"
@@ -38,24 +39,26 @@ const AssessmentCodingListPage = () => {
   }
 
   return (
-    <ContentLayout title={"Coding Assessments"}>
-      <Breadcrumb>
-        <BreadcrumbList className="flex flex-row justify-between">
-          <BreadcrumbItem>
-            <BreadcrumbPage>Coding Assessments</BreadcrumbPage>
-          </BreadcrumbItem>
-          <BreadcrumbItem>
-            <Button
-              variant="outline"
-              onClick={() => handleAdd()}
-              className="flex flex-row items-center gap-2"
-            >
-              <FaPlus />
-              Create new
-            </Button>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+    <ContentLayout
+      title={"Coding Assessments"}
+      breadcrumb={
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbPage>Coding Assessments</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+          <Button
+            variant="outline"
+            onClick={() => handleAdd()}
+            className="flex flex-row items-center gap-2"
+          >
+            <FaPlus />
+            Create new
+          </Button>
+        </Breadcrumb>
+      }
+    >
       <ContentPanel>
         {isLoading ? (
           <p>Loading...</p>
