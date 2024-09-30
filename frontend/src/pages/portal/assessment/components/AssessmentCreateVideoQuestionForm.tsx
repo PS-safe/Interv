@@ -13,7 +13,7 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { toast } from "sonner"
 import { server } from "@/contexts/swr.tsx"
-import { Link, useParams } from "react-router-dom"
+import { Link } from "react-router-dom"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -24,9 +24,10 @@ import {
 } from "@/components/ui/breadcrumb.tsx"
 import ContentPanel from "@/components/layout/ContentPanel.tsx"
 import { ContentLayout } from "@/components/layout/ContentLayout.tsx"
+import useCurrentUser from "@/hooks/UseCurrentUser.ts"
 
 const AssessmentCreateVideoQuestionForm = () => {
-  const { workspaceId } = useParams()
+  const { currentUser } = useCurrentUser()
   const formSchema = z.object({
     title: z.string().min(1, { message: "Required" }),
     timeToPrepare: z.coerce.number().min(1, { message: "Required" }),
@@ -46,7 +47,7 @@ const AssessmentCreateVideoQuestionForm = () => {
     toast.promise(
       server.videoQuestion.createVideoQuestion({
         ...values,
-        workspaceId: Number(workspaceId),
+        portalId: currentUser.portalId,
       }),
       {
         loading: "Creating question...",
@@ -76,13 +77,13 @@ const AssessmentCreateVideoQuestionForm = () => {
       </Breadcrumb>
       <ContentPanel>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
               control={form.control}
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Question title</FormLabel>
+                  <FormLabel className="text-lg">Question Title</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -95,7 +96,9 @@ const AssessmentCreateVideoQuestionForm = () => {
               name="timeToPrepare"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Time to prepare (seconds)</FormLabel>
+                  <FormLabel className="text-lg">
+                    Time To Prepare (seconds)
+                  </FormLabel>
                   <FormControl>
                     <Input type={"number"} {...field} />
                   </FormControl>
@@ -108,7 +111,9 @@ const AssessmentCreateVideoQuestionForm = () => {
               name="timeToAnswer"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Time to answer (seconds)</FormLabel>
+                  <FormLabel className="text-lg">
+                    Time To Answer (seconds)
+                  </FormLabel>
                   <FormControl>
                     <Input type={"number"} {...field} />
                   </FormControl>
@@ -121,7 +126,7 @@ const AssessmentCreateVideoQuestionForm = () => {
               name="retryAmount"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Max retry</FormLabel>
+                  <FormLabel className="text-lg">Max Retry</FormLabel>
                   <FormControl>
                     <Input type={"number"} {...field} />
                   </FormControl>
