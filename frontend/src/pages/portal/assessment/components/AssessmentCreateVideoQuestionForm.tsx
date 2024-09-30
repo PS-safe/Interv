@@ -40,7 +40,7 @@ const AssessmentCreateVideoQuestionForm = () => {
       title: "",
       timeToPrepare: 0,
       timeToAnswer: 0,
-      retryAmount: 0,
+      retryAmount: 1,
     },
   })
   const onSubmit = (values: z.infer<typeof formSchema>) => {
@@ -52,6 +52,7 @@ const AssessmentCreateVideoQuestionForm = () => {
       {
         loading: "Creating question...",
         success: () => {
+          form.reset()
           return "Created successfully"
         },
         error: (err) => {
