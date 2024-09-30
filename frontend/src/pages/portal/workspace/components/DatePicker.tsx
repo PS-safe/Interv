@@ -26,24 +26,29 @@ const DatePicker: React.FC<DatePickerProps> = ({
   }
 
   return (
-    <div>
-      <label htmlFor="start">Start Date:</label>
-      <input
-        type="date"
-        id="start"
-        value={startDate}
-        onChange={handleStartDateChange}
-      />
-
-      <label htmlFor="end">End Date:</label>
-      <input
-        type="date"
-        id="end"
-        value={endDate}
-        onChange={handleEndDateChange}
-        min={startDate}
-        disabled={!startDate}
-      />
+    <div className="w-3/4 flex flex-row gap-10">
+      <div className="w-full flex flex-col">
+        <label htmlFor="start">Start Date:</label>
+        <input
+          className="w-full p-2 border-solid border-2 border-slate-100 rounded-lg hadow-md"
+          type="date"
+          id="start"
+          value={startDate}
+          onChange={handleStartDateChange}
+        />
+      </div>
+      <div className="w-full flex flex-col">
+        <label htmlFor="end">End Date:</label>
+        <input
+          className="w-full p-2 border-solid border-2 border-slate-100 rounded-lg hadow-md"
+          type="date"
+          id="end"
+          value={endDate}
+          onChange={handleEndDateChange}
+          min={startDate}
+          disabled={!startDate}
+        />
+      </div>
     </div>
   )
 }
