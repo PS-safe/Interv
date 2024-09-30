@@ -15,7 +15,12 @@ type workspaceService struct {
 	userInPortalService       IUserInPortalService
 }
 
-func NewWorkspaceService(workspaceRepository repositories.IWorkspaceRepository, userInWorkspaceRepository repositories.IUserInWorkspaceRepository, userRepository repositories.IUserRepository, userInPortalService IUserInPortalService) IWorkspaceService {
+func NewWorkspaceService(
+	workspaceRepository repositories.IWorkspaceRepository,
+	userInWorkspaceRepository repositories.IUserInWorkspaceRepository,
+	userRepository repositories.IUserRepository,
+	userInPortalService IUserInPortalService,
+) IWorkspaceService {
 	return &workspaceService{
 		userInWorkspaceRepository: userInWorkspaceRepository,
 		workspaceRepository:       workspaceRepository,
@@ -70,23 +75,32 @@ func (w *workspaceService) GetUserNumInWorkspace(portalId *uint) (workspaceId []
 	return userWorkspace, nil
 }
 
-func (w *workspaceService) Create(title string, isCoding *bool, isVideo *bool, startDate time.Time, stopDate time.Time, userId *uint) (workspace *domains.Workspace, err error) {
+func (w *workspaceService) Create(
+	title string,
+	isCoding *bool,
+	isVideo *bool,
+	startDate time.Time,
+	endDate time.Time,
+	portalId *uint,
+	reqScreen *bool,
+	reqMicrophone *bool,
+	reqCamera *bool,
+) (workspace *domains.Workspace, err error) {
 
 	if _, err := w.workspaceRepository.FindByTitle(strings.TrimSpace(title)); err == nil {
 		return nil, ErrorWorkspaceExists
 	}
-	portalId, err := w.userInPortalService.GetPortalByUserId(userId)
-	if err != nil {
-		return nil, err
-	}
 
 	return w.workspaceRepository.Create(domains.Workspace{
-		Title:     strings.TrimSpace(title),
-		IsVideo:   isVideo,
-		IsCoding:  isCoding,
-		StartDate: startDate,
-		StopDate:  stopDate,
-		PortalId:  *portalId,
+		Title:         strings.TrimSpace(title),
+		IsVideo:       isVideo,
+		IsCoding:      isCoding,
+		StartDate:     startDate,
+		EndDate:       endDate,
+		PortalId:      *portalId,
+		ReqScreen:     reqScreen,
+		ReqMicrophone: reqMicrophone,
+		ReqCamera:     reqCamera,
 	})
 }
 

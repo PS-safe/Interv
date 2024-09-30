@@ -69,7 +69,7 @@ func (w WorkspaceHandler) GetWorkspaceById(c *fiber.Ctx) error {
 			IsVideo:   *workspace.IsVideo,
 			IsCoding:  *workspace.IsCoding,
 			StartDate: workspace.StartDate,
-			StopDate:  workspace.StopDate,
+			EndDate:   workspace.EndDate,
 			MemberNum: 0,
 		},
 		IndividualUser: res,
@@ -138,7 +138,7 @@ func (w WorkspaceHandler) GetPortalWorkspace(c *fiber.Ctx) error {
 			IsVideo:   *v.IsVideo,
 			IsCoding:  *v.IsCoding,
 			StartDate: v.StartDate,
-			StopDate:  v.StopDate,
+			EndDate:   v.EndDate,
 			PortalId:  v.PortalId,
 			MemberNum: member[index],
 		})
@@ -173,8 +173,11 @@ func (w WorkspaceHandler) CreateWorkspace(c *fiber.Ctx) error {
 	if err != nil {
 		return err
 	}
-
-	response, err := w.workspaceService.Create(form.Title, form.IsVideo, form.IsCoding, form.StartDate, form.StopDate, userId)
+	_, portalId, err := w.authService.Me(*userId)
+	if err != nil {
+		return err
+	}
+	response, err := w.workspaceService.Create(form.Title, form.IsVideo, form.IsCoding, form.StartDate, form.EndDate, portalId, form.ReqScreen, form.ReqMicrophone, form.ReqCamera)
 	if err != nil {
 		return err
 	}
@@ -185,7 +188,7 @@ func (w WorkspaceHandler) CreateWorkspace(c *fiber.Ctx) error {
 		IsVideo:   *response.IsVideo,
 		IsCoding:  *response.IsCoding,
 		StartDate: response.StartDate,
-		StopDate:  response.StopDate,
+		EndDate:   response.EndDate,
 	})
 }
 
