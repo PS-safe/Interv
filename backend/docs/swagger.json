@@ -1418,15 +1418,27 @@
         "AdminCreateBody": {
             "type": "object",
             "required": [
+                "name",
+                "password",
                 "portalId",
-                "user"
+                "role",
+                "username"
             ],
             "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
                 "portalId": {
                     "type": "integer"
                 },
-                "user": {
-                    "$ref": "#/definitions/domains.User"
+                "role": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
                 }
             }
         },
@@ -1549,23 +1561,39 @@
         "CreateWorkspaceBody": {
             "type": "object",
             "required": [
+                "codingTime",
+                "endDate",
                 "isCoding",
                 "isVideo",
+                "reqCamera",
+                "reqMicrophone",
+                "reqScreen",
                 "startDate",
-                "stopDate",
                 "title"
             ],
             "properties": {
+                "codingTime": {
+                    "type": "integer"
+                },
+                "endDate": {
+                    "type": "string"
+                },
                 "isCoding": {
                     "type": "boolean"
                 },
                 "isVideo": {
                     "type": "boolean"
                 },
-                "startDate": {
-                    "type": "string"
+                "reqCamera": {
+                    "type": "boolean"
                 },
-                "stopDate": {
+                "reqMicrophone": {
+                    "type": "boolean"
+                },
+                "reqScreen": {
+                    "type": "boolean"
+                },
+                "startDate": {
                     "type": "string"
                 },
                 "title": {
@@ -2037,6 +2065,9 @@
         "WorkspaceDetail": {
             "type": "object",
             "properties": {
+                "endDate": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "integer"
                 },
@@ -2053,9 +2084,6 @@
                     "type": "integer"
                 },
                 "startDate": {
-                    "type": "string"
-                },
-                "stopDate": {
                     "type": "string"
                 },
                 "title": {

@@ -10,8 +10,11 @@
  */
 
 export interface AdminCreateBody {
+  name: string
+  password: string
   portalId: number
-  user: DomainsUser
+  role: string
+  username: string
 }
 
 export interface CodingInterviewCreateQuestionQuery {
@@ -78,10 +81,14 @@ export interface CreateVideoQuestionResponse {
 }
 
 export interface CreateWorkspaceBody {
+  codingTime: number
+  endDate: string
   isCoding: boolean
   isVideo: boolean
+  reqCamera: boolean
+  reqMicrophone: boolean
+  reqScreen: boolean
   startDate: string
-  stopDate: string
   title: string
 }
 
@@ -633,13 +640,13 @@ export interface WorkspaceData {
 }
 
 export interface WorkspaceDetail {
+  endDate?: string
   id?: number
   isCoding?: boolean
   isVideo?: boolean
   memberNum?: number
   portalId?: number
   startDate?: string
-  stopDate?: string
   title?: string
 }
 
