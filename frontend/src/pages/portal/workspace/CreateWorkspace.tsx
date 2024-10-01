@@ -2,8 +2,10 @@ import { ContentLayout } from "@/components/layout/ContentLayout.tsx"
 import {
   Breadcrumb,
   BreadcrumbItem,
+  BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
+  BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb.tsx"
 import ContentPanel from "@/components/layout/ContentPanel.tsx"
 import AssessmentPicker from "./components/AssessmentPicker"
@@ -29,6 +31,7 @@ import { toast } from "sonner"
 import useCurrentUser from "@/hooks/UseCurrentUser"
 import { useGetCodingInterviewQuestionByPortalId } from "@/hooks/useGetCodingInterviewQuestionByPortalId"
 import { DomainsCodingQuestion } from "@/api/server"
+import { Link } from "react-router-dom"
 
 // Zod schema for form validation
 const formSchema = z.object({
@@ -136,7 +139,13 @@ const CreateWorkspace = () => {
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbPage>Create Workspace</BreadcrumbPage>
+              <BreadcrumbLink asChild>
+                <Link to="/portal/workspace">Workspaces</Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>Create</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
