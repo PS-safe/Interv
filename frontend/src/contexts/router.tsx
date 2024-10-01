@@ -18,6 +18,7 @@ import AssessmentCodingDetail from "@/pages/portal/assessment/components/Assessm
 import WorkspaceCandidateList from "@/pages/portal/workspace/WorkspaceCandidateList"
 import AssessmentVideoDetail from "@/pages/portal/assessment/components/AssessmentVideoDetail.tsx"
 import AssessmentCodingEdit from "@/pages/portal/assessment/components/AssessmentCodingEdit"
+import AssessmentEditVideoQuestionForm from "@/pages/portal/assessment/components/AssessmentEditVideoQuestionForm.tsx"
 
 export const router = createBrowserRouter([
   {
@@ -93,6 +94,10 @@ export const router = createBrowserRouter([
               {
                 path: ":videoQuestionId",
                 element: <AssessmentVideoDetail />,
+              },
+              {
+                path: ":videoQuestionId/edit",
+                element: <AssessmentEditVideoQuestionForm />,
               },
             ],
           },
