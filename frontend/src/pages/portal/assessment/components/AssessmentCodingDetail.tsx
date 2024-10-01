@@ -15,13 +15,13 @@ function AssessmentCodingDetail() {
   return (
     <div>
       <ContentLayout
-        title={"Coding Assessments"}
+        title={"Coding Questions"}
         breadcrumb={
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
                 <BreadcrumbLink asChild>
-                  <Link to="/portal/assessment/coding">Coding Assessments</Link>
+                  <Link to="/portal/question/coding">Coding Questions</Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />

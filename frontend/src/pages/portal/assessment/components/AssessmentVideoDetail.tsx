@@ -14,13 +14,13 @@ function AssessmentVideoDetail() {
   const { videoQuestionId } = useParams()
   return (
     <ContentLayout
-      title={"Coding Assessments"}
+      title={"Coding Questions"}
       breadcrumb={
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <Link to="/portal/assessment/video">Video Assessments</Link>
+                <Link to="/portal/question/video">Video Questions</Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />

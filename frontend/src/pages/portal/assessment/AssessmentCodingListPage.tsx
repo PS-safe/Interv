@@ -24,10 +24,10 @@ const AssessmentCodingListPage = () => {
   } = useGetCodingInterviewQuestionByPortalId(currentUser.currentUser.portalId)
 
   const handleAdd = () => {
-    navigate("/portal/assessment/coding/create")
+    navigate("/portal/question/coding/create")
   }
   const handleView = (title: string) => {
-    navigate(`/portal/assessment/coding/${encodeURIComponent(title)}`)
+    navigate(`/portal/question/coding/${encodeURIComponent(title)}`)
   }
 
   const handleEdit = (id: number) => {
@@ -40,12 +40,12 @@ const AssessmentCodingListPage = () => {
 
   return (
     <ContentLayout
-      title={"Coding Assessments"}
+      title={"Coding Questions"}
       breadcrumb={
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbPage>Coding Assessments</BreadcrumbPage>
+              <BreadcrumbPage>Coding Questions</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
           <Button

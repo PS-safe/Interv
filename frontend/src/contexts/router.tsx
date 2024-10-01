@@ -48,7 +48,7 @@ export const router = createBrowserRouter([
             ],
           },
           {
-            path: "assessment/coding",
+            path: "question/coding",
             children: [
               {
                 path: "",
@@ -65,7 +65,7 @@ export const router = createBrowserRouter([
             ],
           },
           {
-            path: "assessment/video",
+            path: "question/video",
             children: [
               {
                 path: "",
@@ -86,7 +86,7 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: "/lobby/:lobbyId",
+    path: "/room/:lobbyId",
     element: <MainLayout />,
     children: [
       {
