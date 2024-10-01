@@ -18,5 +18,6 @@ type Workspace struct {
 	ReqMicrophone *bool
 	ReqCamera     *bool
 	PortalId      uint
+	VideoQuestion []*VideoQuestion `gorm:"many2many:videoQuestion_workspace"`
 	gorm.Model
 }
