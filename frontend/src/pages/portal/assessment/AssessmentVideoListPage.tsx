@@ -37,7 +37,7 @@ const AssessmentVideoListPage = () => {
   }
 
   const handleEdit = (id: number) => {
-    console.log("edit", id)
+    navigate(`/portal/question/video/${encodeURIComponent(id)}/edit`)
   }
 
   const handleDelete = (id: number) => {

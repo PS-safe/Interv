@@ -13,7 +13,7 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { toast } from "sonner"
 import { server } from "@/contexts/swr.tsx"
-import { Link } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -25,9 +25,11 @@ import {
 import ContentPanel from "@/components/layout/ContentPanel.tsx"
 import { ContentLayout } from "@/components/layout/ContentLayout.tsx"
 import useCurrentUser from "@/hooks/UseCurrentUser.ts"
+import { useEffect } from "react"
 
-const AssessmentCreateVideoQuestionForm = () => {
+const AssessmentEditVideoQuestionForm = () => {
   const { currentUser } = useCurrentUser()
+  const { videoQuestionId } = useParams()
   const formSchema = z.object({
     title: z.string().min(1, { message: "Required" }),
     timeToPrepare: z.coerce.number().min(1, { message: "Required" }),
@@ -45,15 +47,15 @@ const AssessmentCreateVideoQuestionForm = () => {
   })
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     toast.promise(
-      server.videoQuestion.createVideoQuestion({
+      server.videoQuestion.updateVideoQuestion({
         ...values,
         portalId: currentUser.portalId,
+        questionId: parseInt(videoQuestionId!),
       }),
       {
-        loading: "Creating question...",
+        loading: "Updating question...",
         success: () => {
-          form.reset()
-          return "Created successfully"
+          return "Updated successfully"
         },
         error: (err) => {
           return err.response.data.message
@@ -61,6 +63,21 @@ const AssessmentCreateVideoQuestionForm = () => {
       },
     )
   }
+
+  useEffect(() => {
+    server.videoQuestion
+      .getVideoQuestionById({
+        id: parseInt(videoQuestionId!),
+      })
+      .then((res) => {
+        form.reset({
+          title: res.data?.title,
+          timeToPrepare: res.data?.timeToPrepare,
+          timeToAnswer: res.data?.timeToAnswer,
+          totalAttempt: res.data?.totalAttempt,
+        })
+      })
+  }, [form, videoQuestionId])
 
   return (
     <ContentLayout
@@ -75,7 +92,15 @@ const AssessmentCreateVideoQuestionForm = () => {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Create</BreadcrumbPage>
+              <BreadcrumbLink asChild>
+                <Link to={`/portal/question/video/${videoQuestionId}`}>
+                  {videoQuestionId}
+                </Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>Edit</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
@@ -150,4 +175,4 @@ const AssessmentCreateVideoQuestionForm = () => {
   )
 }
 
-export default AssessmentCreateVideoQuestionForm
+export default AssessmentEditVideoQuestionForm
