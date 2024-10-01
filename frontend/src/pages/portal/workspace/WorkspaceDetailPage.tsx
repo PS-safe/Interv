@@ -17,6 +17,7 @@ const WorkspaceDetailPage = () => {
   const { data } = useGetWorkspace(Number(workspaceId))
   const navigate = useNavigate()
 
+  console.log("test")
   return (
     <ContentLayout
       title={"${Workspace name}"}
