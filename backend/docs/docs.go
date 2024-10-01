@@ -2231,6 +2231,15 @@ const docTemplate = `{
                 "portalId": {
                     "type": "integer"
                 },
+                "reqCamera": {
+                    "type": "boolean"
+                },
+                "reqMicrophone": {
+                    "type": "boolean"
+                },
+                "reqScreen": {
+                    "type": "boolean"
+                },
                 "startDate": {
                     "type": "string"
                 },

@@ -64,13 +64,17 @@ func (w WorkspaceHandler) GetWorkspaceById(c *fiber.Ctx) error {
 	}
 	return Ok(c, WorkspaceData{
 		WorkspaceDetail: WorkspaceDetail{
-			Id:        workspace.Id,
-			Title:     workspace.Title,
-			IsVideo:   *workspace.IsVideo,
-			IsCoding:  *workspace.IsCoding,
-			StartDate: workspace.StartDate,
-			EndDate:   workspace.EndDate,
-			MemberNum: 0,
+			Id:            workspace.Id,
+			Title:         workspace.Title,
+			StartDate:     workspace.StartDate,
+			EndDate:       workspace.EndDate,
+			IsVideo:       *workspace.IsVideo,
+			IsCoding:      *workspace.IsCoding,
+			CodingTime:    workspace.CodingTime,
+			ReqScreen:     *workspace.ReqScreen,
+			ReqMicrophone: *workspace.ReqScreen,
+			ReqCamera:     *workspace.ReqCamera,
+			MemberNum:     0,
 		},
 		IndividualUser: res,
 	})

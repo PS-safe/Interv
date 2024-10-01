@@ -697,6 +697,9 @@ export interface WorkspaceDetail {
   isVideo?: boolean
   memberNum?: number
   portalId?: number
+  reqCamera?: boolean
+  reqMicrophone?: boolean
+  reqScreen?: boolean
   startDate?: string
   title?: string
 }

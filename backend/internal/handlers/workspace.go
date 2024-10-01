@@ -5,15 +5,18 @@ import (
 )
 
 type WorkspaceDetail struct {
-	Id         uint      `json:"id"`
-	Title      string    `json:"title"`
-	StartDate  time.Time `json:"startDate"`
-	EndDate    time.Time `json:"endDate"`
-	IsVideo    bool      `json:"isVideo"`
-	IsCoding   bool      `json:"isCoding"`
-	CodingTime uint      `json:"codingTime"`
-	PortalId   uint      `json:"portalId"`
-	MemberNum  uint      `json:"memberNum"`
+	Id            uint      `json:"id"`
+	Title         string    `json:"title"`
+	StartDate     time.Time `json:"startDate"`
+	EndDate       time.Time `json:"endDate"`
+	IsVideo       bool      `json:"isVideo"`
+	IsCoding      bool      `json:"isCoding"`
+	CodingTime    uint      `json:"codingTime"`
+	ReqScreen     bool      `json:"reqScreen"`
+	ReqMicrophone bool      `json:"reqMicrophone"`
+	ReqCamera     bool      `json:"reqCamera"`
+	PortalId      uint      `json:"portalId"`
+	MemberNum     uint      `json:"memberNum"`
 } // @name WorkspaceDetail
 
 type CreateWorkspaceBody struct {
