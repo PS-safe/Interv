@@ -38,7 +38,7 @@ const VideoInterviewQuestionDetail: FC<VideoInterviewQuestionDetailProps> = ({
       },
     },
   )
-  const cleanDescription = DOMPurify.sanitize(data?.data?.question)
+  const cleanDescription = DOMPurify.sanitize(data?.data?.question ?? "")
 
   return (
     <>
