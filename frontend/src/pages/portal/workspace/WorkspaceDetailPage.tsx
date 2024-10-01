@@ -1,11 +1,7 @@
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input.tsx"
-import Papa from "papaparse"
-import React, { useState } from "react"
-import { Link, useParams } from "react-router-dom"
-import { server } from "@/contexts/swr"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import { useGetWorkspace } from "@/hooks/useGetWorkspace"
-import ListUser from "./components/ListUser"
+
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -16,63 +12,12 @@ import {
 } from "@/components/ui/breadcrumb.tsx"
 import ContentPanel from "@/components/layout/ContentPanel.tsx"
 import { ContentLayout } from "@/components/layout/ContentLayout.tsx"
+import { Label } from "@radix-ui/react-label"
 
 const WorkspaceDetailPage = () => {
-  const [importUser, setImportUser] = useState<UserData[]>()
   const { workspaceId } = useParams()
-  const { data, mutate } = useGetWorkspace(Number(workspaceId))
-
-  type UserData = {
-    name: string
-    username: string
-    password: string
-    role: string
-  }
-
-  type ImportData = {
-    listUser: UserData[]
-    workspaceId: number
-  }
-
-  function parseUserData(input: unknown[]): UserData[] {
-    return input
-      .filter(
-        (item): item is string[] =>
-          Array.isArray(item) &&
-          item.length === 4 &&
-          item.every((i) => typeof i === "string"),
-      )
-      .map(([name, username, password, role]) => ({
-        name,
-        username,
-        password,
-        role,
-      }))
-  }
-
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
-    if (file) {
-      Papa.parse(file, {
-        skipEmptyLines: true,
-        complete: (results) => {
-          setImportUser(parseUserData(results.data))
-        },
-      })
-    }
-  }
-
-  const handleSubmitFile = () => {
-    const importData: ImportData = {
-      listUser: importUser ?? [],
-      workspaceId: Number(workspaceId),
-    }
-    if (importUser) {
-      server.user.createUser(importData).finally(() => {
-        mutate()
-      })
-    }
-  }
+  const { data } = useGetWorkspace(Number(workspaceId))
+  const navigate = useNavigate()
 
   return (
     <ContentLayout title={"${Workspace name}"}>
@@ -90,28 +35,58 @@ const WorkspaceDetailPage = () => {
         </BreadcrumbList>
       </Breadcrumb>
       <ContentPanel>
-        <Input
-          className="w-64"
-          type="file"
-          accept=".csv"
-          id="userMail"
-          onChange={(e) => {
-            handleFileUpload(e)
+        <Button
+          className={
+            "w-52 h-14 text-center font-semibold text-xl rounded-xl disabled:opacity-100"
+          }
+          onClick={() => {
+            navigate("candidateList")
           }}
-        />
+        >
+          CandidateList
+        </Button>
+        <div className="mt-5 flex flex-col">
+          <Label>WorkspaceId: {data?.data?.workspaceDetail.id}</Label>
+          <Label>Workspace title: {data?.data?.workspaceDetail.title}</Label>
+          <Label>Start Date: {data?.data?.workspaceDetail.startDate}</Label>
+          <Label>End Date: {data?.data?.workspaceDetail.endDate}</Label>
+          <Label>
+            Have Video Question:
+            {data?.data?.workspaceDetail.isVideo?.toString()}
+          </Label>
+          <Label>
+            Have Coding Question:
+            {data?.data?.workspaceDetail.isCoding?.toString()}
+          </Label>
+          <Label>
+            Coding Time: {data?.data?.workspaceDetail.codingTime?.toString()}
+          </Label>
+          <Label>Portal Id: {data?.data?.workspaceDetail.portalId}</Label>
+          <Label>
+            Require Camera: {data?.data?.workspaceDetail.reqScreen?.toString()}
+          </Label>
+          <Label>
+            Require Microphone:
+            {data?.data?.workspaceDetail.reqMicrophone?.toString()}
+          </Label>
+          <Label>
+            Require Camera: {data?.data?.workspaceDetail.reqCamera?.toString()}
+          </Label>
+          <Label>
+            Number of candidate:{data?.data?.workspaceDetail.memberNum}
+          </Label>
+        </div>
 
         <Button
           className={
             "w-52 h-14 text-center font-semibold text-xl rounded-xl disabled:opacity-100"
           }
           onClick={() => {
-            handleSubmitFile()
+            console.log(data)
           }}
         >
-          Submit
+          TestData
         </Button>
-
-        <ListUser listUser={data?.data?.individualUser ?? []} />
       </ContentPanel>
     </ContentLayout>
   )

@@ -15,6 +15,7 @@ import AssessmentCreateCodingQuestionForm from "@/pages/portal/assessment/compon
 import AssessmentVideoListPage from "@/pages/portal/assessment/AssessmentVideoListPage.tsx"
 import AssessmentCodingListPage from "@/pages/portal/assessment/AssessmentCodingListPage.tsx"
 import AssessmentCodingDetail from "@/pages/portal/assessment/components/AssessmentCodingDetail"
+import WorkspaceCandidateList from "@/pages/portal/workspace/WorkspaceCandidateList"
 
 export const router = createBrowserRouter([
   {
@@ -42,7 +43,16 @@ export const router = createBrowserRouter([
               },
               {
                 path: ":workspaceId",
-                element: <WorkspaceDetailPage />,
+                children: [
+                  {
+                    path: "",
+                    element: <WorkspaceDetailPage />,
+                  },
+                  {
+                    path: "candidateList",
+                    element: <WorkspaceCandidateList />,
+                  },
+                ],
               },
             ],
           },

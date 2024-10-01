@@ -25,9 +25,13 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { useState } from "react"
+import { DateRange } from "react-day-picker"
+import { addDays } from "date-fns"
 import { server } from "@/contexts/swr"
 import { toast } from "sonner"
 import useCurrentUser from "@/hooks/UseCurrentUser"
+import { useGetCodingInterviewQuestionByPortalId } from "@/hooks/useGetCodingInterviewQuestionByPortalId"
+import { DomainsCodingQuestion } from "@/api/server"
 
 // Zod schema for form validation
 const formSchema = z.object({
@@ -45,7 +49,6 @@ const formSchema = z.object({
 })
 
 const CreateWorkspace = () => {
-  const { currentUser } = useCurrentUser()
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -59,10 +62,52 @@ const CreateWorkspace = () => {
       reqCamera: false,
     },
   })
+
+  const [dateRange, setDateRange] = useState<DateRange | undefined>({
+    from: new Date(),
+    to: undefined,
+  })
   const { setValue, watch } = form
+  const { currentUser } = useCurrentUser()
+  const { data } = useGetCodingInterviewQuestionByPortalId(currentUser.portalId)
+  const startDate = watch("date.startDate")
+  const endDate = watch("date.endDate")
+
+  const [codeStockAssessment, setCodeStockAssessment] = useState<
+    DomainsCodingQuestion[] | undefined
+  >(data?.data)
+  const [codeCurrentAssessment, setCodeCurrentAssessment] = useState<
+    DomainsCodingQuestion[] | undefined
+  >([])
+  // const [, setVideoStockAssessment] = useState<string[]>([])
+  // const [videoCurrentAssessment, setVideoCurrentAssessment] = useState<
+  //   string[]
+  // >([])
+  // const isVideo = videoCurrentAssessment.length > 0
+  const isCoding =
+    codeCurrentAssessment === undefined
+      ? false
+      : codeCurrentAssessment.length > 0
+  setValue("isVideo", false)
+  setValue("isCoding", isCoding)
+
+  const handleDateChange = (range: DateRange | undefined) => {
+    setDateRange(range)
+    setValue(
+      "date.startDate",
+      range?.from ? addDays(range?.from, 1).toISOString().split("T")[0] : "",
+      { shouldValidate: true },
+    )
+    setValue(
+      "date.endDate",
+      range?.to ? addDays(range?.to, 1).toISOString().split("T")[0] : "",
+      { shouldValidate: true },
+    )
+  }
+
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    const sD = new Date(values.date.startDate)
-    const eD = new Date(values.date.endDate)
+    const eD = new Date(endDate)
+    const sD = new Date(startDate)
     toast.promise(
       server.workspace.createWorkspace({
         ...values,
@@ -82,44 +127,10 @@ const CreateWorkspace = () => {
     )
   }
 
-  // Watch date values
-  const startDate = watch("date.startDate")
-  const endDate = watch("date.endDate")
-
-  // Handlers for date changes
-  const handleStartDateChange = (date: string) => {
-    setValue("date.startDate", date, { shouldValidate: true })
+  const test = () => {
+    console.log(data)
+    server.codingInterview.addQuestion
   }
-
-  const handleEndDateChange = (date: string) => {
-    setValue("date.endDate", date, { shouldValidate: true })
-  }
-
-  // State for assessments
-  const [codeStockAssessment, setCodeStockAssessment] = useState<string[]>([
-    "a",
-    "b",
-    "c",
-  ])
-  const [codeCurrentAssessment, setCodeCurrentAssessment] = useState<string[]>(
-    [],
-  )
-  const [videoStockAssessment, setVideoStockAssessment] = useState<string[]>([
-    "d",
-    "e",
-    "f",
-  ])
-  const [videoCurrentAssessment, setVideoCurrentAssessment] = useState<
-    string[]
-  >([])
-
-  // Automatically update isVideo and isCoding fields based on currentAssessment
-  const isVideo = videoCurrentAssessment.length > 0
-  const isCoding = codeCurrentAssessment.length > 0
-
-  // Update these values in the form when they change
-  setValue("isVideo", isVideo)
-  setValue("isCoding", isCoding)
 
   return (
     <ContentLayout title={"Create workspace"}>
@@ -159,12 +170,7 @@ const CreateWorkspace = () => {
                 <FormItem>
                   <FormLabel>Date</FormLabel>
                   <FormControl>
-                    <DatePicker
-                      startDate={startDate}
-                      setStartDate={handleStartDateChange}
-                      endDate={endDate}
-                      setEndDate={handleEndDateChange}
-                    />
+                    <DatePicker date={dateRange} setDate={handleDateChange} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -177,12 +183,12 @@ const CreateWorkspace = () => {
                 <FormItem>
                   <FormLabel>Video Assessment</FormLabel>
                   <FormControl>
-                    <AssessmentPicker
+                    {/* <AssessmentPicker
                       currentAssessment={videoCurrentAssessment}
                       setCurrentAssessment={setVideoCurrentAssessment}
                       stockAssessment={videoStockAssessment}
                       setStockAssessment={setVideoStockAssessment}
-                    />
+                    /> */}
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -277,7 +283,9 @@ const CreateWorkspace = () => {
                       type="checkbox"
                       checked={field.value} // Set checked to the boolean value
                       onChange={field.onChange} // Update the form state when checkbox changes
+                      onBlur={field.onBlur}
                       name={field.name}
+                      ref={field.ref}
                     />
                   </FormControl>
                   <FormLabel>Require camera record</FormLabel>
@@ -286,7 +294,7 @@ const CreateWorkspace = () => {
               )}
             />
 
-            <Button className={"w-full"} type="submit">
+            <Button className={"w-full"} onClick={test}>
               Submit
             </Button>
           </form>
