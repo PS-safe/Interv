@@ -25,6 +25,7 @@ import {
 import ContentPanel from "@/components/layout/ContentPanel.tsx"
 import { ContentLayout } from "@/components/layout/ContentLayout.tsx"
 import useCurrentUser from "@/hooks/UseCurrentUser.ts"
+import ReactQuill from "react-quill"
 
 const AssessmentCreateVideoQuestionForm = () => {
   const { currentUser } = useCurrentUser()
@@ -61,6 +62,35 @@ const AssessmentCreateVideoQuestionForm = () => {
       },
     )
   }
+
+  const editorFormats = [
+    "header",
+    "font",
+    "size",
+    "bold",
+    "italic",
+    "underline",
+    "strike",
+    "blockquote",
+    "list",
+    "bullet",
+    "indent",
+    "link",
+    "image",
+    "video",
+  ]
+
+  const editorModules = {
+    toolbar: [
+      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+      ["bold", "italic", "underline", "strike"],
+      ["blockquote", "code-block"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      [{ script: "sub" }, { script: "super" }],
+      ["link", "image", "video"],
+    ],
+  }
+
   return (
     <ContentLayout
       title={"Create Video Assessment"}
@@ -90,7 +120,14 @@ const AssessmentCreateVideoQuestionForm = () => {
                 <FormItem>
                   <FormLabel className="text-lg">Question Title</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <ReactQuill
+                      theme="snow"
+                      value={field.value}
+                      onChange={field.onChange}
+                      formats={editorFormats}
+                      modules={editorModules}
+                      className="bg-white rounded-md"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
